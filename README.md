@@ -24,7 +24,7 @@
     <a href="https://github.com/seantanyurong/drop-and-go"><strong>Explore our documentation »</strong></a>
     <br />
     <br />
-    <a href="https://the100club.netlify.app/">View Demo</a>
+    <a href="https://dropandgo.netlify.app/">View Demo</a>
     <!-- ·
     <a href="https://github.com/github_username/repo_name/issues">Request Feature</a> -->
   </p>
@@ -53,13 +53,16 @@
 <!-- [![Product Name Screen Shot][product-screenshot]](https://the100club.netlify.app/) -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-<p>Find luggage storage in certified shops & hotels.</p>
+<p>Luggage storage sites are located inside existing businesses, including retail outlets, hotels, cafes, and more. All are vetted by Drop and Go's local employee, who performs regular quality checks.</p>
 
-<p>An IS3106 Project</p>
+<p>A beautiful IS3106 Project</p>
 
 ### Built With
 
 - [React.js](https://reactjs.org/)
+- [Tailwind](https://tailwindcss.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Express.js](https://expressjs.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -82,7 +85,7 @@
 
 ## Contact
 
-<p>IS3106 Group 11 - wearecool@gmail.com</p>
+<p>Group 11 - wearecool@gmail.com</p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
