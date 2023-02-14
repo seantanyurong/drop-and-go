@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
-export default function Edit() {
+export default function Edit(props) {
   const [form, setForm] = useState({
     name: "",
     position: "",
     level: "",
     records: [],
   });
-  const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const id = params.id.toString();
+      const id = props.params.id.toString();
       const response = await fetch(
-        `http://localhost:6003/record/${params.id.toString()}`
+        `http://localhost:6003/record/${props.params.id.toString()}`
       );
 
       if (!response.ok) {
@@ -37,7 +36,7 @@ export default function Edit() {
     fetchData();
 
     return;
-  }, [params.id, navigate]);
+  }, [props.params.id, navigate]);
 
   // These methods will update the state properties.
   function updateForm(value) {
@@ -55,7 +54,7 @@ export default function Edit() {
     };
 
     // This will send a post request to update the data in the database.
-    await fetch(`http://localhost:6003/update/${params.id}`, {
+    await fetch(`http://localhost:6003/update/${props.params.id}`, {
       method: "POST",
       body: JSON.stringify(editedPerson),
       headers: {
