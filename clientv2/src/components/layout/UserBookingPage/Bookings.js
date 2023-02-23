@@ -19,7 +19,7 @@ const Bookings = () => {
   return (
     <div>
       <div className="bg-primary-200">
-        <div className="max-w-5xl mx-auto px-5 sm:px-6">
+        <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6">
           <div className="flex-col sm:flex-row flex items-center justify-between relative">
             <div className="shrink-0 mr-4">
               <p className="text-text-main text-xl">My bookings</p>
@@ -54,7 +54,21 @@ const Bookings = () => {
         </div>
       </div>
       {/* Results */}
-      <div className="max-w-5xl mx-auto px-5 sm:px-6 py-8">
+      <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
+        <div className="border-[0.05rem] p-4 rounded-md border-text-dark mb-4">
+          <div className="flex space-x-3 items-center mb-1">
+            <h3 className="font-semibold">Wet Designs Pte Ltd</h3>
+            <p className="rounded-md bg-text-dark text-text-main p-1.5 text-xs">
+              Confirmed
+            </p>
+            <p className="rounded-md bg-text-main text-text-dark p-1.5 text-xs border-2">
+              Singapore
+            </p>
+          </div>
+          <div>
+            <p className="text-sm">You confirmed booking a minute ago</p>
+          </div>
+        </div>
         {renderSwitch()}
       </div>
     </div>
