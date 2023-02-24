@@ -10,9 +10,9 @@ const Header = () => {
   }
 
   return (
-    <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200">
+    <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
       <div className="mx-auto px-5 sm:px-6">
-        <div className="flex-col sm:flex-row flex items-center justify-between h-16 md:h-20 relative">
+        <div className="flex items-center justify-between h-16 md:h-20 relative">
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
@@ -22,7 +22,7 @@ const Header = () => {
           </div>
 
           {/* Desktop navigation */}
-          <nav className="flex grow mt-16 sm:mt-0">
+          <nav className="flex grow mt-4 sm:mt-0">
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
@@ -70,7 +70,7 @@ const Header = () => {
                       <div className="py-1">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <div
                               href="#"
                               className={classNames(
                                 active
@@ -80,12 +80,12 @@ const Header = () => {
                               )}
                             >
                               My bookings
-                            </a>
+                            </div>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <div
                               href="#"
                               className={classNames(
                                 active
@@ -95,12 +95,12 @@ const Header = () => {
                               )}
                             >
                               Account
-                            </a>
+                            </div>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <div
                               href="#"
                               className={classNames(
                                 active
@@ -110,7 +110,7 @@ const Header = () => {
                               )}
                             >
                               Logout
-                            </a>
+                            </div>
                           )}
                         </Menu.Item>
                       </div>

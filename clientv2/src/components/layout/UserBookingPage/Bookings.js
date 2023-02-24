@@ -63,7 +63,7 @@ const Bookings = () => {
             </div>
 
             {/* Navigation */}
-            <nav className="flex grow mt-16 sm:mt-0">
+            <nav className="flex grow mt-4 sm:mt-0">
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li
                   onClick={() => setActiveMenuItem(0)}
