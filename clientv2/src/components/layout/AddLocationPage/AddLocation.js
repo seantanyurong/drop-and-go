@@ -4,13 +4,158 @@ const AddLocation = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
 
+  const AddLocationForm = () => {
+    const [inputs, setInputs] = useState({});
+
+    const handleChange = (event) => {
+      const name = event.target.name;
+      const value = event.target.value;
+      setInputs(values => ({ ...values, [name]: value }))
+    }
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      alert(inputs);
+    }
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <label>
+          <h3 className="font-semibold">Basic Profile</h3>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            Provide the name of your shop
+          </p>
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="Shop Name"
+            name="shopName"
+            value={inputs.shopName || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <p className="mt-1.5 text-xs font-medium py-2" >
+            Indicate the total number of bags you have space for
+          </p>
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="number"
+            name="capacity"
+            placeholder="Capacity (bags)"
+            value={inputs.capacity || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <p className="mt-1.5 text-xs font-medium py-2" >
+            Provide the details of the primary contact name for the shop
+          </p>
+          <div>
+            <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+              type="text"
+              name="contactName"
+              placeholder="Primary Contact Name"
+              value={inputs.contactName || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input className="w-full appearance-none border rounded py-2 px-3 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+              type="text"
+              name="email"
+              placeholder="Email"
+              value={inputs.email || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input className="w-full appearance-none border rounded py-2 px-3 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+              type="text"
+              name="phone"
+              placeholder="Mobile phone"
+              value={inputs.phone || ""}
+              onChange={handleChange}
+            />
+          </div>
+        </label>
+        <label>
+          <h3 className="mt-12 font-semibold ">Billing Contact</h3>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            Provide the email address that will recieve invoices
+          </p>
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="Email"
+            name="billingEmail"
+            value={inputs.billingEmail || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <h3 className="mt-12 font-semibold ">Address</h3>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            Use the search field below to find the shop on Google Maps.
+          </p>
+          {/* Need to change to map */}
+
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="Address"
+            name="address"
+            value={inputs.address || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            If it is difficult to find the location, please provide additional directions
+          </p>
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="E.g. Once you reach end of the street, you will find us at the right corner"
+            name="address"
+            value={inputs.address || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <h3 className="mt-12 font-semibold ">Regular Opening Hours</h3>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            Indicate your weekly opening hours so customers know when they can drop their bags in your shop
+          </p>
+          {/* Need to change to calendar */}
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="OpeningHours"
+            name="openingHours"
+            value={inputs.openingHours || ""}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          <h3 className="mt-12 font-semibold ">Images</h3>
+          <p className="mt-1.5 text-xs font-medium py-2">
+            Upload one or more images of the shop, preferably showing the street
+          </p>
+          {/* Need to change to calendar */}
+          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            type="text"
+            placeholder="OpeningHours"
+            name="openingHours"
+            value={inputs.openingHours || ""}
+            onChange={handleChange}
+          />
+        </label>
+
+
+        <input type="submit" />
+      </form>
+    )
+  }
+
+
   const questions = () => {
     return (
       <div>
-        <h3 className="font-semibold">Basic Profile</h3>
-        <p className="rounded-md mt-1.5 text-xs font-medium">
-          Provide the name of your shop
-        </p>
       </div>
       //         Confirmed
       // <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover">
@@ -145,6 +290,7 @@ const AddLocation = () => {
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
         {/* {renderSwitch()} */}
         {questions()}
+        {AddLocationForm()}
       </div>
     </div>
   );
