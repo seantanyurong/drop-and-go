@@ -1,13 +1,19 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 const Bookings = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
+  let navigate = useNavigate();
 
   const renderSwitch = () => {
     switch (activeMenuItem) {
       case 0:
         return (
-          <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover">
+          <div
+            className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover"
+            onClick={() => navigate("/user/bookings/123")}
+          >
             <div className="flex items-center mb-1 justify-between">
               <div className="flex space-x-3 items-center">
                 <h3 className="font-semibold">Wet Designs Pte Ltd</h3>
