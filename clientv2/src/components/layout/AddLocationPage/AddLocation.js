@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ImageUploadPreviewComponent from "../../ui/ImageUploadPreviewComponent";
-import { useForm } from "react-hook-form";
-// import FormErrors from "../../ui/FormErrors";
-import TestForm from "../../ui/TestForm";
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+
 
 const AddLocation = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
@@ -10,14 +11,6 @@ const AddLocation = () => {
 
   const AddLocationForm = () => {
     const [inputs, setInputs, setSelectedFiles] = useState([]);
-
-    const handleChange = (event) => {
-      const name = event.target.name;
-      const value = event.target.value;
-      setInputs(values => ({ ...values, [name]: value }));
-      // validateField(name, value);
-    };
-
 
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -29,94 +22,121 @@ const AddLocation = () => {
       setSelectedFiles(event.target.files);
     }
 
-    // const validateField = (fieldName, value) => {
-    //   let fieldValidationErrors = this.state.formErrors;
-    //   let emailValid = this.state.emailValid;
-    //   let passwordValid = this.state.passwordValid;
-
-    //   switch (fieldName) {
-    //     case 'email':
-    //       emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    //       fieldValidationErrors.email = emailValid ? '' : ' is invalid';
-    //       break;
-    //     case 'password':
-    //       passwordValid = value.length >= 6;
-    //       fieldValidationErrors.password = passwordValid ? '' : ' is too short';
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    //   this.setInputs({
-    //     formErrors: fieldValidationErrors,
-    //     emailValid: emailValid,
-    //     passwordValid: passwordValid
-    //   }, this.validateForm);
-    // }
-
-    // const validateForm = () => {
-    //   this.setInputs({ formValid: this.state.emailValid && this.state.passwordValid });
-    // }
+    const formik = useFormik({
+      initialValues: {
+        shopName: '',
+        capacity: '',
+        contactName: '',
+        email: '',
+        phone: '',
+        billingEmail: '',
+        address: '',
+        directions: '',
+        openingHours: '',
+      },
+      onSubmit: function (values) {
+        alert(`You are registered! Name: ${values.name}. Email: ${values.email}. Profession: ${values.profession}. 
+          Age: ${values.age}`);
+      },
+      validationSchema: yup.object({
+        shopName: yup.string()
+          .label('Shop name')
+          .required(),
+        capacity: yup.number()
+          .label('Capacity')
+          .min(1, 'The capacity must be minimally 1')
+          .required(),
+        contactName: yup.string()
+          .label('Contact Name')
+          .required(),
+        email: yup.string()
+          .label("Email")
+          .email()
+          .required(),
+        phone: yup.number()
+          .label('Mobile Number')
+          .required(),
+        billingEmail: yup.string()
+          .label("Billing email")
+          .email()
+          .required(),
+        address: yup.string()
+          .label("Address")
+          .required(),
+        directions: '',
+        openingHours: ''
+      })
+    })
 
 
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <label>
-          {/* <TestForm></TestForm> */}
-          {/* <FormErrors formErrors={this.state.formErrors} /> */}
           <h3 className="font-semibold">Basic Profile</h3>
           <p className="mt-1.5 text-xs font-medium py-2">
             Provide the name of your shop
           </p>
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="text"
             placeholder="Shop Name"
             name="shopName"
-            value={inputs.shopName || ""}
-            onChange={handleChange}
-          />
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.shopName && formik.errors.shopName ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.shopName} />
+          {formik.touched.shopName && formik.errors.shopName &&
+            (<span className='text-red-400'>{formik.errors.shopName}</span>)}
         </label>
+
         <label>
           <p className="mt-1.5 text-xs font-medium py-2" >
             Indicate the total number of bags you have space for
           </p>
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="number"
             name="capacity"
             placeholder="Capacity (bags)"
-            value={inputs.capacity || ""}
-            onChange={handleChange}
-          />
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.capacity && formik.errors.capacity ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
+          {formik.touched.capacity && formik.errors.capacity &&
+            (<span className='text-red-400'>{formik.errors.capacity}</span>)}
         </label>
         <label>
           <p className="mt-1.5 text-xs font-medium py-2" >
             Provide the details of the primary contact name for the shop
           </p>
           <div>
-            <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            <input
               type="text"
               name="contactName"
               placeholder="Primary Contact Name"
-              value={inputs.contactName || ""}
-              onChange={handleChange}
-            />
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.contactName && formik.errors.contactName ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.contactName} />
+            {formik.touched.contactName && formik.errors.contactName &&
+              (<span className='text-red-400'>{formik.errors.contactName}</span>)}
           </div>
           <div>
-            <input className="w-full appearance-none border rounded py-2 px-3 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            <input
               type="text"
               name="email"
               placeholder="Email"
-              value={inputs.email || ""}
-              onChange={handleChange}
-            />
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.email && formik.errors.email ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email} />
+            {formik.touched.email && formik.errors.email &&
+              (<span className='text-red-400'>{formik.errors.email}</span>)}
           </div>
           <div>
-            <input className="w-full appearance-none border rounded py-2 px-3 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+            <input
               type="text"
               name="phone"
               placeholder="Mobile phone"
-              value={inputs.phone || ""}
-              onChange={handleChange}
-            />
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+              ${formik.touched.phone && formik.errors.phone ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.phone} />
+            {formik.touched.phone && formik.errors.phone &&
+              (<span className='text-red-400'>{formik.errors.phone}</span>)}
           </div>
         </label>
         <label>
@@ -124,13 +144,15 @@ const AddLocation = () => {
           <p className="mt-1.5 text-xs font-medium py-2">
             Provide the email address that will recieve invoices
           </p>
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="text"
             placeholder="Email"
             name="billingEmail"
-            value={inputs.billingEmail || ""}
-            onChange={handleChange}
-          />
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.billingEmail && formik.errors.billingEmail ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.billingEmail} />
+          {formik.touched.billingEmail && formik.errors.billingEmail &&
+            (<span className='text-red-400'>{formik.errors.billingEmail}</span>)}
         </label>
         <label>
           <h3 className="mt-12 font-semibold ">Address</h3>
@@ -139,25 +161,29 @@ const AddLocation = () => {
           </p>
           {/* Need to change to map */}
 
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="text"
             placeholder="Address"
             name="address"
-            value={inputs.address || ""}
-            onChange={handleChange}
-          />
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.address && formik.errors.address ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.address} />
+          {formik.touched.address && formik.errors.address &&
+            (<span className='text-red-400'>{formik.errors.address}</span>)}
         </label>
         <label>
           <p className="mt-1.5 text-xs font-medium py-2">
             If it is difficult to find the location, please provide additional directions
           </p>
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="text"
             placeholder="E.g. Once you reach end of the street, you will find us at the right corner"
-            name="address"
-            value={inputs.address || ""}
-            onChange={handleChange}
-          />
+            name="directions"
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.directions && formik.errors.directions ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.directions} />
+          {formik.touched.directions && formik.errors.directions &&
+            (<span className='text-red-400'>{formik.errors.directions}</span>)}
         </label>
         <label>
           <h3 className="mt-12 font-semibold ">Regular Opening Hours</h3>
@@ -165,13 +191,15 @@ const AddLocation = () => {
             Indicate your weekly opening hours so customers know when they can drop their bags in your shop
           </p>
           {/* Need to change to calendar */}
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
+          <input
             type="text"
             placeholder="Opening Hours"
             name="openingHours"
-            value={inputs.openingHours || ""}
-            onChange={handleChange}
-          />
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.openingHours && formik.errors.openingHours ? 'border-red-400' : 'border-gray-300'}`}
+            onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.openingHours} />
+          {formik.touched.openingHours && formik.errors.openingHours &&
+            (<span className='text-red-400'>{formik.errors.openingHours}</span>)}
         </label>
         <label>
           <h3 className="mt-12 font-semibold ">Images</h3>
@@ -181,13 +209,9 @@ const AddLocation = () => {
           <ImageUploadPreviewComponent />
           {/* <input type="file" multiple onChange={handleFileInput} /> */}
         </label>
-
-
-
-
         <input type="submit" />
       </form>
-    )
+    );
   }
 
   // function for content in webpage
