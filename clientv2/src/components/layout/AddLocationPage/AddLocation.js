@@ -1,26 +1,68 @@
 import { useState } from "react";
+import ImageUploadPreviewComponent from "../../ui/ImageUploadPreviewComponent";
+import { useForm } from "react-hook-form";
+// import FormErrors from "../../ui/FormErrors";
+import TestForm from "../../ui/TestForm";
 
 const AddLocation = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
 
   const AddLocationForm = () => {
-    const [inputs, setInputs] = useState({});
+    const [inputs, setInputs, setSelectedFiles] = useState([]);
 
     const handleChange = (event) => {
       const name = event.target.name;
       const value = event.target.value;
-      setInputs(values => ({ ...values, [name]: value }))
-    }
+      setInputs(values => ({ ...values, [name]: value }));
+      // validateField(name, value);
+    };
+
 
     const handleSubmit = (event) => {
       event.preventDefault();
       alert(inputs);
+
     }
+
+    const handleFileInput = (event) => {
+      setSelectedFiles(event.target.files);
+    }
+
+    // const validateField = (fieldName, value) => {
+    //   let fieldValidationErrors = this.state.formErrors;
+    //   let emailValid = this.state.emailValid;
+    //   let passwordValid = this.state.passwordValid;
+
+    //   switch (fieldName) {
+    //     case 'email':
+    //       emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    //       fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+    //       break;
+    //     case 'password':
+    //       passwordValid = value.length >= 6;
+    //       fieldValidationErrors.password = passwordValid ? '' : ' is too short';
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    //   this.setInputs({
+    //     formErrors: fieldValidationErrors,
+    //     emailValid: emailValid,
+    //     passwordValid: passwordValid
+    //   }, this.validateForm);
+    // }
+
+    // const validateForm = () => {
+    //   this.setInputs({ formValid: this.state.emailValid && this.state.passwordValid });
+    // }
+
 
     return (
       <form onSubmit={handleSubmit}>
         <label>
+          {/* <TestForm></TestForm> */}
+          {/* <FormErrors formErrors={this.state.formErrors} /> */}
           <h3 className="font-semibold">Basic Profile</h3>
           <p className="mt-1.5 text-xs font-medium py-2">
             Provide the name of your shop
@@ -125,7 +167,7 @@ const AddLocation = () => {
           {/* Need to change to calendar */}
           <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
             type="text"
-            placeholder="OpeningHours"
+            placeholder="Opening Hours"
             name="openingHours"
             value={inputs.openingHours || ""}
             onChange={handleChange}
@@ -136,65 +178,16 @@ const AddLocation = () => {
           <p className="mt-1.5 text-xs font-medium py-2">
             Upload one or more images of the shop, preferably showing the street
           </p>
-          {/* Need to change to calendar */}
-          <input className="w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300"
-            type="text"
-            placeholder="OpeningHours"
-            name="openingHours"
-            value={inputs.openingHours || ""}
-            onChange={handleChange}
-          />
+          <ImageUploadPreviewComponent />
+          {/* <input type="file" multiple onChange={handleFileInput} /> */}
         </label>
+
+
 
 
         <input type="submit" />
       </form>
     )
-  }
-
-
-  const questions = () => {
-    return (
-      <div>
-      </div>
-      //         Confirmed
-      // <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover">
-      //   <div className="flex items-center mb-1 justify-between">
-      //     <div className="flex space-x-3 items-center">
-      //       <h3 className="font-semibold">Wet Designs Pte Ltd</h3>
-      //       <p className="rounded-md bg-text-dark text-text-main p-1.5 text-xs font-medium">
-      //         Confirmed
-      //       </p>
-      //       <p className="rounded-md bg-text-main text-text-dark p-1.5 text-xs border-[1px] border-border-main font-medium">
-      //         Singapore
-      //       </p>
-      //     </div>
-      //     <div className="flex items-center space-x-1">
-      //       <svg
-      //         xmlns="http://www.w3.org/2000/svg"
-      //         fill="none"
-      //         viewBox="0 0 24 24"
-      //         strokeWidth={1.5}
-      //         stroke="currentColor"
-      //         className="w-5 h-5"
-      //       >
-      //         <path
-      //           strokeLinecap="round"
-      //           strokeLinejoin="round"
-      //           d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-      //         />
-      //       </svg>
-      //       <p className="font-medium text-sm">1</p>
-      //     </div>
-      //   </div>
-      //   <div>
-      //     <p className="text-sm font-light">
-      //       <span className="font-semibold">You</span> confirmed booking a
-      //       minute ago
-      //     </p>
-      //   </div>
-      // </div>
-    );
   }
 
   // function for content in webpage
@@ -289,7 +282,6 @@ const AddLocation = () => {
       {/* Results */}
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
         {/* {renderSwitch()} */}
-        {questions()}
         {AddLocationForm()}
       </div>
     </div>
