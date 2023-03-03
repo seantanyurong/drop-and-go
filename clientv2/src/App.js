@@ -3,8 +3,8 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import HomePage from "./pages/HomePage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
+import SearchResultPage from "./pages/SearchResultPage";
 
 function App() {
   return (
@@ -17,6 +17,10 @@ function App() {
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
+        />
+        <Route
+          path="/searchresultpage"
+          element={<SearchResultPage />}
         />
       </Routes>
     </main>

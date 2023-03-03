@@ -4,19 +4,19 @@ const Review = (props) => {
     const stars = parseInt(props.star);
 
     return (
-        <div class="w-[722px] mr-[16px] min-h-[250px] max-h-[250px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative">
-            <div class="flex flex-col flex-nowrap">
-                <div class="block text-sm m-0 font-medium">
+        <div className="w-[722px] mr-[16px] min-h-[250px] max-h-[250px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative">
+            <div className="flex flex-col flex-nowrap">
+                <div className="block text-sm m-0 font-medium">
                     {props.user}
                 </div>
 
-                <div class="block mb-0.5 text-[#AEAEAE] text-xs">
+                <div className="block mb-0.5 text-[#AEAEAE] text-xs">
                     Used Drop&Go {props.time}
                 </div>
 
-                <div class="block relative grow shrink-0 basis-auto min-h-[24px] h-[24px]">
-                    <div class="flex absolute top-0 left-0">
-                        {Array(stars).fill(<StarIcon class="overflow-hidden h-[16px] w-[16px] fill-yellow-500" />)}
+                <div className="block relative grow shrink-0 basis-auto min-h-[24px] h-[24px]">
+                    <div className="flex absolute top-0 left-0">
+                        {Array(stars).fill(<StarIcon className="overflow-hidden h-[16px] w-[16px] fill-yellow-500" />)}
                     </div>
                 </div>
             </div>

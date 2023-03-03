@@ -3,33 +3,33 @@ import Review from "./Review";
 
 const ReviewSection = () => {
     return (
-        <div class="block bg-white border-b border-solid border-gray-200 px-0 py-14 box-border">
-            <div class="block max-w-screen-xl my-0 mx-auto">
-                <div class="mb-3.5 text-center text-lg tracking-normal font-bold mt-0 not-italic text-cyan-900">
+        <div className="block bg-white border-b border-solid border-gray-200 px-0 py-14 box-border">
+            <div className="block max-w-screen-xl my-0 mx-auto">
+                <div className="mb-3.5 text-center text-lg tracking-normal font-bold mt-0 not-italic text-cyan-900">
                     <h2>Most-reviewed luggage storage service</h2>
                 </div>
 
                 <div>
-                    <div class="flex mx-0 mb-2.5 -mt-2.5 items-center justify-center text-cyan-900 text-lg font-medium">
-                        <span class="mx-1">
+                    <div className="flex mx-0 mb-2.5 -mt-2.5 items-center justify-center text-cyan-900 text-lg font-medium">
+                        <span className="mx-1">
                             4.9
                         </span>
 
-                        <span class="mx-1">
-                            <div class="flex relative items-center">
-                                <StarIcon class="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
-                                <StarIcon class="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
-                                <StarIcon class="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
-                                <StarIcon class="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
-                                <StarIcon class="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
+                        <span className="mx-1">
+                            <div className="flex relative items-center">
+                                <StarIcon className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
+                                <StarIcon className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
+                                <StarIcon className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
+                                <StarIcon className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
+                                <StarIcon className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden fill-yellow-500" />
                             </div>
                         </span>
                     </div>
                 </div>
 
-                <div class="block text-center">
-                    <div class="px-[33px] pt-[30px] pb-[50px] my-0 mx-auto relative overflow-hidden z-[1]">
-                        <div class="flex w-[5166px] relative h-full z-[1] transition-transform box-content">
+                <div className="block text-center">
+                    <div className="px-[33px] pt-[30px] pb-[50px] my-0 mx-auto relative overflow-hidden z-[1]">
+                        <div className="flex w-[5166px] relative h-full z-[1] transition-transform box-content">
                             <Review user="Traveler" time="Last Saturday" star="5" review="Great service, very safe!"></Review>
                             <Review user="Grace Yong" time="Last Monday" star="5" review="Friendly owner :)"></Review>
                             <Review user="Steven Gerrard" time="Last Friday" star="4" review="Bien!"></Review>
