@@ -4,13 +4,21 @@ import LoginPage from "./pages/LoginPage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
+
+import TestPage from "./pages/TestPage";
+
 import SearchResultPage from "./pages/SearchResultPage";
+
 
 function App() {
   return (
     <main>
       <Routes>
+
+
+
         <Route path="/" element={<HomePage />} />
+        <Route path="/test" element={<TestPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
