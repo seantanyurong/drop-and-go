@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../components/layout/LoginPage/Header'
-import Login from '../components/layout/LoginPage/Login'
+import UserLogin from '../components/layout/LoginPage/UserLogin'
 
-const LoginPage = () => {
+const UserLoginPage = () => {
     return(
         <div>
             <Header></Header>
-            <Login></Login>
+            <UserLogin></UserLogin>
         </div>
     );
 }
 
-export default LoginPage;
+export default UserLoginPage;
