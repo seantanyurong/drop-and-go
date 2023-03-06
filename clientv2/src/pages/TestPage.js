@@ -6,14 +6,14 @@ import { useState } from "react";
 
 const UserBookingPage = () => {
   let [popping, setPopping] = useState(false);
-  let [listingID, setListingID] = useState(null);
+  let [listingID, setListingID] = useState("63f98e26f252c5eb4dafa07a"); // placeholder id for testing purposes
 
   return (
     <div>
       <div
         className="max-w-xl mx-auto border-[1px] border-border-main p-4 rounded-md my-4 shadow-md cursor-pointer hover:bg-box-hover bg-white"
         onClick={() => {
-          setListingID();
+          setListingID("63f98e26f252c5eb4dafa07a");
           setPopping(true);
         }}
       >
