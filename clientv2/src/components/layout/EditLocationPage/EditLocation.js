@@ -5,11 +5,11 @@ import * as yup from 'yup';
 
 
 
-const AddLocation = () => {
+const EditLocation = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
 
-  const AddLocationForm = () => {
+  const EditLocationForm = () => {
     const [inputs, setInputs, setSelectedFiles] = useState([]);
 
     const handleSubmit = (event) => {
@@ -104,7 +104,7 @@ const AddLocation = () => {
             type="number"
             name="capacity"
             placeholder="Capacity (bags)"
-            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-primary-200
+            className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
             ${formik.touched.capacity && formik.errors.capacity ? 'border-red-400' : 'border-gray-300'}`}
             onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
           {formik.touched.capacity && formik.errors.capacity &&
@@ -259,16 +259,16 @@ const AddLocation = () => {
         <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6">
           <div className="flex-col sm:flex-row flex items-center justify-between relative">
             <div className="shrink-0 mr-4">
-              <p className="text-text-main text-xl">Add Location</p>
+              <p className="text-text-main text-xl">Edit Location</p>
             </div>
           </div>
         </div>
       </div>
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
-        {AddLocationForm()}
+        {EditLocationForm()}
       </div>
     </div>
   );
 };
 
-export default AddLocation;
+export default EditLocation;
