@@ -12,6 +12,7 @@ const DataTableBase = (props) => {
         sortable
         highlightOnHover
         pointerOnHover
+        subHeader
         {...props}
       />
     </div>
