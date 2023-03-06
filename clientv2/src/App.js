@@ -1,6 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import UserLoginPage from "./pages/UserLoginPage";
+import ProviderLoginPage from "./pages/ProviderLoginPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
@@ -14,13 +17,13 @@ function App() {
   return (
     <main>
       <Routes>
-
-
-
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/userLogin" element={<UserLoginPage />} />
+        <Route path="/providerLogin" element={<ProviderLoginPage />} />
+        <Route path="/adminLogin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         <Route
           path="/user/bookings/:bookingId"
