@@ -4,21 +4,19 @@ import LoginPage from "./pages/LoginPage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
+import SearchPage from "./pages/SearchPage";
 
 import TestPage from "./pages/TestPage";
 
 import SearchResultPage from "./pages/SearchResultPage";
 
-
 function App() {
   return (
     <main>
       <Routes>
-
-
-
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
@@ -26,10 +24,7 @@ function App() {
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
         />
-        <Route
-          path="/searchresultpage"
-          element={<SearchResultPage />}
-        />
+        <Route path="/searchresultpage" element={<SearchResultPage />} />
       </Routes>
     </main>
   );
