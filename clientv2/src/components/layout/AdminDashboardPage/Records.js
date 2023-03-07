@@ -1,28 +1,96 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { Navigate } from "react-router-dom";
 import DataTable from "../../ui/DataTableBase";
+import FilterComponent from "../../ui/FilterComponent";
+
 
 const Records = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
+
+  {/* Redirect to Details Page */} 
+  const [redirState, setState] = useState(false);
+  const [id, setData] = useState('');
+  let userRedirect = redirState ? (<Navigate to={`/admin/users/${id}`} />) : '' ;
+  let bookingsRedirect = redirState ? (<Navigate to={`/admin/bookings/${id}`} />) : '' ;
+
+   {/* Table Search */}
+  const [filterText, setFilterText] = useState("");
+
+  const filteredData = data.filter(
+    (item) =>
+      item.userName &&
+      item.userName.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const subHeaderComponentMemo = useMemo(() => {
+    return (
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
+        filterText={filterText}
+      />
+    );
+  }, [filterText]);
 
   const renderSwitch = () => {
     switch (activeMenuItem) {
       case 0:
         return (
           <div>
-            <DataTable columns={userColumns} data={data} />
+            <DataTable
+              title="Users"
+              columns={userColumns}
+              data={filteredData}
+              onRowClicked={rowData => {
+                setState(true);
+                setData(rowData.id);
+              }}
+            subHeaderComponent={subHeaderComponentMemo} 
+            />
+            {userRedirect}
           </div>
         );
       case 1:
         return (
           <div>
-            <DataTable columns={locationsColumns} data={data} />
+            <DataTable 
+            title="Location Providers"
+            columns={userColumns} 
+            data={filteredData}
+            onRowClicked={rowData => {
+              setState(true);
+              setData(rowData.id);
+            }} 
+            subHeaderComponent={subHeaderComponentMemo} 
+            />
+            {userRedirect}
           </div>
         );
       case 2:
         return (
           <div>
-            <DataTable columns={bookingsColumns} data={data} />
+            <DataTable 
+            title="Locations"
+            columns={locationsColumns} 
+            data={filteredData} 
+            subHeaderComponent={subHeaderComponentMemo} 
+            />
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <DataTable 
+            title="Bookings"
+            columns={bookingsColumns} 
+            data={filteredData}
+            onRowClicked={rowData => {
+              setState(true);
+              setData(rowData.id);
+            }}
+            subHeaderComponent={subHeaderComponentMemo} 
+            />
+            {bookingsRedirect}
           </div>
         );
       default:
@@ -60,12 +128,22 @@ const Records = () => {
                       : "text-text-main"
                   } `}
                 >
-                  Locations
+                  Providers
                 </li>
                 <li
                   onClick={() => setActiveMenuItem(2)}
                   className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
                     activeMenuItem === 2
+                      ? "bg-text-main text-text-dark"
+                      : "text-text-main"
+                  } `}
+                >
+                  Locations
+                </li>
+                <li
+                  onClick={() => setActiveMenuItem(3)}
+                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
+                    activeMenuItem === 3
                       ? "bg-text-main text-text-dark"
                       : "text-text-main"
                   } `}
@@ -153,7 +231,7 @@ const data = [
     address: "2 Orchard Turn #B4-25/25A",
     postalCode: "238801",
     startDate: "23/02/23",
-    endDate: "24/02/23"
+    endDate: "24/02/23",
   },
   {
     id: 2,
@@ -164,7 +242,7 @@ const data = [
     address: "78 Airport Boulevard #02-234",
     postalCode: "819666",
     startDate: "23/02/23",
-    endDate: "24/02/23"
+    endDate: "24/02/23",
   },
 ];
 
