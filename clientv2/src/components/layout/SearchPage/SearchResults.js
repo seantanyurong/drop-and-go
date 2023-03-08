@@ -34,7 +34,7 @@ const SearchResults = (props) => {
       <div className="col-span-5">
         <div className="grid grid-cols-3 gap-4">
           {listings.map((listing, index) => {
-            return <Listing name={listing.name} />;
+            return <Listing props = {listing} />;
           })}
         </div>
       </div>

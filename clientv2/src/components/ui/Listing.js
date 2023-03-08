@@ -1,7 +1,7 @@
 import React from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 
-const Listing = (props) => {
+const Listing = ({props}) => {
   return (
     <div className="max-w-xl mx-auto border-[1px] border-border-main p-4 rounded-md my-4 shadow-md cursor-pointer hover:bg-box-hover bg-white">
       <img
@@ -15,9 +15,7 @@ const Listing = (props) => {
         </div>
       </div>
       <div>
-        <p className="text-sm font-light">
-          Wet Designs Pte Ltd, 22 New Industrial Road #06-11 Primax
-        </p>
+        <p className="text-sm font-light">{props.address}</p>
         <div className="flex items-center mt-1">
           <p className="text-sm font-light">4.7</p>
           <StarIcon
