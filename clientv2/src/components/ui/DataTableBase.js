@@ -5,14 +5,12 @@ const DataTableBase = (props) => {
   return (
     <div>
       <DataTable
-        selectableRows
         pagination
         paginationPerPage={10}
         paginationRowsPerPageOptions={[10, 20, 50]}
         sortable
         highlightOnHover
         pointerOnHover
-        subHeader
         {...props}
       />
     </div>

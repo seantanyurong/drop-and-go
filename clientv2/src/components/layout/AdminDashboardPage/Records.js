@@ -4,25 +4,24 @@ import { Navigate } from "react-router-dom";
 import DataTable from "../../ui/DataTableBase";
 import FilterComponent from "../../ui/FilterComponent";
 
-
 const Records = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
-  {/* Redirect to Details Page */} 
   const [redirState, setState] = useState(false);
-  const [id, setData] = useState('');
-  let userRedirect = redirState ? (<Navigate to={`/admin/users/${id}`} />) : '' ;
-  let bookingsRedirect = redirState ? (<Navigate to={`/admin/bookings/${id}`} />) : '' ;
+  const [id, setData] = useState("");
+  let userRedirect = redirState ? <Navigate to={`/admin/users/${id}`} /> : "";
+  let bookingsRedirect = redirState ? (
+    <Navigate to={`/admin/bookings/${id}`} />
+  ) : (
+    ""
+  );
 
-   {/* Table Search */}
   const [filterText, setFilterText] = useState("");
-
   const filteredData = data.filter(
     (item) =>
       item.userName &&
       item.userName.toLowerCase().includes(filterText.toLowerCase())
   );
-
   const subHeaderComponentMemo = useMemo(() => {
     return (
       <FilterComponent
@@ -31,6 +30,61 @@ const Records = () => {
       />
     );
   }, [filterText]);
+
+  function convertArrayOfObjectsToCSV(array) {
+    let result;
+
+    const columnDelimiter = ",";
+    const lineDelimiter = "\n";
+    const keys = Object.keys(data[0]);
+
+    result = "";
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
+
+    array.forEach((item) => {
+      let ctr = 0;
+      keys.forEach((key) => {
+        if (ctr > 0) result += columnDelimiter;
+        result += item[key];
+        // eslint-disable-next-line no-plusplus
+        ctr++;
+      });
+      result += lineDelimiter;
+    });
+    return result;
+  }
+
+  function downloadCSV(array) {
+    const link = document.createElement("a");
+    let csv = convertArrayOfObjectsToCSV(array);
+
+    if (csv == null) return;
+
+    const filename = "export.csv";
+
+    if (!csv.match(/^data:text\/csv/i)) {
+      csv = `data:text/csv;charset=utf-8,${csv}`;
+    }
+
+    link.setAttribute("href", encodeURI(csv));
+    link.setAttribute("download", filename);
+    link.click();
+    console.log(csv)
+  }
+
+  const Export = ({ onExport }) => (
+    <button
+      className="rounded-md bg-box-gray w-20 p-1.5 px-4 text-xs font-medium inline-flex items-center"
+      onClick={(e) => onExport(e.target.value)}
+    >
+      Export
+    </button>
+  );
+  const actionsMemo = useMemo(
+    () => <Export onExport={() => downloadCSV(data)} />,
+    []
+  );
 
   const renderSwitch = () => {
     switch (activeMenuItem) {
@@ -41,11 +95,13 @@ const Records = () => {
               title="Users"
               columns={userColumns}
               data={filteredData}
-              onRowClicked={rowData => {
+              onRowClicked={(rowData) => {
                 setState(true);
                 setData(rowData.id);
               }}
-            subHeaderComponent={subHeaderComponentMemo} 
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              actions={actionsMemo}
             />
             {userRedirect}
           </div>
@@ -53,15 +109,17 @@ const Records = () => {
       case 1:
         return (
           <div>
-            <DataTable 
-            title="Location Providers"
-            columns={userColumns} 
-            data={filteredData}
-            onRowClicked={rowData => {
-              setState(true);
-              setData(rowData.id);
-            }} 
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Location Providers"
+              columns={userColumns}
+              data={filteredData}
+              onRowClicked={(rowData) => {
+                setState(true);
+                setData(rowData.id);
+              }}
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              actions={actionsMemo}
             />
             {userRedirect}
           </div>
@@ -69,26 +127,30 @@ const Records = () => {
       case 2:
         return (
           <div>
-            <DataTable 
-            title="Locations"
-            columns={locationsColumns} 
-            data={filteredData} 
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Locations"
+              columns={locationsColumns}
+              data={filteredData}
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              actions={actionsMemo}
             />
           </div>
         );
       case 3:
         return (
           <div>
-            <DataTable 
-            title="Bookings"
-            columns={bookingsColumns} 
-            data={filteredData}
-            onRowClicked={rowData => {
-              setState(true);
-              setData(rowData.id);
-            }}
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Bookings"
+              columns={bookingsColumns}
+              data={filteredData}
+              onRowClicked={(rowData) => {
+                setState(true);
+                setData(rowData.id);
+              }}
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              actions={actionsMemo}
             />
             {bookingsRedirect}
           </div>

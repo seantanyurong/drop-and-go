@@ -1,11 +1,11 @@
 import React from 'react'
 import Records from '../components/layout/AdminDashboardPage/Records'
-import Header from '../components/layout/UserBookingPage/Header'
+import AdminHeader from '../components/ui/AdminHeader'
 
 const AdminDashboardPage = () => {
   return (
     <div>
-      <Header></Header>
+      <AdminHeader></AdminHeader>
        <Records></Records> 
     </div>
   )
