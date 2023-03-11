@@ -8,6 +8,7 @@ import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import SearchPage from "./pages/SearchPage";
+import ListingDetailsPage from "./pages/ListingDetailsPage";
 
 import TestPage from "./pages/TestPage";
 
@@ -22,18 +23,18 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/listing/:listingId" element={<ListingDetailsPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/userLogin" element={<UserLoginPage />} />
         <Route path="/providerLogin" element={<ProviderLoginPage />} />
         <Route path="/adminLogin" element={<AdminLoginPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route 
-        path="/admin/users/:userId" 
-        element={<AdminUserDetailsPage/>} />
-        <Route 
-        path="/admin/bookings/:bookingId" 
-        element={<AdminBookingDetailsPage />} />
+        <Route path="/admin/users/:userId" element={<AdminUserDetailsPage />} />
+        <Route
+          path="/admin/bookings/:bookingId"
+          element={<AdminBookingDetailsPage />}
+        />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}

@@ -1,7 +1,10 @@
 import React from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
+import { useNavigate } from "react-router-dom";
 
 const Listing = (props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-xl mx-auto border-[1px] border-border-main p-4 rounded-md my-4 shadow-md cursor-pointer  bg-white">
       <img
@@ -35,7 +38,10 @@ const Listing = (props) => {
         >
           Book now
         </button>
-        <button className="ml-2 rounded-md bg-gray-200  p-1.5 px-4 text-xs font-medium">
+        <button
+          className="ml-2 rounded-md bg-gray-200 hover:bg-gray-300  p-1.5 px-4 text-xs font-medium"
+          onClick={() => navigate(`/listing/${props.listing._id}`)}
+        >
           More info
         </button>
       </div>
