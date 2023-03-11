@@ -42,7 +42,7 @@ const SearchResults = (props) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-8 gap-8 mx-auto border-black border-2">
+    <div className="grid grid-cols-8 gap-8 mx-auto">
       <div className="col-span-5 px-5 sm:px-6 py-10">
         <div className="grid grid-cols-3 gap-4">
           {listings.map((listing, index) => {
