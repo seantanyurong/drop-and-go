@@ -8,9 +8,12 @@ const Listing = (props) => {
   return (
     <div className="max-w-xl mx-auto border-[1px] border-border-main p-4 rounded-md my-4 shadow-md cursor-pointer  bg-white">
       <img
-        src="https://img.freepik.com/free-vector/shop-with-we-are-open-sign_23-2148557016.jpg?w=2000"
+        src={
+          props.listing.displayPicture ||
+          "https://img.freepik.com/free-vector/shop-with-we-are-open-sign_23-2148557016.jpg?w=2000"
+        }
         alt="Shop with open sign."
-        className="mb-6"
+        className="mb-6 h-[300px]"
       ></img>
       <div className="flex items-center mb-1 justify-between">
         <div className="flex space-x-3 items-center">
