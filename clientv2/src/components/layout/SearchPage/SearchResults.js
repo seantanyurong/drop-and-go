@@ -1,8 +1,20 @@
 import { useEffect, useState } from "react";
 import Listing from "../../ui/Listing";
+import GoogleMapReact from "google-map-react";
+import LocationPin from "../../ui/LocationPin";
+import BackgroundTint from "../../ui/BackgroundTint";
+import BookingForm from "../../ui/BookingForm";
 
 const SearchResults = (props) => {
   let [listings, setListings] = useState([]);
+  let [popping, setPopping] = useState(false);
+  let [listingID, setListingID] = useState("");
+
+  const location = {
+    address: "1600 Amphitheatre Parkway, Mountain View, california.",
+    lat: 37.42216,
+    lng: -122.08427,
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -30,15 +42,40 @@ const SearchResults = (props) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-8 gap-8 mx-auto px-5 sm:px-6 py-10 border-black border-2">
-      <div className="col-span-5">
+    <div className="grid grid-cols-8 gap-8 mx-auto border-black border-2">
+      <div className="col-span-5 px-5 sm:px-6 py-10">
         <div className="grid grid-cols-3 gap-4">
           {listings.map((listing, index) => {
-            return <Listing props = {listing} />;
+            return (
+              <Listing
+                listing={listing}
+                listingIDHandler={setListingID}
+                poppingHandler={setPopping}
+                key={index}
+              />
+            );
           })}
         </div>
       </div>
-      <div className="col-span-3 bg-red-500">Map</div>
+      <div className="col-span-3">
+        <div className="google-map" style={{ height: "100%", width: "100%" }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
+            }}
+            defaultCenter={location}
+            defaultZoom={17}
+          >
+            <LocationPin
+              lat={location.lat}
+              lng={location.lng}
+              text={location.address}
+            />
+          </GoogleMapReact>
+        </div>
+      </div>
+      {popping && <BookingForm listingID={listingID} />}
+      {popping && <BackgroundTint clickHandler={() => setPopping(false)} />}
     </div>
   );
 };

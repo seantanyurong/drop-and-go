@@ -41,8 +41,8 @@ const BookingForm = (props) => {
   return (
     <div>
       {listing && (
-        <div className="">
-          <div className="z-20 relative max-w-5xl md:max-w-2xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
+        <div className="z-20 fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+          <div className=" relative max-w-5xl md:max-w-2xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
             <div className="border-[1px] border-border-mainrounded-md mb-4 shadow-md ">
               {/* Top Section */}
               <div className="bg-box-gray p-8">
