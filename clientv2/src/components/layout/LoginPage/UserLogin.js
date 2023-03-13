@@ -31,7 +31,7 @@ const UserLogin = () => {
                         </div>
 
                         <div class="text-sm">
-                            <a href="/userSignUp" class="font-medium text-indigo-600 hover:text-indigo-500">Don't Have An Account?</a>
+                            <a href="/signup/user" class="font-medium text-indigo-600 hover:text-indigo-500">Don't Have An Account?</a>
                         </div>
                     </div>
 
