@@ -4,17 +4,18 @@ import { Navigate } from "react-router-dom";
 import DataTable from "../../ui/DataTableBase";
 import FilterComponent from "../../ui/FilterComponent";
 
-
 const Records = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
-  {/* Redirect to Details Page */} 
   const [redirState, setState] = useState(false);
-  const [id, setData] = useState('');
-  let userRedirect = redirState ? (<Navigate to={`/admin/users/${id}`} />) : '' ;
-  let bookingsRedirect = redirState ? (<Navigate to={`/admin/bookings/${id}`} />) : '' ;
+  const [id, setData] = useState("");
+  let userRedirect = redirState ? <Navigate to={`/admin/users/${id}`} /> : "";
+  let bookingsRedirect = redirState ? (
+    <Navigate to={`/admin/bookings/${id}`} />
+  ) : (
+    ""
+  );
 
-   {/* Table Search */}
   const [filterText, setFilterText] = useState("");
 
   const filteredData = data.filter(
@@ -41,11 +42,11 @@ const Records = () => {
               title="Users"
               columns={userColumns}
               data={filteredData}
-              onRowClicked={rowData => {
+              onRowClicked={(rowData) => {
                 setState(true);
                 setData(rowData.id);
               }}
-            subHeaderComponent={subHeaderComponentMemo} 
+              subHeaderComponent={subHeaderComponentMemo}
             />
             {userRedirect}
           </div>
@@ -53,15 +54,15 @@ const Records = () => {
       case 1:
         return (
           <div>
-            <DataTable 
-            title="Location Providers"
-            columns={userColumns} 
-            data={filteredData}
-            onRowClicked={rowData => {
-              setState(true);
-              setData(rowData.id);
-            }} 
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Location Providers"
+              columns={userColumns}
+              data={filteredData}
+              onRowClicked={(rowData) => {
+                setState(true);
+                setData(rowData.id);
+              }}
+              subHeaderComponent={subHeaderComponentMemo}
             />
             {userRedirect}
           </div>
@@ -69,26 +70,26 @@ const Records = () => {
       case 2:
         return (
           <div>
-            <DataTable 
-            title="Locations"
-            columns={locationsColumns} 
-            data={filteredData} 
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Locations"
+              columns={locationsColumns}
+              data={filteredData}
+              subHeaderComponent={subHeaderComponentMemo}
             />
           </div>
         );
       case 3:
         return (
           <div>
-            <DataTable 
-            title="Bookings"
-            columns={bookingsColumns} 
-            data={filteredData}
-            onRowClicked={rowData => {
-              setState(true);
-              setData(rowData.id);
-            }}
-            subHeaderComponent={subHeaderComponentMemo} 
+            <DataTable
+              title="Bookings"
+              columns={bookingsColumns}
+              data={filteredData}
+              onRowClicked={(rowData) => {
+                setState(true);
+                setData(rowData.id);
+              }}
+              subHeaderComponent={subHeaderComponentMemo}
             />
             {bookingsRedirect}
           </div>
