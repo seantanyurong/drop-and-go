@@ -11,6 +11,17 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+bookingRoutes.route("/booking").get(function (req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  db_connect
+    .collection("booking")
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // This section will help you create a new listing.
 bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");

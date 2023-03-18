@@ -55,11 +55,12 @@ const BookingForm = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        listing: props.listingID,
+        listingID: props.listingID,
         startDate: startDate,
         endDate: endDate,
         paynow: paynow,
         bags: bags,
+        status: "active",
       }),
     }).catch((error) => {
       window.alert(error);
