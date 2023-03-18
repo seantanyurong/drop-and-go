@@ -1,21 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
+// import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import LogoImg from "../../../assets/Logo.png";
+// import UserLoginPage from "../../../pages/UserLoginPage";
 
 const UserLogin = () => {
+    /*
+    const [token, setToken] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    if (!token) {
+        return <UserLoginPage setToken={setToken} />
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        let body = {
+            email,
+            password,
+        }
+
+        async function doLogin() {
+            const settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', 'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            };
+
+            console.log("body" + JSON.stringify(body));
+            const response = await fetch(`http://localhost:6003/user`, settings)
+    
+            if (!response.ok) {
+                const message = `An error has occurred: ${response.statusText}`;
+                window.alert(message);
+                return;
+            }
+    
+            const userRes = await response.json();
+            if (!userRes) {
+                window.alert(`User with id ${userId} not found`);
+                return;
+            }
+    
+        }
+
+    };
+    */
+
     return (
         <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div class="w-full max-w-md space-y-8">
+
                 <div>
                     <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
                     <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-indigo-900">User Log In</h2>
                 </div>
 
-                <form class="mt-8 space-y-8" action="#" method="POST">
+                <form class="mt-8 space-y-8" action="/" /*onSubmit={handleSubmit}*/ method="POST">
                     <input type="hidden" name="remember" value="true"></input>
                     <div class="-space-y-px rounded-md shadow-sm">
                         <div>
                             <label for="email-address" class="sr-only">Email address</label>
-                            <input id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email address / Phone Number"></input>
+                            <input id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email address"></input>
                         </div>
 
                         <div>

@@ -81,4 +81,20 @@ userRoutes.route("/:id").delete((req, response) => {
   });
 });
 
+// Admin Login (WIP)
+userRoutes.route("/login/user").post(function(req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  let email = req.body.email;
+  let password = req.body.password;
+  db_connect
+      .collection("user")
+      .findOne(email, function (err, result) {
+          if (result.password == password) {
+              res.redirect("/");
+          } else {
+              throw err;
+          }
+  });
+});
+
 module.exports = userRoutes;
