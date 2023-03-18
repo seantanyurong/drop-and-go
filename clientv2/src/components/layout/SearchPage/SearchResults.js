@@ -74,7 +74,9 @@ const SearchResults = (props) => {
           </GoogleMapReact>
         </div>
       </div>
-      {popping && <BookingForm listingID={listingID} />}
+      {popping && (
+        <BookingForm listingID={listingID} poppingHandler={setPopping} />
+      )}
       {popping && <BackgroundTint clickHandler={() => setPopping(false)} />}
     </div>
   );

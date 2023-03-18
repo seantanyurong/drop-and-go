@@ -10,6 +10,7 @@ app.use(require("./routes/listing"));
 app.use(require("./routes/user"))
 app.use(require("./routes/provider"))
 app.use(require("./routes/booking"))
+
 // get driver connection
 const dbo = require("./db/conn");
 
