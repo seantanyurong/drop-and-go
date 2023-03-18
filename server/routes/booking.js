@@ -39,4 +39,15 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
   });
 });
 
+// This section will help you get a single listing by id
+bookingRoutes.route("/booking/:id").get(function (req, res) {
+  console.log("Searching for id");
+  let db_connect = dbo.getDb();
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("booking").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
 module.exports = bookingRoutes;

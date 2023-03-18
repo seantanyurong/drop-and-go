@@ -58,6 +58,7 @@ const BookingForm = (props) => {
         listingID: props.listingID,
         startDate: startDate,
         endDate: endDate,
+        days: days(endDate, startDate),
         paynow: paynow,
         bags: bags,
         status: "active",
@@ -237,7 +238,7 @@ const BookingForm = (props) => {
                   <p className="text-sm text-text-dark font-light">
                     {`Storage, ${
                       paynow ? "pay as you go" : days(endDate, startDate)
-                    } x ${bags} bag(s)`}
+                    } day(s) x ${bags} bag(s)`}
                   </p>
                   <p className="text-sm text-text-dark font-light">
                     {`${
