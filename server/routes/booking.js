@@ -11,7 +11,6 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-
 // This section will help you get a list of all the bookings.
 bookingRoutes.route("/booking").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
@@ -23,7 +22,6 @@ bookingRoutes.route("/booking").get(function (req, res) {
       res.json(result);
     });
 });
-
 
 // This section will help you get a single booking by id
 bookingRoutes.route("/booking/:id").get(function (req, res) {
@@ -41,7 +39,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");
   let db_connect = dbo.getDb();
   let myobj = {
-    listing: req.body.listing,
+    listingID: req.body.listingID,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     days: req.body.days,
@@ -57,16 +55,6 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     response.json(res);
   });
 });
-
-
-// This section will help you get a single listing by id
-bookingRoutes.route("/booking/:id").get(function (req, res) {
-  console.log("Searching for id");
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("booking").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
 
 // This section will help you update a booking by id.
 bookingRoutes.route("/update/:id").post(function (req, response) {
