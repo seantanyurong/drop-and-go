@@ -30,8 +30,10 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     listing: req.body.listing,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
+    days: req.body.days,
     paynow: req.body.paynow,
     bags: req.body.bags,
+    status: req.body.active,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
