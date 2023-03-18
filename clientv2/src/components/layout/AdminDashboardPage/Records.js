@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import DataTable from "../../ui/DataTableBase";
 import FilterComponent from "../../ui/FilterComponent";
@@ -15,6 +15,85 @@ const Records = () => {
   ) : (
     ""
   );
+
+  let [users, setUsers] = useState(data);
+  let [providers, setProviders] = useState(null);
+  let [listings, setListings] = useState(null);
+  let [bookings, setBookings] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const responseUsers = await fetch(`http://localhost:6003/user`);
+      const responseProviders = await fetch(`http://localhost:6003/provider`);
+      const responseListing = await fetch(`http://localhost:6003/listing`);
+      const responseBookings = await fetch(`http://localhost:6003/booking`);
+
+      if (!responseUsers.ok) {
+        const message = `An error has occurred: ${responseUsers.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userRes = await responseUsers.json();
+      if (!userRes) {
+        window.alert(`Users not found`);
+        return;
+      } else {
+        console.log(userRes);
+        setUsers(userRes);
+      }
+
+      if (!responseProviders.ok) {
+        const message = `An error has occurred: ${responseProviders.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const providerRes = await responseProviders.json();
+      if (!providerRes) {
+        window.alert(`Providers not found`);
+        return;
+      } else {
+        console.log(providerRes);
+        setProviders(providerRes);
+      }
+      
+      if (!responseListing.ok) {
+        const message = `An error has occurred: ${responseListing.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const listingRes = await responseListing.json();
+      if (!listingRes) {
+        window.alert(`Listings not found`);
+        return;
+      } else {
+        console.log(listingRes);
+        setListings(listingRes);
+      }
+
+      if (!responseBookings.ok) {
+        const message = `An error has occurred: ${responseBookings.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const bookingRes = await responseBookings.json();
+      if (!bookingRes) {
+        window.alert(`Bookings not found`);
+        return;
+      } else {
+        console.log(bookingRes);
+        setBookings(bookingRes);
+      }
+    }
+
+    fetchData();
+
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   const [filterText, setFilterText] = useState("");
   const filteredData = data.filter(
@@ -95,10 +174,10 @@ const Records = () => {
             <DataTable
               title="Users"
               columns={userColumns}
-              data={filteredData}
+              data={users}
               onRowClicked={(rowData) => {
                 setState(true);
-                setData(rowData.id);
+                setData(rowData._id);
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
@@ -113,7 +192,7 @@ const Records = () => {
             <DataTable
               title="Location Providers"
               columns={userColumns}
-              data={filteredData}
+              data={providers}
               onRowClicked={(rowData) => {
                 setState(true);
                 setData(rowData.id);
@@ -131,7 +210,7 @@ const Records = () => {
             <DataTable
               title="Locations"
               columns={locationsColumns}
-              data={filteredData}
+              data={listings}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
               actions={actionsMemo}
@@ -144,7 +223,7 @@ const Records = () => {
             <DataTable
               title="Bookings"
               columns={bookingsColumns}
-              data={filteredData}
+              data={bookings}
               onRowClicked={(rowData) => {
                 setState(true);
                 setData(rowData.id);
@@ -229,7 +308,7 @@ const Records = () => {
 const userColumns = [
   {
     name: "Name",
-    selector: (row) => row.userName,
+    selector: (row) => row.name,
     sortable: true,
   },
   {
@@ -247,7 +326,7 @@ const userColumns = [
 const locationsColumns = [
   {
     name: "Name",
-    selector: (row) => row.locationName,
+    selector: (row) => row.name,
     sortable: true,
   },
   {
@@ -257,7 +336,7 @@ const locationsColumns = [
   },
   {
     name: "Postal Code",
-    selector: (row) => row.postalCode,
+    selector: (row) => row.postal,
     sortable: true,
   },
 ];
