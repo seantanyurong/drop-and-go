@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 // import TimePickerComponent from "../../ui/TimePickerComponent";
-import TimePicker from 'react-time-picker';
 // import Sample from '../../ui/Sample';
 
 
@@ -93,19 +92,6 @@ const EditBusinessHours = () => {
                     <p className="mt-1.5 text-xs font-medium py-2" >
                         Monday
                     </p>
-
-                    <TimePicker
-                        amPmAriaLabel="Select AM/PM"
-                        clearAriaLabel="Clear value"
-                        clockAriaLabel="Toggle clock"
-                        hourAriaLabel="Hour"
-                        maxDetail="second"
-                        minuteAriaLabel="Minute"
-                        nativeInputAriaLabel="Time"
-                        onChange={onChange}
-                        secondAriaLabel="Second"
-                        value={value}
-                    />
 
                     <input
                         type="number"

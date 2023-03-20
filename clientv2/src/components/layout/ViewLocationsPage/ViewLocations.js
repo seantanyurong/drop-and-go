@@ -31,8 +31,6 @@ const ViewLocations = () => {
       }
     }
 
-
-
     fetchData();
     console.log(listings)
     return;
