@@ -13,7 +13,7 @@ adminRoutes.route("/admin").get(function (req, res) {
         .toArray(function (err, result) {
             if (err) throw err;
             res.json(result);
-    });
+        });
 });
 
 // This section will help you get a single admin by id
@@ -26,7 +26,7 @@ adminRoutes.route("/admin/:id").get(function (req, res) {
         .findOne(myquery, function (err, result) {
             if (err) throw err;
             res.json(result);
-    });
+        });
 });
 
 // This section will help you create a new admin.
@@ -43,7 +43,7 @@ adminRoutes.route("/admin/add").post(function (req, response) {
         .insertOne(myobj, function (err, res) {
             if (err) throw err;
             response.json(res);
-    });
+        });
 });
 
 // This section will help you update a listing by id.
@@ -63,7 +63,7 @@ adminRoutes.route("/admin/update/:id").post(function (req, response) {
             if (err) throw err;
             console.log("admin updated");
             response.json(res);
-    });
+        });
 });
 
 // This section will help you delete a listing
@@ -76,11 +76,11 @@ adminRoutes.route("/admin/delete/:id").delete((req, response) => {
             if (err) throw err;
             console.log("admin deleted");
             response.json(obj);
-    });
+        });
 });
 
 // Admin Login (WIP)
-adminRoutes.route("/login/admin").post(function(req, res) {
+adminRoutes.route("/login/admin").post(function (req, res) {
     let db_connect = dbo.getDb("dropandgo");
     let email = req.body.email;
     let password = req.body.password;
@@ -88,11 +88,11 @@ adminRoutes.route("/login/admin").post(function(req, res) {
         .collection("admin")
         .findOne(email, function (err, result) {
             if (result.password == password) {
-                res.redirect(/admin/dashboard);
+                res.redirect("/admin/dashboard");
             } else {
                 throw err;
             }
-    });
+        });
 });
-  
+
 module.exports = adminRoutes;

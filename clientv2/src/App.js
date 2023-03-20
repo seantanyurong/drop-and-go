@@ -10,6 +10,11 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProviderProfilePage from "./pages/ProviderProfilePage";
 import AdminProfilePage from "./pages/AdminProfilePage";
 import UserBookingPage from "./pages/UserBookingPage";
+import AddLocationPage from "./pages/AddLocationPage";
+import ViewLocationsPage from "./pages/ViewLocationsPage";
+import EditLocationPage from "./pages/EditLocationPage";
+import ViewBusinessHoursPage from "./pages/ViewBusinessHoursPage";
+import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import SearchPage from "./pages/SearchPage";
@@ -30,6 +35,11 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/listing/:listingId" element={<ListingDetailsPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
+        <Route path="/provider/add-location" element={<AddLocationPage />} />
+        <Route path="/provider/view-locations" element={<ViewLocationsPage />} />
+        <Route path="/provider/edit-location" element={<EditLocationPage />} />
+        <Route path="/provider/view-business-hours" element={<ViewBusinessHoursPage />} />
+        <Route path="/provider/edit-business-hours" element={<EditBusinessHoursPage />} />
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
         <Route path="/login/provider" element={<ProviderLoginPage />} />
