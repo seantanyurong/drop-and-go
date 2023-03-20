@@ -81,3 +81,5 @@ listingRoutes.route("/:id").delete((req, response) => {
 });
 
 module.exports = listingRoutes;
+
+module.exports = listingRoutes;
