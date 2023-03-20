@@ -1,14 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import ProviderListingCard from "../../ui/ProviderListingCard";
 
 
 const ViewLocations = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
+  let [listings, setListings] = useState([]);
 
-  const navigate = useNavigate();
-  function handleClick() {
-    navigate("/provider/edit-location");
-  }
+
+  // need to modify this to only fetch listing related to owner
+  useEffect(() => {
+    async function fetchData() {
+      const responseListings = await fetch(`http://localhost:6003/listing`);
+
+
+      if (!responseListings.ok) {
+        const message = `An error has occurred: ${responseListings.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const listingRes = await responseListings.json();
+      if (!listingRes) {
+        window.alert(`Listings not found`);
+        return;
+      } else {
+        setListings(listingRes);
+        console.log(listingRes);
+
+      }
+    }
+
+
+
+    fetchData();
+    console.log(listings)
+    return;
+
+  }, []);
+
+  useEffect(() => { console.log(listings) }, [listings])
+
 
   return (
     <div>
@@ -46,7 +78,17 @@ const ViewLocations = () => {
         </div>
       </div>
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
-        <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
+        {listings.map((listing, index) => {
+          return (
+            <ProviderListingCard
+              listing={listing}
+              // listingIDHandler={setListingID}
+              // poppingHandler={setPopping}
+              key={index}
+            />
+          );
+        })}
+        {/* <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
           <div className="flex items-center mb-1 justify-between">
             <div className="flex space-x-3 items-center">
               <h3 className="font-semibold">First Location</h3>
@@ -80,7 +122,7 @@ const ViewLocations = () => {
               Billings
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 // import TimePickerComponent from "../../ui/TimePickerComponent";
-// import TimePicker from 'react-time-picker';
-// import Sample from '../../ui/Sample';
 import TimePicker from 'react-time-picker';
+// import Sample from '../../ui/Sample';
 
 
 
@@ -12,10 +11,11 @@ import TimePicker from 'react-time-picker';
 
 const EditBusinessHours = () => {
     let [activeMenuItem, setActiveMenuItem] = useState(0);
+    const [value, onChange] = useState(null);
+    const [inputs, setInputs, setSelectedFiles] = useState([]);
 
 
     const EditLocationForm = () => {
-        const [inputs, setInputs, setSelectedFiles] = useState([]);
 
         const handleSubmit = (event) => {
             event.preventDefault();
@@ -87,14 +87,14 @@ const EditBusinessHours = () => {
 
             <form onSubmit={formik.handleSubmit}>
                 {/* <div id="react-root"></div> */}
-                <TimePicker onChange={formik.handleChange} value={formik.values.name} />
+                {/* <TimePicker onChange={formik.handleChange} value={formik.values.name} /> */}
                 <script type="module" src="../../ui/index.jsx"></script>
                 <label>
                     <p className="mt-1.5 text-xs font-medium py-2" >
                         Monday
                     </p>
 
-                    {/* <TimePicker
+                    <TimePicker
                         amPmAriaLabel="Select AM/PM"
                         clearAriaLabel="Clear value"
                         clockAriaLabel="Toggle clock"
@@ -105,7 +105,7 @@ const EditBusinessHours = () => {
                         onChange={onChange}
                         secondAriaLabel="Second"
                         value={value}
-                    /> */}
+                    />
 
                     <input
                         type="number"
