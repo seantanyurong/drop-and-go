@@ -88,7 +88,7 @@ adminRoutes.route("/login/admin").post(function (req, res) {
         .collection("admin")
         .findOne(email, function (err, result) {
             if (result.password == password) {
-                res.redirect(/admin/dashboard);
+                res.redirect("/admin/dashboard");
             } else {
                 throw err;
             }
