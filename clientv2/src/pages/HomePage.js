@@ -1,14 +1,18 @@
 import React from "react";
-import Header from "../components/layout/UserBookingPage/Header.js";
-import SearchBar from "../components/ui/searchBar.js"
+import Header from "../components/layout/UserBookingPage/Header";
+import ReviewSection from "../components/layout/HomePage/ReviewSection";
+import Pricing from "../components/layout/HomePage/Pricing";
+import HowItWorks from "../components/layout/HomePage/HowItWorks";
 
 const HomePage = () => {
-    return(
-        <div>
-            <Header></Header>
-            <SearchBar></SearchBar>
-        </div>
-    );
+  return (
+    <div>
+        <Header />
+        <ReviewSection />
+        <Pricing />
+        <HowItWorks />
+    </div>
+  );
 };
 
 export default HomePage;
