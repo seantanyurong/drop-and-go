@@ -5,7 +5,8 @@ const ProviderListingCard = (props) => {
     const navigate = useNavigate();
 
     function handleClick() {
-        navigate("/provider/edit-location");
+        // need to change this 
+        navigate(`/provider/edit/${props.listing._id}`);
     }
     return (
         <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
@@ -13,8 +14,8 @@ const ProviderListingCard = (props) => {
                 <div className="flex space-x-3 items-center">
                     <h3 className="font-semibold">{props.listing.name}</h3>
                 </div>
-                <div className="cursor-pointer" >
-                    onClick={handleClick}
+                <div className="cursor-pointer" onClick={handleClick}>
+
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
