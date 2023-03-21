@@ -6,9 +6,14 @@ import ProviderLoginPage from "./pages/ProviderLoginPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import UserSignUpPage from "./pages/UserSignupPage";
 import ProviderSignUpPage from "./pages/ProviderSignUpPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import ProviderProfilePage from "./pages/ProviderProfilePage";
+import AdminProfilePage from "./pages/AdminProfilePage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
+import SearchPage from "./pages/SearchPage";
+import ListingDetailsPage from "./pages/ListingDetailsPage";
 
 import TestPage from "./pages/TestPage";
 
@@ -16,13 +21,14 @@ import SearchResultPage from "./pages/SearchResultPage";
 import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 
-
 function App() {
   return (
     <main>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/listing/:listingId" element={<ListingDetailsPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
@@ -30,21 +36,20 @@ function App() {
         <Route path="/login/admin" element={<AdminLoginPage />} />
         <Route path="/signup/user" element={<UserSignUpPage />} />
         <Route path="/signup/provider" element={<ProviderSignUpPage />} />
+        <Route path="/user/profile/:id" element={<UserProfilePage />} />
+        <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
+        <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route 
-        path="/admin/users/:userId" 
-        element={<AdminUserDetailsPage/>} />
-        <Route 
-        path="/admin/bookings/:bookingId" 
-        element={<AdminBookingDetailsPage />} />
+        <Route path="/admin/users/:userId" element={<AdminUserDetailsPage />} />
+        <Route
+          path="/admin/bookings/:bookingId"
+          element={<AdminBookingDetailsPage />}
+        />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
         />
-        <Route
-          path="/searchresultpage"
-          element={<SearchResultPage />}
-        />
+        <Route path="/searchresultpage" element={<SearchResultPage />} />
       </Routes>
     </main>
   );
