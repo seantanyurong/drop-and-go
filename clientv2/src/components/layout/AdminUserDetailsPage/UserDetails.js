@@ -1,7 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UserDetails = () => {
   const navigate = useNavigate();
@@ -10,27 +10,94 @@ const UserDetails = () => {
     navigate(path);
   };
 
-  const initialState = {
+  const defaultState = {
     name: "Nevan Ng",
     email: "nevan@mail.com",
-    phoneNumber: "91234567",
+    phone: "91234567",
     joinDate: "17 Feb 2020",
     status: "Active",
   };
 
-  const [formState, setFormState] = useState(initialState);
+  const [formState, setFormState] = useState(defaultState);
+  const [initialState, setInitialState] = useState(defaultState);
+  const { userId } = useParams();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`http://localhost:6003/user/${userId}`);
+
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userRes = await response.json();
+      if (!userRes) {
+        window.alert(`User with id ${userId} not found`);
+        return;
+      } else {
+        setFormState(userRes);
+        setInitialState(initialState);
+      }
+    }
+    fetchData();
+    return;
+    // eslint-disable-next-line
+  }, []);
+
   const [editState, setEditState] = useState(false);
+  
   const handleChange = ({ target: { value, id } }) => {
     setFormState({ ...formState, [id]: value });
   };
+ const handleCancel = () => {
+    setEditState(false);
+    setFormState(initialState); 
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     setEditState(false);
+
+    let body = {
+      "name": formState.name,
+      "email": formState.email,
+      "phone": formState.phone,
+      "status": formState.status
+    }
+
+    async function updateData() {
+      const settings = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    };
+      console.log("body" + JSON.stringify(body));
+      const response = await fetch(`http://localhost:6003/user/update/${userId}`, settings)
+
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userRes = await response.json();
+      if (!userRes) {
+        window.alert(`User with id ${userId} not found`);
+        return;
+      }
+     
+    }
+    updateData();
+    setInitialState(formState);
   };
   const formStyle = {
     active:
-      "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:outline-none focus:shadow-outline",
-    inactive: "text-l font-light py-2 px-3",
+      "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
+    inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };
 
   return (
@@ -92,6 +159,7 @@ const UserDetails = () => {
           <div className="grid grid-rows-4 gap-4">
             <input
               className={editState ? formStyle.active : formStyle.inactive}
+              readOnly={!editState}
               id="name"
               name="name"
               type="text"
@@ -100,6 +168,7 @@ const UserDetails = () => {
             />
             <input
               className={editState ? formStyle.active : formStyle.inactive}
+              readOnly={!editState}
               id="email"
               type="email"
               value={formState.email}
@@ -107,9 +176,10 @@ const UserDetails = () => {
             />
             <input
               className={editState ? formStyle.active : formStyle.inactive}
-              id="phoneNumber"
-              type="text"
-              value={formState.phoneNumber}
+              readOnly={!editState}
+              id="phone"
+              type="number"
+              value={formState.phone}
               onChange={handleChange}
             />
             
@@ -126,6 +196,7 @@ const UserDetails = () => {
                 className="block w-full border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="status"
                 disabled={!editState}
+                onChange={handleChange}
               >
                 <option>Active</option>
                 <option>Inactive</option>
@@ -140,10 +211,10 @@ const UserDetails = () => {
             <div className="grid grid-cols-2 col-start-3">
               <button
                 className="rounded-md bg-box-gray w-20 p-1.5 text-xs font-medium"
-                onClick={() => setEditState(false)}
+                onClick={handleCancel}
               >
                 Cancel
-              </button>
+              </button> 
               <button className="rounded-md bg-green-500 w-20 text-white p-1.5 text-xs font-medium"
               type="submit">
                 Save

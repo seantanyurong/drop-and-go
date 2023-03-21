@@ -43,7 +43,7 @@ listingRoutes.route("/listing/add").post(function (req, response) {
     position: req.body.position,
     level: req.body.level,
   };
-  db_connect.collection("listings").insertOne(myobj, function (err, res) {
+  db_connect.collection("listing").insertOne(myobj, function (err, res) {
     if (err) throw err;
     response.json(res);
   });
@@ -73,7 +73,7 @@ listingRoutes.route("/update/:id").post(function (req, response) {
 listingRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("listings").deleteOne(myquery, function (err, obj) {
+  db_connect.collection("listing").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
     console.log("1 document deleted");
     response.json(obj);
