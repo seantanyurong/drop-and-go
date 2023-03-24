@@ -1,15 +1,22 @@
 const express = require("express");
 
-// recordRoutes is an instance of the express router.
+// providerRoutes is an instance of the express router.
 // We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /record.
+// The router will be added as a middleware and will take control of requests starting with path /provider.
 const providerRoutes = express.Router();
 
-// This will help us connect to the database
+// This will help us connect to the database.
 const dbo = require("../db/conn");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
+
+// This help with the login authentication of provider
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+
+/* Provider CRUD Methods */
 
 // This section will help you get a list of all the providers.
 providerRoutes.route("/provider").get(function (req, res) {
@@ -26,7 +33,7 @@ providerRoutes.route("/provider").get(function (req, res) {
 // This section will help you get a single provider by id
 providerRoutes.route("/provider/:id").get(function (req, res) {
   console.log("Searching for id");
-  let db_connect = dbo.getDb();
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("provider").findOne(myquery, function (err, result) {
     if (err) throw err;
@@ -35,18 +42,54 @@ providerRoutes.route("/provider/:id").get(function (req, res) {
 });
 
 // This section will help you create a new provider.
-providerRoutes.route("/provider/add").post(function (req, response) {
+providerRoutes.route("/provider/add").post(async function (req, res) {
   console.log("Add method running");
-  let db_connect = dbo.getDb();
-  let myobj = {
-    name: req.body.name,
-    position: req.body.position,
-    level: req.body.level,
-  };
-  db_connect.collection("provider").insertOne(myobj, function (err, res) {
-    if (err) throw err;
-    response.json(res);
-  });
+  let db_connect = dbo.getDb("dropandgo");
+  const provider = req.body;
+  console.log(provider.name);
+
+  // checks if username or email have been taken by another provider
+  const takenUsername = await db_connect
+    .collection("provider")
+    .findOne({ name: provider.name });
+  const takenEmail = await db_connect
+    .collection("provider")
+    .findOne({ email: provider.email });
+
+  console.log(takenUsername);
+  console.log(takenEmail);
+
+  // checks if password matches reenterPassword
+  const pw = provider.password;
+  const repw = provider.reenterPassword;
+
+  if (takenUsername || takenEmail) {
+    console.log("Username/Email Taken!");
+    res.json({ message: "Username or Email has already been taken!" });
+  } else if (pw !== repw) {
+    console.log("Password Not Equals!");
+
+    res.json({ message: "Password does not match re-entered Password!" });
+  } else {
+    // provider.password = await bcrypt.hash(req.body.password, 10);
+    console.log("Trying Create Provider");
+
+    let myobj = {
+      name: provider.name,
+      email: provider.email,
+      password: provider.password,
+      phone: provider.phone,
+      bank: provider.bank,
+      joinDate: provider.joinDate,
+      status: "active",
+    };
+
+    db_connect.collection("provider").insertOne(myobj, function (err, response) {
+      console.log("Creating Provider");
+      if (err) throw err;
+      response.json(res);
+    });
+  }
 });
 
 // This section will help you update a provider by id.
@@ -64,20 +107,62 @@ providerRoutes.route("/update/:id").post(function (req, response) {
     .collection("provider")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
-      console.log("1 document updated");
+      console.log("Provider Was Updated");
       response.json(res);
     });
 });
 
 // This section will help you delete a provider
-providerRoutes.route("/:id").delete((req, response) => {
-  let db_connect = dbo.getDb();
+providerRoutes.route("/provider/delete/:id").delete((req, response) => {
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("provider").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
-    console.log("1 document deleted");
+    console.log("Provider Was Deleted");
     response.json(obj);
   });
+});
+
+
+/* Provider Login Methods */
+
+// This section will help you to allow user to login
+providerRoutes.route("/provider/login").post(async function (req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  const providerLogin = req.body;
+  const providerDB = await db_connect
+    .collection("provider")
+    .findOne({ email: providerLogin.email });
+
+  console.log(providerDB.password);
+  console.log(providerLogin.email);
+
+  if (!providerDB) {
+    return res.json({ message: "Invalid Email Address!" });
+  }
+
+  if (providerLogin.password === providerDB.password) {
+    console.log("Equal");
+    const payload = {
+      id: providerDB._id,
+      name: providerDB.name,
+    };
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 86400 },
+      (err, token) => {
+        if (err) return res.json({ message: err });
+        return res.json({
+          message: "Success",
+          token: "Bearer " + token,
+        });
+      }
+    );
+  } else {
+    console.log("Not Equal");
+    return res.json({ message: "Invalid Email or Password!" });
+  }
 });
 
 module.exports = providerRoutes;

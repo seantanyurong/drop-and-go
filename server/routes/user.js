@@ -5,15 +5,18 @@ const express = require("express");
 // The router will be added as a middleware and will take control of requests starting with path /user.
 const userRoutes = express.Router();
 
-// This will help us connect to the database
+// This will help us connect to the database.
 const dbo = require("../db/conn");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-// const bodyParser = require("body-parser");
-// const jwt = require("jsonwebtoken");
-// const bcrypt = require("bcrypt");
+// This help with the login authentication of user
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+
+/* User CRUD Methods */
 
 // This section will help you get a list of all the users.
 userRoutes.route("/user").get(function (req, res) {
@@ -30,7 +33,7 @@ userRoutes.route("/user").get(function (req, res) {
 // This section will help you get a single user by id
 userRoutes.route("/user/:id").get(function (req, res) {
   console.log("Searching for id");
-  let db_connect = dbo.getDb();
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("user").findOne(myquery, function (err, result) {
     if (err) throw err;
@@ -42,7 +45,6 @@ userRoutes.route("/user/:id").get(function (req, res) {
 userRoutes.route("/user/add").post(async function (req, res) {
   console.log("Add method running");
   let db_connect = dbo.getDb("dropandgo");
-  // console.log(req);
   const user = req.body;
   console.log(user.name);
 
@@ -62,15 +64,15 @@ userRoutes.route("/user/add").post(async function (req, res) {
   const repw = user.reenterPassword;
 
   if (takenUsername || takenEmail) {
-    console.log("taken");
+    console.log("Username/Email Taken!");
     res.json({ message: "Username or Email has already been taken!" });
   } else if (pw !== repw) {
-    console.log("pw issue");
+    console.log("Password Not Equals!");
 
     res.json({ message: "Password does not match re-entered Password!" });
   } else {
     // user.password = await bcrypt.hash(req.body.password, 10);
-    console.log("trying create");
+    console.log("Trying Create User");
 
     let myobj = {
       name: user.name,
@@ -81,17 +83,17 @@ userRoutes.route("/user/add").post(async function (req, res) {
       status: "active",
     };
 
-    db_connect.collection("user").insertOne(myobj, function (err, res) {
-      console.log("Creating user");
+    db_connect.collection("user").insertOne(myobj, function (err, response) {
+      console.log("Creating User");
       if (err) throw err;
-      res.json(this.res);
+      response.json(res);
     });
   }
 });
 
 // This section will help you update a user by id.
 userRoutes.route("/user/update/:id").post(function (req, response) {
-  let db_connect = dbo.getDb();
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
     $set: {
@@ -105,31 +107,26 @@ userRoutes.route("/user/update/:id").post(function (req, response) {
     .collection("user")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
-      console.log(`${res.modifiedCount} user was updated.`);
+      console.log(`${res.modifiedCount} User Was Updated.`);
       response.json(res);
     });
 });
 
 // This section will help you delete a user
-userRoutes.route("/:id").delete((req, response) => {
-  let db_connect = dbo.getDb();
+userRoutes.route("user/delete/:id").delete((req, response) => {
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("user").deleteOne(myquery, function (err, obj) {
     if (err) throw err;
-    console.log("1 user deleted");
+    console.log("User Was Deleted");
     response.json(obj);
   });
 });
 
-// User Login
+/* User Login Methods */
 
-/*
-userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
-  res.json({isLoggedIn: true, email: req.user.email})
-})
-*/
-
-userRoutes.route("/login/user").post(async function (req, res) {
+// This section will help you to allow user to login
+userRoutes.route("/user/login").post(async function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   const userLogin = req.body;
   const userDB = await db_connect
@@ -208,6 +205,13 @@ function verifyJWT(req, res, next) {
   } else {
     res.json({ message: "Incorrect Token Provided", isLoggedIn: false})
   }
-}*/
+}
+*/
+
+/*
+userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
+  res.json({isLoggedIn: true, email: req.user.email})
+})
+*/
 
 module.exports = userRoutes;
