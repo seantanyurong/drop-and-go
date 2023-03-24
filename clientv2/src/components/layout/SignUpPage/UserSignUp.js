@@ -1,16 +1,18 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserSignUp = () => {
 
     let defaultState = {
         name: "",
         email:"",
-        phone: "",
+        password: "",
         reenterPassword: "",
         phone: "",
         joinDate: new Date(),
     }
+
+    let navigate = useNavigate();
     
     const [formState, setFormState] = useState(defaultState);
 
@@ -52,6 +54,7 @@ const UserSignUp = () => {
         }
 
         confirmSignup();
+        navigate(`/login/user`);
     };
 
     return (
@@ -72,7 +75,7 @@ const UserSignUp = () => {
                 </div>
             </div>
             <div class="mt-5 md:col-span-2 md:mt-0">
-                <form onSubmit={handleSubmit} action="/login/user" /* method="POST" */>
+                <form onSubmit={handleSubmit} action="/login/user" >
                     <div class="overflow-hidden shadow sm:rounded-md">
                         <div class="bg-white px-4 py-5 sm:p-6">
                             <div class="grid grid-cols-6 gap-6">
