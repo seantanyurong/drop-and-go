@@ -129,39 +129,65 @@ userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
 })
 */
 
-userRoutes.route("/login/user").post(function (req, res) {
+userRoutes.route("/login/user").post(async function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   const userLogin = req.body;
-  const userDB = db_connect
+  const userDB = await db_connect
     .collection("user")
     .findOne({ email: userLogin.email });
+
+  console.log(userDB.password);
+  console.log(userLogin.email);
 
   if (!userDB) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      const payload = {
-        id: userDB._id,
-        name: userDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      return res.json({ message: "Invalid Email or Password!" });
-    }
-  });
+  if (userLogin.password === userDB.password) {
+    console.log("Equal");
+    const payload = {
+      id: userDB._id,
+      name: userDB.name,
+    };
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 86400 },
+      (err, token) => {
+        if (err) return res.json({ message: err });
+        return res.json({
+          message: "Success",
+          token: "Bearer " + token,
+        });
+      }
+    );
+  } else {
+    console.log("Not Equal");
+    return res.json({ message: "Invalid Email or Password!" });
+  }
+
+  // bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
+  //   if (isCorrect) {
+  //     const payload = {
+  //       id: userDB._id,
+  //       name: userDB.name,
+  //     };
+  //     jwt.sign(
+  //       payload,
+  //       process.env.JWT_SECRET,
+  //       { expiresIn: 86400 },
+  //       (err, token) => {
+  //         if (err) return res.json({ message: err });
+  //         return res.json({
+  //           message: "Success",
+  //           token: "Bearer " + token,
+  //         });
+  //       }
+  //     );
+  //   } else {
+  //     return res.json({ message: "Invalid Email or Password!" });
+  //   }
+  // });
 });
 
 /*
