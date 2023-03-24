@@ -39,26 +39,38 @@ userRoutes.route("/user/:id").get(function (req, res) {
 });
 
 // This section will help you create a new user.
-userRoutes.route("/user/add").post(function (req, res) {
+userRoutes.route("/user/add").post(async function (req, res) {
   console.log("Add method running");
-  let db_connect = dbo.getDb();
-  console.log(req);
+  let db_connect = dbo.getDb("dropandgo");
+  // console.log(req);
   const user = req.body;
+  console.log(user.name);
 
   // checks if username or email have been taken by another user
-  const takenUsername = db_connect.collection("user").findOne({ name: user.name });
-  const takenEmail = db_connect.collection("user").findOne({ email: user.email });
+  const takenUsername = await db_connect
+    .collection("user")
+    .findOne({ name: user.name });
+  const takenEmail = await db_connect
+    .collection("user")
+    .findOne({ email: user.email });
+
+  console.log(takenUsername);
+  console.log(takenEmail);
 
   // checks if password matches reenterPassword
   const pw = user.password;
   const repw = user.reenterPassword;
 
   if (takenUsername || takenEmail) {
+    console.log("taken");
     res.json({ message: "Username or Email has already been taken!" });
-  } else if (!pw.equals(repw)) {
+  } else if (pw !== repw) {
+    console.log("pw issue");
+
     res.json({ message: "Password does not match re-entered Password!" });
   } else {
     // user.password = await bcrypt.hash(req.body.password, 10);
+    console.log("trying create");
 
     let myobj = {
       name: user.name,
@@ -70,8 +82,9 @@ userRoutes.route("/user/add").post(function (req, res) {
     };
 
     db_connect.collection("user").insertOne(myobj, function (err, res) {
+      console.log("Creating user");
       if (err) throw err;
-      response.json(res);
+      res.json(this.res);
     });
   }
 });
@@ -108,7 +121,7 @@ userRoutes.route("/:id").delete((req, response) => {
   });
 });
 
-// User Login 
+// User Login
 
 /*
 userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
@@ -116,41 +129,40 @@ userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
 })
 */
 
-/*
 userRoutes.route("/login/user").post(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   const userLogin = req.body;
-  const userDB = db_connect.collection("user").findOne({ email: userLogin.email });
+  const userDB = db_connect
+    .collection("user")
+    .findOne({ email: userLogin.email });
 
   if (!userDB) {
-    return res.json({ message: "Invalid Email Address!" })
+    return res.json({ message: "Invalid Email Address!" });
   }
 
-  bcrypt.compare(userLogin.password, userDB.password)
-    .then(isCorrect => {
-      if (isCorrect) {
-        const payload = {
-          id: userDB._id,
-          name: userDB.name,
+  bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      const payload = {
+        id: userDB._id,
+        name: userDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
         }
-        jwt.sign(
-          payload,
-          process.env.JWT_SECRET,
-          { expiresIn: 86400 },
-          (err, token) => {
-            if (err) return res.json({ message: err })
-            return res.json({
-              message: "Success",
-              token: "Bearer " + token
-            })
-          }
-        )
-      } else {
-        return res.json({ message: "Invalid Email or Password!" })
-      }
-    })
+      );
+    } else {
+      return res.json({ message: "Invalid Email or Password!" });
+    }
+  });
 });
-*/
 
 /*
 function verifyJWT(req, res, next) {
