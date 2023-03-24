@@ -9,7 +9,8 @@ const Records = () => {
 
   const [redirState, setState] = useState(false);
   const [id, setData] = useState("");
-  let userRedirect = redirState ? <Navigate to={`/admin/users/${id}`} /> : "";
+  let userRedirect = redirState ? <Navigate to={`/admin/user/${id}`} /> : "";
+  let providerRedirect = redirState ? <Navigate to={`/admin/provider/${id}`} /> : "";
   let bookingsRedirect = redirState ? (
     <Navigate to={`/admin/bookings/${id}`} />
   ) : (
@@ -195,13 +196,13 @@ const Records = () => {
               data={providers}
               onRowClicked={(rowData) => {
                 setState(true);
-                setData(rowData.id);
+                setData(rowData._id);
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
               actions={actionsMemo}
             />
-            {userRedirect}
+            {providerRedirect}
           </div>
         );
       case 2:
