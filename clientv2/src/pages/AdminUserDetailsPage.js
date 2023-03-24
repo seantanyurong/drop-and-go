@@ -1,13 +1,13 @@
 import React from 'react'
 import RecentBookings from '../components/layout/AdminUserDetailsPage/RecentBookings'
 import UserDetails from '../components/layout/AdminUserDetailsPage/UserDetails'
-import Header from '../components/layout/UserBookingPage/Header'
+import AdminHeader from '../components/ui/AdminHeader'
 
 const AdminUserDetailsPage = () => {
   return (
     <div>
-    <Header></Header>
-    <UserDetails></UserDetails>
+    <AdminHeader></AdminHeader>
+    <UserDetails entityType='User'></UserDetails>
     <RecentBookings></RecentBookings>
     </div>
   )
