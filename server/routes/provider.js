@@ -50,14 +50,15 @@ providerRoutes.route("/provider/add").post(function (req, response) {
 });
 
 // This section will help you update a provider by id.
-providerRoutes.route("/update/:id").post(function (req, response) {
+providerRoutes.route("/provider/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
     $set: {
       name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      email: req.body.email,
+      phone: req.body.phone,
+      status: req.body.status, 
     },
   };
   db_connect

@@ -23,6 +23,19 @@ bookingRoutes.route("/booking").get(function (req, res) {
     });
 });
 
+// This section will help you get a list of all the bookings belonging to a user
+bookingRoutes.route("/booking/:userId").get(function (req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  let myquery = { user_id: req.params.userId };
+  db_connect
+    .collection("booking")
+    .find(myquery)
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // This section will help you get a single booking by id
 bookingRoutes.route("/booking/:id").get(function (req, res) {
   console.log("Searching for id");
