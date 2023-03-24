@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router"
+import { Route, BrowserRoute, Switch } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
 const UserLogin = () => {
+    /*
+    const history = useHistory()
+    
+    function handleLogin(e) {
+        e.preventDefault()
+
+        const form = e.target;
+        const user = {
+            email: form[0].value,
+            password: form[1].value
+        }
+
+        fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem("token", data.token)
+        })
+    }
+
+    useEffect(() => {
+        fetch("/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token")
+            }
+        })
+        .then(res => res.json())
+        .then(data => data.isLoggedIn ? history.push("/") : null)
+    }, [])
+    */
+
     return (
         <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div class="w-full max-w-md space-y-8">
@@ -10,17 +48,17 @@ const UserLogin = () => {
                     <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-indigo-900">User Log In</h2>
                 </div>
 
-                <form class="mt-8 space-y-8" action="#" method="POST">
+                <form class="mt-8 space-y-8" action="/" /* onSubmit={event => handleLogin(event)} */ method="POST">
                     <input type="hidden" name="remember" value="true"></input>
                     <div class="-space-y-px rounded-md shadow-sm">
                         <div>
                             <label for="email-address" class="sr-only">Email address</label>
-                            <input id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email address / Phone Number"></input>
+                            <input id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email Address"></input>
                         </div>
 
                         <div>
                             <label for="password" class="sr-only">Password</label>
-                            <input id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Password"></input>
+                            <input id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Password"></input>
                         </div>
                     </div>
 

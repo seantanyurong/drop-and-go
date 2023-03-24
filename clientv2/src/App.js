@@ -6,6 +6,9 @@ import ProviderLoginPage from "./pages/ProviderLoginPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import UserSignUpPage from "./pages/UserSignupPage";
 import ProviderSignUpPage from "./pages/ProviderSignUpPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import ProviderProfilePage from "./pages/ProviderProfilePage";
+import AdminProfilePage from "./pages/AdminProfilePage";
 import UserBookingPage from "./pages/UserBookingPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
@@ -36,6 +39,9 @@ function App() {
         <Route path="/login/admin" element={<AdminLoginPage />} />
         <Route path="/signup/user" element={<UserSignUpPage />} />
         <Route path="/signup/provider" element={<ProviderSignUpPage />} />
+        <Route path="/user/profile/:id" element={<UserProfilePage />} />
+        <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
+        <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         <Route 
         path="/admin/user/:userId" 

@@ -52,6 +52,13 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");
   let db_connect = dbo.getDb();
   let myobj = {
+    listingID: req.body.listingID,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    days: req.body.days,
+    paynow: req.body.paynow,
+    bags: req.body.bags,
+    status: req.body.active,
     name: req.body.name,
     position: req.body.position,
     level: req.body.level,

@@ -150,7 +150,7 @@ const Records = () => {
     link.setAttribute("href", encodeURI(csv));
     link.setAttribute("download", filename);
     link.click();
-    console.log(csv)
+    console.log(csv);
   }
 
   const Export = ({ onExport }) => (
@@ -163,7 +163,7 @@ const Records = () => {
   );
   const actionsMemo = useMemo(
     () => <Export onExport={() => downloadCSV(data)} />,
-   // eslint-disable-next-line
+    // eslint-disable-next-line
     []
   );
 
