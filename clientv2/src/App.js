@@ -17,6 +17,9 @@ import TestPage from "./pages/TestPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
+import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
+import AdminLocationDetailsPage from "./pages/AdminLocationDetailsPage";
+
 
 function App() {
   return (
@@ -34,11 +37,18 @@ function App() {
         <Route path="/signup/user" element={<UserSignUpPage />} />
         <Route path="/signup/provider" element={<ProviderSignUpPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route path="/admin/users/:userId" element={<AdminUserDetailsPage />} />
-        <Route
-          path="/admin/bookings/:bookingId"
-          element={<AdminBookingDetailsPage />}
-        />
+        <Route 
+        path="/admin/user/:userId" 
+        element={<AdminUserDetailsPage/>} />
+        <Route 
+        path="/admin/provider/:providerId" 
+        element={<AdminProviderDetailsPage/>} />
+        <Route 
+        path="/admin/location/:locationId" 
+        element={<AdminLocationDetailsPage />} />
+        <Route 
+        path="/admin/booking/:bookingId" 
+        element={<AdminBookingDetailsPage />} />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
