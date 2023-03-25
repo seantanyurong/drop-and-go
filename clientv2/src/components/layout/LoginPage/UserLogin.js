@@ -1,20 +1,57 @@
-import React, { useEffect } from "react";
-import { useHistory } from "react-router"
-import { Route, BrowserRoute, Switch } from "react-router-dom";
+import React, { /* useEffect, */ useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
 const UserLogin = () => {
-    /*
-    const history = useHistory()
-    
-    function handleLogin(e) {
-        e.preventDefault()
 
-        const form = e.target;
-        const user = {
-            email: form[0].value,
-            password: form[1].value
+    let defaultState = {
+        email:"",
+        password: "",
+    }
+
+    let navigate = useNavigate();
+    
+    const [formState, setFormState] = useState(defaultState);
+
+    const handleChange = ({ target: { value, id } }) => {
+        setFormState({ ...formState, [id]: value });
+    }; 
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        let body = {
+            email: formState.email,
+            password: formState.password,
         }
+        async function confirmLogin() {
+            console.log("Submitting");
+
+            const settings = {
+                method: "POST",
+                headers: {
+                    Accept: 'application/json',
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            };
+            
+            console.log("body" + JSON.stringify(body));
+            const response = await fetch("http://localhost:6003/user/login", settings);
+            
+            if (!response.ok) {
+                const message = `An error has occurred: ${response.statusText}`;
+                window.alert(message);
+                return;
+            }
+        }
+
+        confirmLogin();
+        navigate(`/`);
+    }
+
+    /*
+    function handleLogin(e) {
 
         fetch("/login", {
             method: "POST",
@@ -48,17 +85,19 @@ const UserLogin = () => {
                     <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-indigo-900">User Log In</h2>
                 </div>
 
-                <form class="mt-8 space-y-8" action="/" /* onSubmit={event => handleLogin(event)} */ method="POST">
+                <form class="mt-8 space-y-8" action="/" onSubmit={handleSubmit} >
                     <input type="hidden" name="remember" value="true"></input>
                     <div class="-space-y-px rounded-md shadow-sm">
                         <div>
-                            <label for="email-address" class="sr-only">Email address</label>
-                            <input id="email-address" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email Address"></input>
+                            <label for="email" class="sr-only">Email address</label>
+                            <input value={formState.email} onChange={handleChange}
+                                id="email" name="email" type="email" autocomplete="email" required class="relative block w-full rounded-t-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Email Address"></input>
                         </div>
 
                         <div>
                             <label for="password" class="sr-only">Password</label>
-                            <input id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Password"></input>
+                            <input value={formState.password} onChange={handleChange}
+                                id="password" name="password" type="password" autocomplete="current-password" required class="relative block w-full rounded-b-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Password"></input>
                         </div>
                     </div>
 

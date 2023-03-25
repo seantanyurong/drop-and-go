@@ -79,7 +79,7 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
       email: provider.email,
       password: provider.password,
       phone: provider.phone,
-      bank: provider.bank,
+      bankAccount: provider.bank,
       joinDate: provider.joinDate,
       status: "active",
     };
@@ -87,7 +87,7 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
     db_connect.collection("provider").insertOne(myobj, function (err, response) {
       console.log("Creating Provider");
       if (err) throw err;
-      response.json(res);
+      res.json(response);
     });
   }
 });
