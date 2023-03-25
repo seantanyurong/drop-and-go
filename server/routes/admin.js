@@ -12,6 +12,11 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 
+// This help with the login authentication of user
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+
 /* Admin CRUD Methods */
 
 // This section will help you get a list of all the admins
