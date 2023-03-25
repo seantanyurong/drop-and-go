@@ -4,8 +4,9 @@ import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
 import ProviderLoginPage from "./pages/ProviderLoginPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
-import UserSignUpPage from "./pages/UserSignupPage";
+import UserSignUpPage from "./pages/UserSignUpPage";
 import ProviderSignUpPage from "./pages/ProviderSignUpPage";
+import AdminSignUpPage from "./pages/AdminSignUpPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProviderProfilePage from "./pages/ProviderProfilePage";
 import AdminProfilePage from "./pages/AdminProfilePage";
@@ -39,6 +40,7 @@ function App() {
         <Route path="/login/admin" element={<AdminLoginPage />} />
         <Route path="/signup/user" element={<UserSignUpPage />} />
         <Route path="/signup/provider" element={<ProviderSignUpPage />} />
+        <Route path="/signup/admin" element={<AdminSignUpPage />} />
         <Route path="/user/profile/:id" element={<UserProfilePage />} />
         <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
         <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
