@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { /* useEffect, */ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
@@ -49,6 +49,7 @@ const UserLogin = () => {
         confirmLogin();
         navigate(`/`);
     }
+
     /*
     function handleLogin(e) {
 
