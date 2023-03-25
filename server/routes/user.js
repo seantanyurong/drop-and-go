@@ -71,13 +71,13 @@ userRoutes.route("/user/add").post(async function (req, res) {
 
     res.json({ message: "Password does not match re-entered Password!" });
   } else {
-    // user.password = await bcrypt.hash(req.body.password, 10);
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
     console.log("Trying Create User");
 
     let myobj = {
       name: user.name,
       email: user.email,
-      password: user.password,
+      password: encryptedPassword,
       phone: user.phone,
       joinDate: user.joinDate,
       status: "active",
@@ -140,58 +140,38 @@ userRoutes.route("/user/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  if (userLogin.password === userDB.password) {
-    console.log("Equal");
-    const payload = {
-      id: userDB._id,
-      name: userDB.name,
-    };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 86400 },
-      (err, token) => {
-        if (err) return res.json({ message: err });
-        return res.json({
-          message: "Success",
-          token: "Bearer " + token,
-        });
-      }
-    );
-  } else {
-    console.log("Not Equal");
-    return res.json({ message: "Invalid Email or Password!" });
-  }
-
-  // bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
-  //   if (isCorrect) {
-  //     const payload = {
-  //       id: userDB._id,
-  //       name: userDB.name,
-  //     };
-  //     jwt.sign(
-  //       payload,
-  //       process.env.JWT_SECRET,
-  //       { expiresIn: 86400 },
-  //       (err, token) => {
-  //         if (err) return res.json({ message: err });
-  //         return res.json({
-  //           message: "Success",
-  //           token: "Bearer " + token,
-  //         });
-  //       }
-  //     );
-  //   } else {
-  //     return res.json({ message: "Invalid Email or Password!" });
-  //   }
-  // });
+  bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Equal");
+      const payload = {
+        id: userDB._id,
+        name: userDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
+  });
 });
 
-/*
 function verifyJWT(req, res, next) {
   const token = req.header["x-access-token"]?.split(' ')[1]
+  console.log(token);
 
   if (token) {
+    console.log("Authenticating Token");
     jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {
       if (err) return res.json({
         isLoggedIn: false,
@@ -203,15 +183,13 @@ function verifyJWT(req, res, next) {
       next()
     })
   } else {
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false})
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false })
   }
 }
-*/
 
-/*
-userRoutes.route("/user/getEmail").get(verifyJWT, function (req, res) {
-  res.json({isLoggedIn: true, email: req.user.email})
-})
-*/
+userRoutes.route("/user/isUserAuth").get(verifyJWT, function (req, res) {
+  res.json({ isLoggedIn: true, email: req.user.email })
+});
 
 module.exports = userRoutes;

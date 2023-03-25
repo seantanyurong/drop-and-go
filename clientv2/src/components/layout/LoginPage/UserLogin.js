@@ -1,4 +1,4 @@
-import React, { /* useEffect, */ useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
@@ -37,13 +37,16 @@ const UserLogin = () => {
             };
             
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/user/login", settings);
+            const response = await fetch("http://localhost:6003/user/login", settings)
+                                    .then(data => {
+                                        localStorage.setItem("token", data.token);
+                                    });
             
             if (!response.ok) {
                 const message = `An error has occurred: ${response.statusText}`;
                 window.alert(message);
                 return;
-            }
+            } 
         }
 
         confirmLogin();
@@ -65,17 +68,17 @@ const UserLogin = () => {
             localStorage.setItem("token", data.token)
         })
     }
+    */
 
     useEffect(() => {
-        fetch("/isUserAuth", {
+        fetch("/user/isUserAuth", {
             headers: {
                 "x-access-token": localStorage.getItem("token")
             }
         })
         .then(res => res.json())
-        .then(data => data.isLoggedIn ? history.push("/") : null)
+        //.then(data => data.isLoggedIn ? history.push("/") : null)
     }, [])
-    */
 
     return (
         <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
