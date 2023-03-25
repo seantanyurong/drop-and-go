@@ -86,7 +86,7 @@ userRoutes.route("/user/add").post(async function (req, res) {
     db_connect.collection("user").insertOne(myobj, function (err, response) {
       console.log("Creating User");
       if (err) throw err;
-      response.json(res);
+      res.json(response);
     });
   }
 });
