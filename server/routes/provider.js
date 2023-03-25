@@ -71,13 +71,13 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
 
     res.json({ message: "Password does not match re-entered Password!" });
   } else {
-    // provider.password = await bcrypt.hash(req.body.password, 10);
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
     console.log("Trying Create Provider");
 
     let myobj = {
       name: provider.name,
       email: provider.email,
-      password: provider.password,
+      password: encryptedPassword,
       phone: provider.phone,
       bankAccount: provider.bank,
       joinDate: provider.joinDate,
@@ -101,7 +101,7 @@ providerRoutes.route("/provider/update/:id").post(function (req, response) {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
-      status: req.body.status, 
+      status: req.body.status,
     },
   };
   db_connect
@@ -142,28 +142,30 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  if (providerLogin.password === providerDB.password) {
-    console.log("Equal");
-    const payload = {
-      id: providerDB._id,
-      name: providerDB.name,
-    };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 86400 },
-      (err, token) => {
-        if (err) return res.json({ message: err });
-        return res.json({
-          message: "Success",
-          token: "Bearer " + token,
-        });
-      }
-    );
-  } else {
-    console.log("Not Equal");
-    return res.json({ message: "Invalid Email or Password!" });
-  }
+  bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Equal");
+      const payload = {
+        id: providerDB._id,
+        name: providerDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
+  });
 });
 
 module.exports = providerRoutes;
