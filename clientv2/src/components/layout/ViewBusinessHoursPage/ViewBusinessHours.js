@@ -82,7 +82,7 @@ const ViewBusinessHours = () => {
                             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
                                 <div className="flex items-center mb-1 justify-between">
                                     <div className="flex space-x-3 items-center">
-                                        <h3 className="font-semibold">Orchard</h3>
+                                        <h3 className="font-semibold">{businessHourSetting.name}</h3>
                                     </div>
                                     <div className="cursor-pointer" onClick={handleClick}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
