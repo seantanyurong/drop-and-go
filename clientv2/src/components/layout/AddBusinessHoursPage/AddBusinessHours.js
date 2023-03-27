@@ -24,12 +24,6 @@ const AddBusinessHours = () => {
 
   });
 
-  const { businessHoursId } = useParams();
-
-  // console log to check errors
-  useEffect(() => { console.log(formState) }, formState)
-
-
   const handleSubmit = (e) => {
     // e.preventDefault();
 
@@ -51,7 +45,7 @@ const AddBusinessHours = () => {
       sunClosingHours: formik.values.sunClosing,
     };
 
-    async function updateData() {
+    async function addData() {
       const settings = {
         method: "POST",
         headers: {
@@ -62,21 +56,41 @@ const AddBusinessHours = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      const response = await fetch(`http://localhost:6003/businessHours/update/${businessHoursId}`, settings);
-
-      if (!response.ok) {
-        const message = `An error has occurred: ${response.statusText}`;
+      const duplicate = await fetch(`http://localhost:6003/businessHours/name/${body.name}`, settings);
+      if (!duplicate.ok) {
+        console.log("Error in finding by name")
+        const message = `An error has occurred: ${duplicate.statusText}`;
         window.alert(message);
         return;
       }
 
-      const res = await response.json();
-      if (!res) {
-        window.alert(`Business Hours not found`);
+      const duplicateRes = await duplicate.json();
+      // expected result: indicates there is no duplicate 
+      if (!duplicateRes) {
+        const response = await fetch(`http://localhost:6003/businessHours/add`, settings);
+
+        if (!response.ok) {
+          const message = `An error has occurred: ${response.statusText}`;
+          window.alert(message);
+          return;
+        }
+
+        // const res = await response.json();
+        // if (!res) {
+        //   window.alert(`Business Hours not found`);
+        //   return;
+        // }
+        // return;
+
+        // means a duplicate was found
+      } else {
+        const message = `You have another Business Hour with the same name of ${body.name}. Please use another name`;
+        window.alert(message);
         return;
       }
+      alert(`${body.name} Business Hours has been added!`);
     }
-    updateData();
+    addData();
   };
 
   const formik = useFormik({
@@ -86,7 +100,6 @@ const AddBusinessHours = () => {
 
     onSubmit: function (values) {
       handleSubmit();
-      alert(`${formState.name} Business Hours has been updated!`);
     },
 
     validationSchema: yup.object({

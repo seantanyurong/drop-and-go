@@ -55,6 +55,17 @@ businessHoursRoutes.route("/businessHours/update/:id").post(function (req, respo
         });
 });
 
+// This section will help you get a single businessHours by name 
+businessHoursRoutes.route("/businessHours/name/:name").post(function (req, res) {
+    console.log("Searching for name");
+    let db_connect = dbo.getDb("dropandgo");
+    let myquery = { name: String(req.params.name) };
+    db_connect.collection("businessHours").findOne(myquery, function (err, result) {
+        if (err) throw err;
+        res.json(result);
+    });
+});
+
 // This section will help you get a single businessHours by id
 businessHoursRoutes.route("/businessHours/:id").get(function (req, res) {
     console.log("Searching for id");
@@ -66,28 +77,28 @@ businessHoursRoutes.route("/businessHours/:id").get(function (req, res) {
     });
 });
 
+
+
 // This section will help you create a new businessHours.
 businessHoursRoutes.route("/businessHours/add").post(function (req, response) {
     console.log("Add method running");
     let db_connect = dbo.getDb();
     let myobj = {
-        $set: {
-            // name: req.body.name,
-            monOpeningHours: req.body.monOpeningHours,
-            monClosingHours: req.body.monClosingHours,
-            tueOpeningHours: req.body.tueOpeningHours,
-            tueClosingHours: req.body.tueClosingHours,
-            wedOpeningHours: req.body.wedOpeningHours,
-            wedClosingHours: req.body.wedClosingHours,
-            thurOpeningHours: req.body.thurOpeningHours,
-            thurClosingHours: req.body.thurClosingHours,
-            friOpeningHours: req.body.friOpeningHours,
-            friClosingHours: req.body.friClosingHours,
-            satOpeningHours: req.body.satOpeningHours,
-            satClosingHours: req.body.satClosingHours,
-            sunOpeningHours: req.body.sunOpeningHours,
-            sunClosingHours: req.body.sunClosingHours,
-        },
+        name: req.body.name,
+        monOpeningHours: req.body.monOpeningHours,
+        monClosingHours: req.body.monClosingHours,
+        tueOpeningHours: req.body.tueOpeningHours,
+        tueClosingHours: req.body.tueClosingHours,
+        wedOpeningHours: req.body.wedOpeningHours,
+        wedClosingHours: req.body.wedClosingHours,
+        thurOpeningHours: req.body.thurOpeningHours,
+        thurClosingHours: req.body.thurClosingHours,
+        friOpeningHours: req.body.friOpeningHours,
+        friClosingHours: req.body.friClosingHours,
+        satOpeningHours: req.body.satOpeningHours,
+        satClosingHours: req.body.satClosingHours,
+        sunOpeningHours: req.body.sunOpeningHours,
+        sunClosingHours: req.body.sunClosingHours,
     };
     db_connect.collection("businessHours").insertOne(myobj, function (err, res) {
         if (err) throw err;

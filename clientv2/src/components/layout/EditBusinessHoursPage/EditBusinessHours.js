@@ -103,8 +103,6 @@ const EditBusinessHours = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      // const response = await fetch(`http://localhost:6003/businessHours/${businessHoursId}`);
-
       const response = await fetch(`http://localhost:6003/businessHours/update/${businessHoursId}`, settings);
 
       if (!response.ok) {
