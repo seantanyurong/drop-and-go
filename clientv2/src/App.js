@@ -15,6 +15,7 @@ import ViewLocationsPage from "./pages/ViewLocationsPage";
 import EditLocationPage from "./pages/EditLocationPage";
 import ViewBusinessHoursPage from "./pages/ViewBusinessHoursPage";
 import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
+import AddBusinessHoursPage from "./pages/AddBusinessHoursPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import SearchPage from "./pages/SearchPage";
@@ -39,7 +40,8 @@ function App() {
         <Route path="/provider/view-locations" element={<ViewLocationsPage />} />
         <Route path="/provider/edit-location" element={<EditLocationPage />} />
         <Route path="/provider/view-business-hours" element={<ViewBusinessHoursPage />} />
-        <Route path="/provider/edit-business-hours" element={<EditBusinessHoursPage />} />
+        <Route path="/provider/add-business-hours" element={<AddBusinessHoursPage />} />
+        <Route path="/provider/edit-business-hours/:businessHoursId" element={<EditBusinessHoursPage />} />
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
         <Route path="/login/provider" element={<ProviderLoginPage />} />

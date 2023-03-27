@@ -8,8 +8,12 @@ const ViewBusinessHours = () => {
 
 
     const navigate = useNavigate();
-    function handleClick() {
-        navigate("/provider/edit-business-hours");
+    function handleClick(id) {
+        navigate(`/provider/edit-business-hours/${id}`);
+    }
+
+    function addBusinessHours() {
+        navigate(`/provider/add-business-hours`);
     }
 
     useEffect(() => {
@@ -35,7 +39,6 @@ const ViewBusinessHours = () => {
         }
 
         fetchData();
-        console.log(hours)
         return;
 
     }, []);
@@ -53,23 +56,14 @@ const ViewBusinessHours = () => {
                         <nav className="flex grow mt-4 sm:mt-0">
                             <ul className="flex grow justify-end flex-wrap items-center">
                                 <li
-                                    onClick={() => setActiveMenuItem(0)}
-                                    className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 0
-                                        ? "bg-text-main text-text-dark"
-                                        : "text-text-main"
-                                        } `}
+                                    onClick={() => addBusinessHours()}
+                                    className={`cursor-pointer rounded-t-sm  hover:text-primary-200  font-semibold px-6 flex items-center text-sm py-[0.6rem]
+                                        bg-text-main text-text-dark
+                                        `}
                                 >
-                                    Active
+                                    Add Business Hours
                                 </li>
-                                <li
-                                    onClick={() => setActiveMenuItem(1)}
-                                    className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 1
-                                        ? "bg-text-main text-text-dark"
-                                        : "text-text-main"
-                                        } `}
-                                >
-                                    Completed
-                                </li>
+
                             </ul>
                         </nav>
                     </div>
@@ -84,7 +78,7 @@ const ViewBusinessHours = () => {
                                     <div className="flex space-x-3 items-center">
                                         <h3 className="font-semibold">{businessHourSetting.name}</h3>
                                     </div>
-                                    <div className="cursor-pointer" onClick={handleClick}>
+                                    <div className="cursor-pointer" onClick={() => handleClick(businessHourSetting._id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"

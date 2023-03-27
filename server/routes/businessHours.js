@@ -23,10 +23,42 @@ businessHoursRoutes.route("/businessHours").get(function (req, res) {
         });
 });
 
+// This section will help you update a businessHours by id.
+businessHoursRoutes.route("/businessHours/update/:id").post(function (req, response) {
+    let db_connect = dbo.getDb();
+    let myquery = { _id: ObjectId(req.params.id) };
+    let newvalues = {
+        $set: {
+            // name: req.body.name,
+            monOpeningHours: req.body.monOpeningHours,
+            monClosingHours: req.body.monClosingHours,
+            tueOpeningHours: req.body.tueOpeningHours,
+            tueClosingHours: req.body.tueClosingHours,
+            wedOpeningHours: req.body.wedOpeningHours,
+            wedClosingHours: req.body.wedClosingHours,
+            thurOpeningHours: req.body.thurOpeningHours,
+            thurClosingHours: req.body.thurClosingHours,
+            friOpeningHours: req.body.friOpeningHours,
+            friClosingHours: req.body.friClosingHours,
+            satOpeningHours: req.body.satOpeningHours,
+            satClosingHours: req.body.satClosingHours,
+            sunOpeningHours: req.body.sunOpeningHours,
+            sunClosingHours: req.body.sunClosingHours,
+        },
+    };
+    db_connect
+        .collection("businessHours")
+        .updateOne(myquery, newvalues, function (err, res) {
+            if (err) throw err;
+            console.log("1 document updated");
+            response.json(res);
+        });
+});
+
 // This section will help you get a single businessHours by id
 businessHoursRoutes.route("/businessHours/:id").get(function (req, res) {
     console.log("Searching for id");
-    let db_connect = dbo.getDb();
+    let db_connect = dbo.getDb("dropandgo");
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("businessHours").findOne(myquery, function (err, result) {
         if (err) throw err;
@@ -39,9 +71,23 @@ businessHoursRoutes.route("/businessHours/add").post(function (req, response) {
     console.log("Add method running");
     let db_connect = dbo.getDb();
     let myobj = {
-        name: req.body.name,
-        position: req.body.position,
-        level: req.body.level,
+        $set: {
+            // name: req.body.name,
+            monOpeningHours: req.body.monOpeningHours,
+            monClosingHours: req.body.monClosingHours,
+            tueOpeningHours: req.body.tueOpeningHours,
+            tueClosingHours: req.body.tueClosingHours,
+            wedOpeningHours: req.body.wedOpeningHours,
+            wedClosingHours: req.body.wedClosingHours,
+            thurOpeningHours: req.body.thurOpeningHours,
+            thurClosingHours: req.body.thurClosingHours,
+            friOpeningHours: req.body.friOpeningHours,
+            friClosingHours: req.body.friClosingHours,
+            satOpeningHours: req.body.satOpeningHours,
+            satClosingHours: req.body.satClosingHours,
+            sunOpeningHours: req.body.sunOpeningHours,
+            sunClosingHours: req.body.sunClosingHours,
+        },
     };
     db_connect.collection("businessHours").insertOne(myobj, function (err, res) {
         if (err) throw err;
@@ -49,25 +95,7 @@ businessHoursRoutes.route("/businessHours/add").post(function (req, response) {
     });
 });
 
-// This section will help you update a businessHours by id.
-businessHoursRoutes.route("/update/:id").post(function (req, response) {
-    let db_connect = dbo.getDb();
-    let myquery = { _id: ObjectId(req.params.id) };
-    let newvalues = {
-        $set: {
-            name: req.body.name,
-            position: req.body.position,
-            level: req.body.level,
-        },
-    };
-    db_connect
-        .collection("businessHourss")
-        .updateOne(myquery, newvalues, function (err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            response.json(res);
-        });
-});
+
 
 // This section will help you delete a businessHours
 businessHoursRoutes.route("/:id").delete((req, response) => {

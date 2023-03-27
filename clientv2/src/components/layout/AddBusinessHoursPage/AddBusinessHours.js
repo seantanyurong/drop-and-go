@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const EditBusinessHours = () => {
+const AddBusinessHours = () => {
 
   const [formState, setFormState] = useState({
     name: "",
@@ -26,48 +26,6 @@ const EditBusinessHours = () => {
 
   const { businessHoursId } = useParams();
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`http://localhost:6003/businessHours/${businessHoursId}`);
-
-      if (!response.ok) {
-        const message = `An error has occurred: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const res = await response.json();
-      if (!res) {
-        window.alert(`BusinessHours with id ${businessHoursId} not found`);
-        return;
-      } else {
-
-        // setting initial form state
-        setFormState({
-          name: res.name,
-          monOpening: res.monOpeningHours,
-          monClosing: res.monClosingHours,
-          tueOpening: res.tueOpeningHours,
-          tueClosing: res.tueClosingHours,
-          wedOpening: res.wedOpeningHours,
-          wedClosing: res.wedClosingHours,
-          thurOpening: res.thurOpeningHours,
-          thurClosing: res.thurClosingHours,
-          friOpening: res.friOpeningHours,
-          friClosing: res.friClosingHours,
-          satOpening: res.satOpeningHours,
-          satClosing: res.satClosingHours,
-          sunOpening: res.sunOpeningHours,
-          sunClosing: res.sunClosingHours,
-        });
-      }
-    }
-    fetchData();
-    return;
-    // eslint-disable-next-line
-  }, []);
-
-
   // console log to check errors
   useEffect(() => { console.log(formState) }, formState)
 
@@ -76,6 +34,7 @@ const EditBusinessHours = () => {
     // e.preventDefault();
 
     let body = {
+      name: formik.values.name,
       monOpeningHours: formik.values.monOpening,
       monClosingHours: formik.values.monClosing,
       tueOpeningHours: formik.values.tueOpening,
@@ -102,8 +61,6 @@ const EditBusinessHours = () => {
         body: JSON.stringify(body),
       };
       console.log("body" + JSON.stringify(body));
-
-      // const response = await fetch(`http://localhost:6003/businessHours/${businessHoursId}`);
 
       const response = await fetch(`http://localhost:6003/businessHours/update/${businessHoursId}`, settings);
 
@@ -133,6 +90,7 @@ const EditBusinessHours = () => {
     },
 
     validationSchema: yup.object({
+      name: yup.string().label("Name").required(),
       monOpening: yup.string().label("This").required(),
       monClosing: yup.string().label("This").required(),
       tueOpening: yup.string().label("This").required(),
@@ -157,13 +115,44 @@ const EditBusinessHours = () => {
         <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6">
           <div className="flex-col sm:flex-row flex items-center justify-between relative">
             <div className="shrink-0 mr-4">
-              <p className="text-text-main text-xl">Edit Business Hours: {formState.name}</p>
+              <p className="text-text-main text-xl">Add Business Hours</p>
             </div>
           </div>
         </div>
       </div>
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
         <form onSubmit={formik.handleSubmit}>
+          <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 text-text-dark">
+            <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
+              {/* <div className="flex items-center mb-1 justify-between"> */}
+              <label>
+                <div className="flex items-center mb-1 justify-between">
+                  <p className="mt-1.5 text-md font-medium py-2">Name:</p>
+
+                  <div>
+                    <input
+                      type="string"
+                      name="name"
+                      placeholder="Name"
+                      className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+                    ${formik.touched.name && formik.errors.name
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.name}
+                    />
+                    {formik.touched.name && formik.errors.name && (
+                      <span className="text-red-400">{formik.errors.name}</span>
+                    )}
+                  </div>
+                </div>
+
+              </label>
+              {/* </div> */}
+            </div>
+          </div>
           <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 text-text-dark">
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
@@ -528,4 +517,4 @@ const EditBusinessHours = () => {
   );
 };
 
-export default EditBusinessHours;
+export default AddBusinessHours;
