@@ -21,7 +21,7 @@ const BookingForm = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-      const id = props.listingID;
+      const id = props.listing_id;
       const response = await fetch(`http://localhost:6003/listing/${id}`);
 
       if (!response.ok) {
@@ -55,13 +55,14 @@ const BookingForm = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        listingID: props.listingID,
         startDate: startDate,
         endDate: endDate,
         days: days(endDate, startDate),
         paynow: paynow,
         bags: bags,
         status: "active",
+        listing_id: props.listing_id,
+        user_id: "Not implemented",
       }),
     }).catch((error) => {
       window.alert(error);
@@ -243,9 +244,9 @@ const BookingForm = (props) => {
                   <p className="text-sm text-text-dark font-light">
                     {`${
                       paynow
-                        ? "$" + listing.pricePerHourSimple * bags + "/hour"
+                        ? "$" + listing.pricePerHour[0] * bags + "/hour"
                         : "$" +
-                          listing.pricePerDaySimple *
+                          listing.pricePerDay[0] *
                             bags *
                             days(endDate, startDate)
                     }`}
@@ -270,7 +271,7 @@ const BookingForm = (props) => {
                       paynow
                         ? "$0.00"
                         : "$" +
-                          (listing.pricePerDaySimple *
+                          (listing.pricePerDay[0] *
                             bags *
                             days(endDate, startDate) +
                             1)

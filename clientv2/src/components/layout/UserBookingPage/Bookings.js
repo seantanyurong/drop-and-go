@@ -9,6 +9,8 @@ const Bookings = () => {
     async function fetchData() {
       const response = await fetch(`http://localhost:6003/booking`);
 
+      console.log(response);
+
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
         window.alert(message);

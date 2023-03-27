@@ -14,6 +14,8 @@ const UserBookingDetails = () => {
         `http://localhost:6003/booking/${bookingId}`
       );
 
+      console.log(bookingId);
+
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
         window.alert(message);
@@ -27,8 +29,11 @@ const UserBookingDetails = () => {
       } else {
         setBooking(bookingRes);
 
+        console.log(bookingRes);
+        console.log(bookingRes.listing_id);
+
         const response2 = await fetch(
-          `http://localhost:6003/listing/${bookingRes.listingID}`
+          `http://localhost:6003/listing/${bookingRes.listing_id}`
         );
 
         if (!response2.ok) {
@@ -39,7 +44,7 @@ const UserBookingDetails = () => {
 
         const listingRes = await response2.json();
         if (!listingRes) {
-          window.alert(`listing with id ${bookingRes.listingID} not found`);
+          window.alert(`listing with id ${bookingRes.listing_id} not found`);
           return;
         } else {
           setListing(listingRes);
@@ -125,11 +130,9 @@ const UserBookingDetails = () => {
                   {" "}
                   {`${
                     booking.paynow
-                      ? "$" +
-                        listing.pricePerHourSimple * booking.bags +
-                        "/hour"
+                      ? "$" + listing.pricePerHour[0] * booking.bags + "/hour"
                       : "$" +
-                        listing.pricePerDaySimple * booking.bags * booking.days
+                        listing.pricePerDay[0] * booking.bags * booking.days
                   }`}
                 </p>
               </div>
@@ -150,9 +153,7 @@ const UserBookingDetails = () => {
                     booking.paynow
                       ? "$0.00"
                       : "$" +
-                        (listing.pricePerDaySimple *
-                          booking.bags *
-                          booking.days +
+                        (listing.pricePerDay[0] * booking.bags * booking.days +
                           1)
                   }`}
                 </p>

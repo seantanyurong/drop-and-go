@@ -13,6 +13,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the bookings.
 bookingRoutes.route("/booking").get(function (req, res) {
+  console.log("Booking: Getting all bookings");
   let db_connect = dbo.getDb("dropandgo");
   db_connect
     .collection("booking")
@@ -23,6 +24,20 @@ bookingRoutes.route("/booking").get(function (req, res) {
     });
 });
 
+// This section will help you get a single booking by id
+bookingRoutes.route("/booking/:id").get(function (req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  console.log("Booking: Searching for id");
+  console.log(req.params.id);
+  console.log(ObjectId(req.params.id));
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("booking").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+// The order matters. This won't ever trigger cause of above ID.
 // This section will help you get a list of all the bookings belonging to a user
 bookingRoutes.route("/booking/:userId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
@@ -36,23 +51,11 @@ bookingRoutes.route("/booking/:userId").get(function (req, res) {
     });
 });
 
-// This section will help you get a single booking by id
-bookingRoutes.route("/booking/:id").get(function (req, res) {
-  console.log("Searching for id");
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("booking").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
-  });
-});
-
 // This section will help you create a new booking.
 bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");
   let db_connect = dbo.getDb();
   let myobj = {
-    listingID: req.body.listingID,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     days: req.body.days,
@@ -62,6 +65,8 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     name: req.body.name,
     position: req.body.position,
     level: req.body.level,
+    listing_id: req.body.listing_id,
+    user_id: req.body.user_id,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
