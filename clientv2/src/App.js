@@ -21,7 +21,7 @@ import SearchResultPage from "./pages/SearchResultPage";
 import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
-import AdminLocationDetailsPage from "./pages/AdminLocationDetailsPage";
+import AdminListingDetailsPage from "./pages/AdminLocationDetailsPage";
 
 
 function App() {
@@ -50,8 +50,8 @@ function App() {
         path="/admin/provider/:providerId" 
         element={<AdminProviderDetailsPage/>} />
         <Route 
-        path="/admin/location/:locationId" 
-        element={<AdminLocationDetailsPage />} />
+        path="/admin/listing/:listingId" 
+        element={<AdminListingDetailsPage />} />
         <Route 
         path="/admin/booking/:bookingId" 
         element={<AdminBookingDetailsPage />} />
