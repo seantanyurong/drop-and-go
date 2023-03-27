@@ -21,7 +21,7 @@ import SearchResultPage from "./pages/SearchResultPage";
 import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
-import AdminListingDetailsPage from "./pages/AdminLocationDetailsPage";
+import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
 
 
 function App() {
