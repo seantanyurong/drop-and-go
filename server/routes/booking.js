@@ -67,6 +67,8 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     level: req.body.level,
     listing_id: req.body.listing_id,
     user_id: req.body.user_id,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -75,14 +77,17 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
 });
 
 // This section will help you update a booking by id.
-bookingRoutes.route("/update/:id").post(function (req, response) {
-  let db_connect = dbo.getDb();
+bookingRoutes.route("/booking/update/:id").post(function (req, response) {
+  console.log("Booking: Updating");
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
+
+  console.log(req.body.status);
   let newvalues = {
     $set: {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      status: req.body.status,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
     },
   };
   db_connect

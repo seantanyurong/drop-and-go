@@ -7,6 +7,9 @@ const UserBookingDetails = () => {
   let { bookingId } = useParams();
   const [booking, setBooking] = useState(null);
   const [listing, setListing] = useState(null);
+  const [status, setStatus] = useState();
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -28,9 +31,9 @@ const UserBookingDetails = () => {
         return;
       } else {
         setBooking(bookingRes);
-
-        console.log(bookingRes);
-        console.log(bookingRes.listing_id);
+        setStatus(bookingRes.status);
+        setStartTime(bookingRes.startTime);
+        setEndTime(bookingRes.endTime);
 
         const response2 = await fetch(
           `http://localhost:6003/listing/${bookingRes.listing_id}`
@@ -57,6 +60,32 @@ const UserBookingDetails = () => {
     return;
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    async function onStatusChange() {
+      console.log(status);
+      console.log(startTime);
+
+      const editedBooking = {
+        status: status,
+        startTime: startTime,
+        endTime: endTime,
+      };
+
+      // This will send a post request to update the data in the database.
+      await fetch(`http://localhost:6003/booking/update/${bookingId}`, {
+        method: "POST",
+        body: JSON.stringify(editedBooking),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    onStatusChange();
+
+    // eslint-disable-next-line
+  }, [status, endTime, startTime]);
 
   return (
     <div>
@@ -107,12 +136,51 @@ const UserBookingDetails = () => {
               </h4>
             </div>
             <div className="flex space-x-4 items-center mb-10">
-              <CheckCircleIcon className="h-10 w-10" aria-hidden="true" />
-              <h4 className="font-semibold text-lg">Hand over your luggage</h4>
+              <CheckCircleIcon
+                className={`h-10 w-10 ${
+                  (status === "Handed over" || status === "Collected") &&
+                  "text-emerald-400"
+                }`}
+                aria-hidden="true"
+              />
+              <h4 className="font-semibold text-lg">Hand over luggage</h4>
+              <button
+                className="rounded-md bg-box-gray p-1.5 px-4 text-md font-medium "
+                onClick={() => {
+                  setStartTime(new Date());
+                  setStatus("Handed over");
+                }}
+              >
+                Handed Over
+              </button>
+              {(status === "Handed over" || status === "Collected") && (
+                <h4 className="font-semibold text-lg">
+                  Time Started: {startTime?.toLocaleString()}
+                </h4>
+              )}
             </div>
             <div className="flex space-x-4 items-center mb-10">
-              <CheckCircleIcon className="h-10 w-10" aria-hidden="true" />
+              <CheckCircleIcon
+                className={`h-10 w-10 ${
+                  status === "Collected" && "text-emerald-400"
+                }`}
+                aria-hidden="true"
+              />
               <h4 className="font-semibold text-lg">Reclaim your baggage</h4>
+              <button
+                className="rounded-md bg-box-gray p-1.5 px-4 text-md font-medium "
+                onClick={(e) => {
+                  setEndTime(new Date());
+                  setStatus("Collected");
+                }}
+              >
+                Collected
+              </button>
+              {status === "Collected" && (
+                <h4 className="font-semibold text-lg">
+                  Time Started: {endTime?.toLocaleString()}
+                </h4>
+              )}
             </div>
 
             {/* Summary */}
