@@ -8,7 +8,7 @@ const AdminUserDetailsPage = () => {
     <div>
     <AdminHeader></AdminHeader>
     <UserDetails entityType='User'></UserDetails>
-    <RecentBookings></RecentBookings>
+    <RecentBookings entityType='User'></RecentBookings>
     </div>
   )
 }

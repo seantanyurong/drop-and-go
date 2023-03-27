@@ -1,6 +1,8 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeftIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import moment from 'moment';
 
 const AdminBookingDetails = () => {
   const navigate = useNavigate();
@@ -8,6 +10,68 @@ const AdminBookingDetails = () => {
     let path = "/admin/dashboard";
     navigate(path);
   };
+
+  const {bookingId} = useParams();
+  const [booking, setBooking] = useState(data);
+  const [user, setUser] = useState(data);
+  const [listing, setListing] = useState(data);
+
+  useEffect(() => {
+    async function fetchData() {
+      const dbUrl = `http://localhost:6003/booking/${bookingId}`;
+      const responseBooking = await fetch(dbUrl);
+      
+      if (!responseBooking.ok) {
+        const message = `An error has occurred: ${responseBooking.statusText}`;
+        window.alert(message);
+        return;
+      }
+      
+      const bookingRes = await responseBooking.json();
+      console.log(bookingRes);
+      if (!bookingRes) {
+        window.alert(`Booking not found`);
+        return;
+      } else {
+        setBooking(bookingRes);
+      }
+
+      const responseUser = await fetch(`http://localhost:6003/user/${bookingRes.user_id}`);
+      const responseListing = await fetch(`http://localhost:6003/listing/${bookingRes.listing_id}`)
+      
+      console.log(responseUser);
+      if (!responseUser.ok) {
+        const message = `An error has occurred: ${responseUser.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userRes = await responseUser.json();
+      if (!userRes) {
+        window.alert(`User not found`);
+        return;
+      } else {
+        setUser(userRes);
+      } 
+
+      if (!responseListing.ok) {
+        const message = `An error has occurred: ${responseListing.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const listingRes = await responseListing.json();
+      if (!responseListing) {
+        window.alert(`Listing not found`);
+        return;
+      } else {
+        setListing(listingRes);
+      }
+    }
+    fetchData();
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -24,7 +88,7 @@ const AdminBookingDetails = () => {
             Back
           </button>
           <div className="grid grid-cols-2 gap-4 pt-6">
-            <h1 className="text-3xl font-semibold">Booking 1</h1>
+            <h1 className="text-3xl font-semibold">Booking Details</h1>
             <div className="flex justify-end space-x-4"></div>
           </div>
         </div>
@@ -52,7 +116,19 @@ const AdminBookingDetails = () => {
           <h4 className="font-semibold text-lg">Luggage Reclaimed</h4>
         </div>
         </div>
-
+        <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-rows-4 gap-4 py-8">
+            <h4 className="text-l text-text-dark font-semibold">Start Date</h4>
+            <h4 className="text-l text-text-dark font-semibold">
+              End Date
+            </h4>
+          </div>
+          {/* Actual Data */}
+          <div className="grid grid-rows-4 gap-4 py-8">
+            <h4 className="text-l font-light"> {moment(booking.startDate).format("lll")} </h4>
+            <h4 className="text-l font-light"> {moment(booking.endDate).format("lll")} </h4>
+          </div>
+        </div>
         {/* Column Headings*/}
         <h1 className="text-2xl font-semibold">User Details</h1>
         <div className="grid grid-cols-2 gap-4">
@@ -67,28 +143,28 @@ const AdminBookingDetails = () => {
           </div>
           {/* Actual Data */}
           <div className="grid grid-rows-4 gap-4 py-8">
-            <h4 className="text-l font-light">Nevan Ng</h4>
-            <h4 className="text-l font-light">nevan@mail.com</h4>
-            <h4 className="text-l font-light">9123 4567</h4>
+            <h4 className="text-l font-light"> {user.name} </h4>
+            <h4 className="text-l font-light"> {user.email} </h4>
+            <h4 className="text-l font-light"> {user.phone} </h4>
           </div>
         </div>
 
-        <h1 className="text-2xl font-semibold">Location Details</h1>
+        <h1 className="text-2xl font-semibold">Listing Details</h1>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid grid-rows-4 gap-4 py-8">
             <h4 className="text-l text-text-dark font-semibold">Name</h4>
             <h4 className="text-l text-text-dark font-semibold">
-              Email Address
+              Address
             </h4>
             <h4 className="text-l text-text-dark font-semibold">
-              Phone Number
+              About
             </h4>
           </div>
           {/* Actual Data */}
           <div className="grid grid-rows-4 gap-4 py-8">
-            <h4 className="text-l font-light">Nevan Ng</h4>
-            <h4 className="text-l font-light">nevan@mail.com</h4>
-            <h4 className="text-l font-light">9123 4567</h4>
+            <h4 className="text-l font-light"> {listing.name} </h4>
+            <h4 className="text-l font-light"> {listing.address} </h4>
+            <h4 className="text-l font-light"> {listing.about} </h4>
           </div>
         </div>
         {/* Summary */}
@@ -120,5 +196,19 @@ const AdminBookingDetails = () => {
     </div>
   );
 };
+
+const data = [
+  {
+    id: 1,
+    userName: "Nevan Ng",
+    email: "nevan@mail.com",
+    phone: "91234567",
+    locationName: "Adidas @Orchard",
+    address: "2 Orchard Turn #B4-25/25A",
+    postalCode: "238801",
+    startDate: "23/02/23",
+    endDate: "24/02/23",
+  },
+];
 
 export default AdminBookingDetails;

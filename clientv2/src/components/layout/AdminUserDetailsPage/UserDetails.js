@@ -161,6 +161,14 @@ const UserDetails = ({ entityType }) => {
             >
               Phone Number
             </label>
+            {entityType === 'Provider' &&
+            <label
+              className="text-l py-2 text-text-dark font-semibold"
+              htmlFor="phoneNumber"
+            >
+              Bank Account
+            </label>
+}
           </div>
           {/* Actual Data */}
           <div className="grid grid-rows-4 gap-4">
@@ -189,6 +197,16 @@ const UserDetails = ({ entityType }) => {
               value={formState.phone}
               onChange={handleChange}
             />
+            { entityType === 'Provider' && 
+            <input
+              className={editState ? formStyle.active : formStyle.inactive}
+              readOnly={!editState}
+              id="bankAccount"
+              type="number"
+              value={formState.bankAccount}
+              onChange={handleChange}
+            />
+}
           </div>
           <div className="grid grid-rows-5 gap-4">
             <div className="row-span-2 rounded bg-cyan-400 p-3">
