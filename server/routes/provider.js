@@ -144,7 +144,7 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
 
   bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
     if (isCorrect) {
-      console.log("Equal");
+      console.log("Passwords Equal");
       const payload = {
         id: providerDB._id,
         name: providerDB.name,
@@ -155,6 +155,9 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
         { expiresIn: 86400 },
         (err, token) => {
           if (err) return res.json({ message: err });
+          
+          console.log("JWT Signing");
+          
           return res.json({
             message: "Success",
             token: "Bearer " + token,
@@ -162,10 +165,39 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
         }
       );
     } else {
-      console.log("Not Equal");
+      console.log("Passwords Not Equal");
       return res.json({ message: "Invalid Email or Password!" });
     }
   });
 });
+
+providerRoutes.route("/provider/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  res.json({ isLoggedIn: true, email: req.provider.email });
+});
+
+function verifyJWT(req, res, next) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Provider",
+        });
+      req.provider = {};
+      req.provider.id = decoded.id;
+      req.provider.email = decoded.email;
+      next();
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
+};
 
 module.exports = providerRoutes;

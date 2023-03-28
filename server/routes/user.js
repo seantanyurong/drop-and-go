@@ -141,7 +141,7 @@ userRoutes.route("/user/login").post(async function (req, res) {
 
   bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
     if (isCorrect) {
-      console.log("Equal");
+      console.log("Passwords Equal");
       const payload = {
         id: userDB._id,
         name: userDB.name,
@@ -153,7 +153,7 @@ userRoutes.route("/user/login").post(async function (req, res) {
         (err, token) => {
           if (err) return res.json({ message: err });
 
-          console.log("passing error");
+          console.log("JWT Signing");
 
           return res.json({
             message: "Success",
@@ -162,23 +162,29 @@ userRoutes.route("/user/login").post(async function (req, res) {
         }
       );
     } else {
-      console.log("Not Equal");
+      console.log("Passwords Not Equal");
       return res.json({ message: "Invalid Email or Password!" });
     }
   });
 });
 
+userRoutes.route("/user/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  res.json({ isLoggedIn: true, email: req.user.email });
+});
+
 function verifyJWT(req, res, next) {
-  const token = req.header["x-access-token"]?.split(" ")[1];
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
   console.log(token);
 
   if (token) {
     console.log("Authenticating Token");
-    jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err)
         return res.json({
           isLoggedIn: false,
-          message: "Failed to authenticate user",
+          message: "Failed To Authenticate User",
         });
       req.user = {};
       req.user.id = decoded.id;
@@ -189,11 +195,6 @@ function verifyJWT(req, res, next) {
     console.log("Incorrect Token Auth");
     res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
   }
-}
-
-userRoutes.route("/user/isUserAuth").get(verifyJWT, function (req, res) {
-  console.log("Doing this");
-  res.json({ isLoggedIn: true, email: req.user.email });
-});
+};
 
 module.exports = userRoutes;
