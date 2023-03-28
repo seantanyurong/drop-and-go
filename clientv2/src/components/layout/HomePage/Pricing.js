@@ -5,7 +5,7 @@ const Pricing = () => {
 
     let navigate = useNavigate();
     const toSearchPage = () => {
-        let path = "/searchresultpage";
+        let path = "/search";
         navigate(path);
     }
     

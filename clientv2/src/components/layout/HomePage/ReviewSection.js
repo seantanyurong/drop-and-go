@@ -111,7 +111,7 @@ const ReviewSection = () => {
 
           <a
             className="py-0 px-[40px] duration-200 ease-in transition-[all] rounded-[100px] h-[50px] leading-[50px] text-[15px] bg-[#F4F4F4] text-[#384347] border-none outline-none inline-block no-underline font-medium cursor-pointer"
-            href="/login"
+            href="/login/user"
           >
             Write a review
           </a>
