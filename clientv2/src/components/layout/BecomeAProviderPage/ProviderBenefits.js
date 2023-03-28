@@ -2,7 +2,7 @@ import ProviderBenefitTile from "./ProviderBenefitTile";
 
 const ProviderBenefits = () => {
     return (
-        <div className="py-[70px] bg-white border-b-1 border-solid border-border-main">
+        <div className="py-[70px] bg-white border-b border-solid box-border">
             <div className="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
                 <div>
                     <h2 className="mb-[35px] text-center text-2xl leading-snug tracking-tighter font-bold mt-0 text-gray-700">

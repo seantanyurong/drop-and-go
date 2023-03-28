@@ -1,5 +1,5 @@
 import React from "react";
-import HowItWorksTile from "./HowItWorksTile";
+import HowItWorksTile from "../../ui/HowItWorksTile";
 
 const HowItWorks = () => {
     return (
@@ -22,9 +22,6 @@ const HowItWorks = () => {
                         img="https://luggagehero.com/wp-content/uploads/2018/05/LH_Ikon_03.png.webp"
                         heading="Enjoy your time without the weight of your baggage" />
                 </div>
-                <div></div>
-                <div></div>
-                <div></div>
             </div>
         </div>
     );
