@@ -13,7 +13,7 @@ const Review = (props) => {
                     {props.user}
                 </div>
 
-                <div className="block mb-0.5 text-[#AEAEAE] text-xs">
+                <div className="block mb-0.5 text-xs">
                     Used Drop&Go {props.time}
                 </div>
 
