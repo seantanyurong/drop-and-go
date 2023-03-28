@@ -17,30 +17,83 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 
-/* Admin CRUD Methods */
+/* Admin Login Methods */
 
-// This section will help you get a list of all the admins
-adminRoutes.route("/admin").get(function (req, res) {
-  let db_connect = dbo.getDb("dropandgo");
-  db_connect
-    .collection("admin")
-    .find({})
-    .toArray(function (err, result) {
-      if (err) throw err;
-      res.json(result);
-    });
+// This section will help you to verify if a provider is logged in
+adminRoutes.route("/admin/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  res.json({ isLoggedIn: true, email: req.admin.email });
 });
 
-// This section will help you get a single admin by id
-adminRoutes.route("/admin/:id").get(function (req, res) {
-  console.log("Searching for id");
+// This section will help you to allow admin to login
+adminRoutes.route("/admin/login").post(async function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("admin").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
+  const adminLogin = req.body;
+  const adminDB = await db_connect
+    .collection("admin")
+    .findOne({ email: adminLogin.email });
+
+  console.log(adminDB.password);
+  console.log(adminLogin.email);
+
+  if (!adminDB) {
+    return res.json({ message: "Invalid Email Address!" });
+  }
+
+  bcrypt.compare(adminLogin.password, adminDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Passwords Equal");
+      const payload = {
+        id: adminDB._id,
+        name: adminDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          
+          console.log("JWT Signing");
+
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Passwords Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
   });
 });
+
+function verifyJWT(req, res, next) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Admin",
+        });
+      req.admin = {};
+      req.admin.id = decoded.id;
+      req.admin.email = decoded.email;
+      next();
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
+};
+
+/* Admin CRUD Methods */
 
 // This section will help you create a new admin.
 adminRoutes.route("/admin/add").post(async function (req, res) {
@@ -122,79 +175,27 @@ adminRoutes.route("/admin/delete/:id").delete((req, response) => {
   });
 });
 
-/* Admin Login Methods */
-
-// This section will help you to allow admin to login
-adminRoutes.route("/admin/login").post(async function (req, res) {
+// This section will help you get a list of all the admins
+adminRoutes.route("/admin").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  const adminLogin = req.body;
-  const adminDB = await db_connect
+  db_connect
     .collection("admin")
-    .findOne({ email: adminLogin.email });
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
 
-  console.log(adminDB.password);
-  console.log(adminLogin.email);
-
-  if (!adminDB) {
-    return res.json({ message: "Invalid Email Address!" });
-  }
-
-  bcrypt.compare(adminLogin.password, adminDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      console.log("Passwords Equal");
-      const payload = {
-        id: adminDB._id,
-        name: adminDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-          
-          console.log("JWT Signing");
-
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
-    }
+// This section will help you get a single admin by id
+adminRoutes.route("/admin/:id").get(function (req, res) {
+  console.log("Searching for id");
+  let db_connect = dbo.getDb("dropandgo");
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("admin").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
   });
 });
-
-adminRoutes.route("/admin/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.admin.email });
-});
-
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate Admin",
-        });
-      req.admin = {};
-      req.admin.id = decoded.id;
-      req.admin.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-};
 
 module.exports = adminRoutes;
