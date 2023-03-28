@@ -1,5 +1,9 @@
 import { Routes, Route } from "react-router-dom";
+import TestPage from "./pages/TestPage";
 import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
+import SearchResultPage from "./pages/SearchResultPage";
+import BecomeAProviderPage from "./pages/BecomeAProviderPage";
 
 import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
@@ -15,19 +19,15 @@ import ProviderProfilePage from "./pages/ProviderProfilePage";
 import AdminProfilePage from "./pages/AdminProfilePage";
 
 import UserBookingPage from "./pages/UserBookingPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
-import SearchPage from "./pages/SearchPage";
 import ListingDetailsPage from "./pages/ListingDetailsPage";
 
-import TestPage from "./pages/TestPage";
-
-import SearchResultPage from "./pages/SearchResultPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
-import BecomeAProviderPage from "./pages/BecomeAProviderPage";
+
 
 function App() {
   return (
