@@ -22,6 +22,7 @@ import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
+import BecomeAProviderPage from "./pages/BecomeAProviderPage";
 
 
 function App() {
@@ -43,23 +44,24 @@ function App() {
         <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
         <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route 
-        path="/admin/user/:userId" 
-        element={<AdminUserDetailsPage/>} />
-        <Route 
-        path="/admin/provider/:providerId" 
-        element={<AdminProviderDetailsPage/>} />
-        <Route 
-        path="/admin/listing/:listingId" 
-        element={<AdminListingDetailsPage />} />
-        <Route 
-        path="/admin/booking/:bookingId" 
-        element={<AdminBookingDetailsPage />} />
+        <Route
+          path="/admin/user/:userId"
+          element={<AdminUserDetailsPage />} />
+        <Route
+          path="/admin/provider/:providerId"
+          element={<AdminProviderDetailsPage />} />
+        <Route
+          path="/admin/listing/:listingId"
+          element={<AdminListingDetailsPage />} />
+        <Route
+          path="/admin/booking/:bookingId"
+          element={<AdminBookingDetailsPage />} />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
+        <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
       </Routes>
     </main>
   );
