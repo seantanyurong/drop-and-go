@@ -16,27 +16,38 @@ bookingRoutes.route("/booking").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
-      "$addFields":  {
-        convertedUserId: {$toObjectId: "$user_id"},
-        convertedListingId: {$toObjectId: "$listing_id"}
-      }
+      $addFields: {
+        convertedUserId: { $toObjectId: "$user_id" },
+        convertedListingId: { $toObjectId: "$listing_id" },
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "user",
-        localField: 'convertedUserId',
-        foreignField: '_id',
-        as: 'userDetails' 
-      } 
+        localField: "convertedUserId",
+        foreignField: "_id",
+        as: "userName",
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "listing",
-        localField: 'convertedListingId',
-        foreignField: '_id',
-        as: 'listingDetails' 
-      } 
-    }];
+        localField: "convertedListingId",
+        foreignField: "_id",
+        as: "listingName",
+      },
+    },
+    {
+      $set: {
+        userName: {
+          $arrayElemAt: ["$userName.name", 0],
+        },
+        listingName: {
+          $arrayElemAt: ["$listingName.name", 0],
+        },
+      },
+    },
+  ];
   db_connect
     .collection("booking")
     .aggregate(myquery)
@@ -51,32 +62,33 @@ bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
-      "$match": {
-        user_id: req.params.userId
-      }
+      $match: {
+        user_id: req.params.userId,
+      },
     },
     {
-      "$addFields":  {
-        convertedUserId: {$toObjectId: "$user_id"},
-        convertedListingId: {$toObjectId: "$listing_id"}
-      }
+      $addFields: {
+        convertedUserId: { $toObjectId: "$user_id" },
+        convertedListingId: { $toObjectId: "$listing_id" },
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "user",
-        localField: 'convertedUserId',
-        foreignField: '_id',
-        as: 'userDetails' 
-      } 
+        localField: "convertedUserId",
+        foreignField: "_id",
+        as: "userDetails",
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "listing",
-        localField: 'convertedListingId',
-        foreignField: '_id',
-        as: 'listingDetails' 
-      } 
-    }];
+        localField: "convertedListingId",
+        foreignField: "_id",
+        as: "listingDetails",
+      },
+    },
+  ];
   db_connect
     .collection("booking")
     .aggregate(myquery)
@@ -90,32 +102,33 @@ bookingRoutes.route("/booking/listings/:listingId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
-      "$match": {
-        listing_id: req.params.listingId
-      }
+      $match: {
+        listing_id: req.params.listingId,
+      },
     },
     {
-      "$addFields":  {
-        convertedUserId: {$toObjectId: "$user_id"},
-        convertedListingId: {$toObjectId: "$listing_id"}
-      }
+      $addFields: {
+        convertedUserId: { $toObjectId: "$user_id" },
+        convertedListingId: { $toObjectId: "$listing_id" },
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "user",
-        localField: 'convertedUserId',
-        foreignField: '_id',
-        as: 'userDetails' 
-      } 
+        localField: "convertedUserId",
+        foreignField: "_id",
+        as: "userDetails",
+      },
     },
     {
-      "$lookup": {
+      $lookup: {
         from: "listing",
-        localField: 'convertedListingId',
-        foreignField: '_id',
-        as: 'listingDetails' 
-      } 
-    }];
+        localField: "convertedListingId",
+        foreignField: "_id",
+        as: "listingDetails",
+      },
+    },
+  ];
   db_connect
     .collection("booking")
     .aggregate(myquery)

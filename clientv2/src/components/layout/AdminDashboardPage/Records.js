@@ -104,20 +104,17 @@ const Records = () => {
   const [filterText, setFilterText] = useState("");
   const filteredUsers = users.filter(
     (item) =>
-      item.name &&
-      item.name.toLowerCase().includes(filterText.toLowerCase())
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const filteredProviders = providers.filter(
     (item) =>
-      item.name &&
-      item.name.toLowerCase().includes(filterText.toLowerCase())
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const filteredListings = listings.filter(
     (item) =>
-      item.name &&
-      item.name.toLowerCase().includes(filterText.toLowerCase())
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -366,12 +363,12 @@ const locationsColumns = [
 const bookingsColumns = [
   {
     name: "User Name",
-    selector: (row) => row?.userDetails[0]?.name,
+    selector: (row) => row?.userName,
     sortable: true,
   },
   {
     name: "Listing Name",
-    selector: (row) => row?.listingDetails[0]?.name,
+    selector: (row) => row?.listingName,
     sortable: true,
   },
   {
