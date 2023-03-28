@@ -73,7 +73,7 @@ const ReviewSection = () => {
             customRightArrow={<RightArrow />}
             infinite={false}
             containerClass=""
-            itemClass="mr-[16px] my-[8px] h-[250px] max-w-[550px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative"
+            itemClass="mr-[16px] my-[8px] min-h-[250px] max-w-[550px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative"
           >
             <Review
               user="Traveler"
