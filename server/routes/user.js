@@ -15,36 +15,84 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-/* User CRUD Methods */
 
+/* User Login Methods */
+
+// This section will help you to verify if a user is logged in
 userRoutes.route("/user/authenticate").get(verifyJWT, function (req, res) {
   console.log("Authenticating");
-  // return res.json({ isLoggedIn: true });
   return res.json({ isLoggedIn: true, email: req.user.email });
 });
 
-// This section will help you get a list of all the users.
-userRoutes.route("/user").get(function (req, res) {
+// This section will help you to allow user to login
+userRoutes.route("/user/login").post(async function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  db_connect
+  const userLogin = req.body;
+  const userDB = await db_connect
     .collection("user")
-    .find({})
-    .toArray(function (err, result) {
-      if (err) throw err;
-      res.json(result);
-    });
-});
+    .findOne({ email: userLogin.email });
 
-// This section will help you get a single user by id
-userRoutes.route("/user/:id").get(function (req, res) {
-  console.log("Searching for id");
-  let db_connect = dbo.getDb("dropandgo");
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("user").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
+  console.log(userDB.password);
+  console.log(userLogin.email);
+
+  if (!userDB) {
+    return res.json({ message: "Invalid Email Address!" });
+  }
+
+  bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Passwords Equal");
+      const payload = {
+        id: userDB._id,
+        name: userDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+
+          console.log("JWT Signing");
+
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Passwords Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
   });
 });
+
+function verifyJWT(req, res, next) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(" ")[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate User",
+        });
+      req.user = {};
+      req.user.id = decoded.id;
+      req.user.email = decoded.email;
+      next();
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
+}
+
+/* User CRUD Methods */
 
 // This section will help you create a new user.
 userRoutes.route("/user/add").post(async function (req, res) {
@@ -128,74 +176,27 @@ userRoutes.route("user/delete/:id").delete((req, response) => {
   });
 });
 
-/* User Login Methods */
-
-// This section will help you to allow user to login
-userRoutes.route("/user/login").post(async function (req, res) {
+// This section will help you get a list of all the users.
+userRoutes.route("/user").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  const userLogin = req.body;
-  const userDB = await db_connect
+  db_connect
     .collection("user")
-    .findOne({ email: userLogin.email });
-
-  console.log(userDB.password);
-  console.log(userLogin.email);
-
-  if (!userDB) {
-    return res.json({ message: "Invalid Email Address!" });
-  }
-
-  bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      console.log("Passwords Equal");
-      const payload = {
-        id: userDB._id,
-        name: userDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-
-          console.log("JWT Signing");
-
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
-    }
-  });
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
 });
 
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(" ")[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate User",
-        });
-      req.user = {};
-      req.user.id = decoded.id;
-      req.user.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-}
+// This section will help you get a single user by id
+userRoutes.route("/user/:id").get(function (req, res) {
+  console.log("Searching for id");
+  let db_connect = dbo.getDb("dropandgo");
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("user").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
 
 module.exports = userRoutes;

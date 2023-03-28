@@ -16,30 +16,83 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 
-/* Provider CRUD Methods */
+/* Provider Login Methods */
 
-// This section will help you get a list of all the providers.
-providerRoutes.route("/provider").get(function (req, res) {
-  let db_connect = dbo.getDb("dropandgo");
-  db_connect
-    .collection("provider")
-    .find({})
-    .toArray(function (err, result) {
-      if (err) throw err;
-      res.json(result);
-    });
+// This section will help you to verify if a provider is logged in
+providerRoutes.route("/provider/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  res.json({ isLoggedIn: true, email: req.provider.email });
 });
 
-// This section will help you get a single provider by id
-providerRoutes.route("/provider/:id").get(function (req, res) {
-  console.log("Searching for id");
+// This section will help you to allow provider to login
+providerRoutes.route("/provider/login").post(async function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("provider").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
+  const providerLogin = req.body;
+  const providerDB = await db_connect
+    .collection("provider")
+    .findOne({ email: providerLogin.email });
+
+  console.log(providerDB.password);
+  console.log(providerLogin.email);
+
+  if (!providerDB) {
+    return res.json({ message: "Invalid Email Address!" });
+  }
+
+  bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Passwords Equal");
+      const payload = {
+        id: providerDB._id,
+        name: providerDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          
+          console.log("JWT Signing");
+          
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Passwords Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
   });
 });
+
+function verifyJWT(req, res, next) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Provider",
+        });
+      req.provider = {};
+      req.provider.id = decoded.id;
+      req.provider.email = decoded.email;
+      next();
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
+};
+
+/* Provider CRUD Methods */
 
 // This section will help you create a new provider.
 providerRoutes.route("/provider/add").post(async function (req, res) {
@@ -124,80 +177,27 @@ providerRoutes.route("/provider/delete/:id").delete((req, response) => {
   });
 });
 
-
-/* Provider Login Methods */
-
-// This section will help you to allow user to login
-providerRoutes.route("/provider/login").post(async function (req, res) {
+// This section will help you get a list of all the providers.
+providerRoutes.route("/provider").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
-  const providerLogin = req.body;
-  const providerDB = await db_connect
+  db_connect
     .collection("provider")
-    .findOne({ email: providerLogin.email });
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
 
-  console.log(providerDB.password);
-  console.log(providerLogin.email);
-
-  if (!providerDB) {
-    return res.json({ message: "Invalid Email Address!" });
-  }
-
-  bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      console.log("Passwords Equal");
-      const payload = {
-        id: providerDB._id,
-        name: providerDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-          
-          console.log("JWT Signing");
-          
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
-    }
+// This section will help you get a single provider by id
+providerRoutes.route("/provider/:id").get(function (req, res) {
+  console.log("Searching for id");
+  let db_connect = dbo.getDb("dropandgo");
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("provider").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
   });
 });
-
-providerRoutes.route("/provider/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.provider.email });
-});
-
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate Provider",
-        });
-      req.provider = {};
-      req.provider.id = decoded.id;
-      req.provider.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-};
 
 module.exports = providerRoutes;

@@ -1,4 +1,4 @@
-import React, { /* useEffect, */ useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
@@ -58,8 +58,37 @@ const ProviderLogin = () => {
         }
 
         confirmLogin();
-    }
+    };
 
+    useEffect(() => {
+        async function checkIsLoggedIn() {
+            console.log("Use Effect Triggered");
+            const settings = {
+                method: "GET",
+                headers: {
+                    "x-access-token": localStorage.getItem("token"),
+                },
+            };
+
+            const response = await fetch("http://localhost:6003/provider/authenticate", settings)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+
+                    if (data) {
+                        navigate("/");
+                    }
+                });
+
+            if (!response.ok) {
+                const message = `An error has occurred: ${response.statusText}`;
+                window.alert(message);
+                return;
+            }
+        }
+
+        checkIsLoggedIn();
+    }, []);
 
     return (
         <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
