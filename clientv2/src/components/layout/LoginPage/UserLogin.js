@@ -71,13 +71,22 @@ const UserLogin = () => {
     */
 
     useEffect(() => {
-        fetch("/user/isUserAuth", {
-            headers: {
-                "x-access-token": localStorage.getItem("token")
-            }
-        })
-        .then(res => res.json())
-        //.then(data => data.isLoggedIn ? history.push("/") : null)
+
+        async function checkIsLoggedIn() {
+        
+            const settings = {
+                method: "GET",
+                headers: {
+                    "x-access-token": localStorage.getItem("token"),
+                },
+            };
+            const response = await fetch("http://localhost:6003/user/isUserAuth", settings)
+            .then(res => res.json())
+            .then(data => data.isLoggedIn ? navigate("/") : null)
+        };
+
+        console.log("Use Effect Triggered");
+        checkIsLoggedIn();
     }, [])
 
     return (

@@ -189,6 +189,7 @@ function verifyJWT(req, res, next) {
 }
 
 userRoutes.route("/user/isUserAuth").get(verifyJWT, function (req, res) {
+  console.log("Doing this");
   res.json({ isLoggedIn: true, email: req.user.email })
 });
 
