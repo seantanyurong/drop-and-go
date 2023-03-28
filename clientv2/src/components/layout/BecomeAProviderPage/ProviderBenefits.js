@@ -25,7 +25,7 @@ const ProviderBenefits = () => {
                         <div className="w-1/2 pr-[30px]">
                             <ProviderBenefitTile
                                 heading="Increase foot traffic"
-                                body="Free marketing. Display your venue for travelers and locals."
+                                body="Free marketing. Display your venue for travelers."
                             />
                             <p className="my-4 mx-0">&nbsp;</p>
                             <ProviderBenefitTile

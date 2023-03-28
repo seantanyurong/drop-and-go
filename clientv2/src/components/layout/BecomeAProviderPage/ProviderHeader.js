@@ -10,7 +10,7 @@ const ProviderHeader = () => {
 
             <div className="relative z-2 w-full max-w-screen-xl mx-auto px-6 lg:px-8">
                 <div className="m-0 max-w-none text-center overflow-hidden">
-                    <h1 className="px-[30px] text-auto text-white text-3xl leading-1.2 tracking-tighter mt-0 mb-[20px] font-normal my-[4px]">
+                    <h1 className="px-[30px] text-auto text-white text-3xl leading-1.2 tracking-tighter mt-0 mb-[20px] font-bold my-[4px]">
                         Do you own a business?
                     </h1>
 
