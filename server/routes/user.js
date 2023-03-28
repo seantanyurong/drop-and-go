@@ -17,6 +17,12 @@ const bcrypt = require("bcrypt");
 
 /* User CRUD Methods */
 
+userRoutes.route("/user/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  // return res.json({ isLoggedIn: true });
+  return res.json({ isLoggedIn: true, email: req.user.email });
+});
+
 // This section will help you get a list of all the users.
 userRoutes.route("/user").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
@@ -168,14 +174,9 @@ userRoutes.route("/user/login").post(async function (req, res) {
   });
 });
 
-userRoutes.route("/user/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.user.email });
-});
-
 function verifyJWT(req, res, next) {
   console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
+  const token = req.headers["x-access-token"]?.split(" ")[1];
   console.log(token);
 
   if (token) {
@@ -195,6 +196,6 @@ function verifyJWT(req, res, next) {
     console.log("Incorrect Token Auth");
     res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
   }
-};
+}
 
 module.exports = userRoutes;
