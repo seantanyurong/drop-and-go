@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const UserSignUp = () => {
+const AdminSignUp = () => {
 
     let defaultState = {
         name: "",
         email: "",
         password: "",
         reenterPassword: "",
-        phone: "",
         joinDate: new Date(),
     }
 
@@ -29,7 +28,6 @@ const UserSignUp = () => {
             email: formState.email,
             password: formState.password,
             reenterPassword: formState.reenterPassword,
-            phone: formState.phone,
             joinDate: new Date(),
         }
         async function confirmSignup() {
@@ -45,7 +43,7 @@ const UserSignUp = () => {
             };
 
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/user/add", settings)
+            const response = await fetch("http://localhost:6003/admin/add", settings)
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
@@ -76,118 +74,90 @@ const UserSignUp = () => {
                             </h1>
                             <br />
                             <p className="mt-1 text-sm text-center text-gray-600">
-                                By continuing you agree to our terms and conditions.
+                                Strictly Only For Creation Of Administrator Accounts. 
                             </p>
                             <br />
                             <br />
-                            <div className="text-sm text-center">
-                                <a
-                                    href="/faq"
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                >
-                                    Frequently Asked Questions
-                                </a>
-                            </div>
                         </span>
                     </div>
                 </div>
                 <div className="mt-5 md:col-span-2 md:mt-0">
-                    <form onSubmit={handleSubmit} action="/login/user" >
+                    <form onSubmit={handleSubmit} action="/login/admin" >
                         <div className="overflow-hidden shadow sm:rounded-md">
                             <div className="bg-white px-4 py-5 sm:p-6">
                                 <div className="grid grid-cols-6 gap-6">
                                     <div className="col-span-6 sm:col-span-4">
-                                        <label
-                                            htmlFor="name"
+                                        <label 
+                                            htmlFor="name" 
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             Name
                                         </label>
-                                        <input
-                                            value={formState.name}
+                                        <input 
+                                            value={formState.name} 
                                             onChange={handleChange}
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            autoComplete="given-name"
-                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            type="text" 
+                                            name="name" 
+                                            id="name" 
+                                            autoComplete="given-name" 
+                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
                                             placeholder="Name"
                                         ></input>
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-4">
-                                        <label
-                                            htmlFor="email-address"
-                                            className="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Email Address
-                                        </label>
-                                        <input
-                                            value={formState.email}
+                                        <label 
+                                            htmlFor="email-address" 
+                                            className="block text-sm font-medium leading-6 text-gray-900">
+                                                Email Address
+                                            </label>
+                                        <input 
+                                            value={formState.email} 
                                             onChange={handleChange}
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            autoComplete="email"
-                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            type="text" 
+                                            name="email" 
+                                            id="email" 
+                                            autoComplete="email" 
+                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
                                             placeholder="Email Address"
                                         ></input>
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-4">
-                                        <label
-                                            htmlFor="password"
+                                        <label 
+                                            htmlFor="password" 
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             Password
                                         </label>
-                                        <input
-                                            value={formState.password}
+                                        <input 
+                                            value={formState.password} 
                                             onChange={handleChange}
-                                            type="password"
-                                            name="password"
-                                            id="password"
-                                            autoComplete="password"
-                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            type="password" 
+                                            name="password" 
+                                            id="password" 
+                                            autoComplete="password" 
+                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
                                             placeholder="Password"
                                         ></input>
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-4">
-                                        <label
-                                            htmlFor="reenter-password"
+                                        <label 
+                                            htmlFor="reenter-password" 
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             Re-Enter Password
                                         </label>
-                                        <input
-                                            value={formState.reenterPassword}
+                                        <input 
+                                            value={formState.reenterPassword} 
                                             onChange={handleChange}
-                                            type="password"
-                                            name="reenterPassword"
-                                            id="reenterPassword"
-                                            autoComplete="password"
-                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            type="password" 
+                                            name="reenterPassword" 
+                                            id="reenterPassword" 
+                                            autoComplete="password" 
+                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
                                             placeholder="Re-Enter Password"
-                                        ></input>
-                                    </div>
-
-                                    <div className="col-span-6 sm:col-span-4">
-                                        <label
-                                            htmlFor="phone"
-                                            className="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Phone Number
-                                        </label>
-                                        <input
-                                            value={formState.phone}
-                                            onChange={handleChange}
-                                            type="text"
-                                            name="phone"
-                                            id="phone"
-                                            autoComplete="phone"
-                                            required className="mt-2 block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            placeholder="Phone Number"
                                         ></input>
                                     </div>
 
@@ -195,9 +165,8 @@ const UserSignUp = () => {
                             </div>
 
                             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                <button
-                                    id="create"
-                                    type="submit"
+                                <button 
+                                    type="submit" 
                                     className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                                 >
                                     Create
@@ -242,7 +211,7 @@ const UserSignUp = () => {
                             </div>
                             <div className="items-center px-4 py-3">
                                 <button
-                                    onClick={() => navigate(`/login/user`)}
+                                    onClick={() => navigate(`/login/admin`)}
                                     id="loginButton"
                                     className="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
                                 >
@@ -253,9 +222,9 @@ const UserSignUp = () => {
                     </div>
                 </div>
             )}
-            
+
         </div>
     );
 }
 
-export default UserSignUp;
+export default AdminSignUp;

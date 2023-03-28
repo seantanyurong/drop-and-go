@@ -72,19 +72,21 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
 
     res.json({ message: "Password does not match re-entered Password!" });
   } else {
-    // admin.password = await bcrypt.hash(req.body.password, 10);
-    console.log("Trying Create User");
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log("Trying Create Admin");
 
     let myobj = {
       name: admin.name,
       email: admin.email,
-      password: admin.password,
+      password: encryptedPassword,
+      joinDate: admin.joinDate,
+      status: "active",
     };
 
     db_connect.collection("admin").insertOne(myobj, function (err, response) {
       console.log("Creating Admin");
       if (err) throw err;
-      response.json(res);
+      res.json(response);
     });
   }
 });
@@ -120,7 +122,7 @@ adminRoutes.route("/admin/delete/:id").delete((req, response) => {
   });
 });
 
-/* User Login Methods */
+/* Admin Login Methods */
 
 // This section will help you to allow admin to login
 adminRoutes.route("/admin/login").post(async function (req, res) {
@@ -137,28 +139,62 @@ adminRoutes.route("/admin/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  if (adminLogin.password === adminDB.password) {
-    console.log("Equal");
-    const payload = {
-      id: adminDB._id,
-      name: adminDB.name,
-    };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 86400 },
-      (err, token) => {
-        if (err) return res.json({ message: err });
-        return res.json({
-          message: "Success",
-          token: "Bearer " + token,
-        });
-      }
-    );
-  } else {
-    console.log("Not Equal");
-    return res.json({ message: "Invalid Email or Password!" });
-  }
+  bcrypt.compare(adminLogin.password, adminDB.password).then((isCorrect) => {
+    if (isCorrect) {
+      console.log("Passwords Equal");
+      const payload = {
+        id: adminDB._id,
+        name: adminDB.name,
+      };
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: 86400 },
+        (err, token) => {
+          if (err) return res.json({ message: err });
+          
+          console.log("JWT Signing");
+
+          return res.json({
+            message: "Success",
+            token: "Bearer " + token,
+          });
+        }
+      );
+    } else {
+      console.log("Passwords Not Equal");
+      return res.json({ message: "Invalid Email or Password!" });
+    }
+  });
 });
+
+adminRoutes.route("/admin/authenticate").get(verifyJWT, function (req, res) {
+  console.log("Authenticating");
+  res.json({ isLoggedIn: true, email: req.admin.email });
+});
+
+function verifyJWT(req, res, next) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Admin",
+        });
+      req.admin = {};
+      req.admin.id = decoded.id;
+      req.admin.email = decoded.email;
+      next();
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
+};
 
 module.exports = adminRoutes;
