@@ -15,7 +15,6 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 /* User CRUD Methods */
 
 // This section will help you get a list of all the users.
@@ -153,6 +152,9 @@ userRoutes.route("/user/login").post(async function (req, res) {
         { expiresIn: 86400 },
         (err, token) => {
           if (err) return res.json({ message: err });
+
+          console.log("passing error");
+
           return res.json({
             message: "Success",
             token: "Bearer " + token,
@@ -167,30 +169,31 @@ userRoutes.route("/user/login").post(async function (req, res) {
 });
 
 function verifyJWT(req, res, next) {
-  const token = req.header["x-access-token"]?.split(' ')[1]
+  const token = req.header["x-access-token"]?.split(" ")[1];
   console.log(token);
 
   if (token) {
     console.log("Authenticating Token");
     jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {
-      if (err) return res.json({
-        isLoggedIn: false,
-        message: "Failed to authenticate user"
-      })
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed to authenticate user",
+        });
       req.user = {};
-      req.user.id = decoded.id
-      req.user.email = decoded.email
-      next()
-    })
+      req.user.id = decoded.id;
+      req.user.email = decoded.email;
+      next();
+    });
   } else {
     console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false })
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
   }
 }
 
 userRoutes.route("/user/isUserAuth").get(verifyJWT, function (req, res) {
   console.log("Doing this");
-  res.json({ isLoggedIn: true, email: req.user.email })
+  res.json({ isLoggedIn: true, email: req.user.email });
 });
 
 module.exports = userRoutes;

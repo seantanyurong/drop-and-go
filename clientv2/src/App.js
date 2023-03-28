@@ -24,7 +24,6 @@ import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminLocationDetailsPage from "./pages/AdminLocationDetailsPage";
 
-
 function App() {
   return (
     <main>
@@ -45,18 +44,19 @@ function App() {
         <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
         <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route 
-        path="/admin/user/:userId" 
-        element={<AdminUserDetailsPage/>} />
-        <Route 
-        path="/admin/provider/:providerId" 
-        element={<AdminProviderDetailsPage/>} />
-        <Route 
-        path="/admin/location/:locationId" 
-        element={<AdminLocationDetailsPage />} />
-        <Route 
-        path="/admin/booking/:bookingId" 
-        element={<AdminBookingDetailsPage />} />
+        <Route path="/admin/user/:userId" element={<AdminUserDetailsPage />} />
+        <Route
+          path="/admin/provider/:providerId"
+          element={<AdminProviderDetailsPage />}
+        />
+        <Route
+          path="/admin/location/:locationId"
+          element={<AdminLocationDetailsPage />}
+        />
+        <Route
+          path="/admin/booking/:bookingId"
+          element={<AdminBookingDetailsPage />}
+        />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
