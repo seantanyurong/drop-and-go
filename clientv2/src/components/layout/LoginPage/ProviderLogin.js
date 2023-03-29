@@ -75,7 +75,7 @@ const ProviderLogin = () => {
                 .then((data) => {
                     console.log(data);
 
-                    if (data) {
+                    if (data.isLoggedIn) {
                         navigate("/");
                     }
                 });
