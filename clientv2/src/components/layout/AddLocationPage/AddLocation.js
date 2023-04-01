@@ -25,10 +25,14 @@ const AddLocation = () => {
       shopName: '',
       capacity: '',
       address: '',
-      directions: '',
+      about: '',
       openingHours: '',
-      hourlyFee: '',
-      dailyFee: ''
+      smallHourlyFee: '',
+      mediumHourlyFee: '',
+      largeHourlyFee: '',
+      smallDailyFee: '',
+      mediumDailyFee: '',
+      largeDailyFee: '',
     },
     onSubmit: function (values) {
       alert(`You are registered! Name: ${values.name}. Email: ${values.email}. Profession: ${values.profession}. 
@@ -47,12 +51,24 @@ const AddLocation = () => {
         .required(),
       about: '',
       openingHours: '',
-      hourlyFee: yup.number()
+      smallHourlyFee: yup.number()
         .label("Hourly Fee")
         .required(),
-      dailyFee: yup.number()
+      mediumHourlyFee: yup.number()
+        .label("Hourly Fee")
+        .required(),
+      largeHourlyFee: yup.number()
+        .label("Hourly Fee")
+        .required(),
+      smallDailyFee: yup.number()
         .label("Daily Fee")
-        .required()
+        .required(),
+      mediumDailyFee: yup.number()
+        .label("Daily Fee")
+        .required(),
+      largeDailyFee: yup.number()
+        .label("Daily Fee")
+        .required(),
 
     })
   })
@@ -97,7 +113,7 @@ const AddLocation = () => {
               placeholder="E.g. Your one stop place for baggage storage!"
               name="about"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${formik.touched.about && formik.errors.directions ? 'border-red-400' : 'border-gray-300'}`}
+            ${formik.touched.about && formik.errors.about ? 'border-red-400' : 'border-gray-300'}`}
               onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.about} />
             {formik.touched.about && formik.errors.about &&
               (<span className='text-red-400'>{formik.errors.about}</span>)}
@@ -154,31 +170,88 @@ const AddLocation = () => {
           <label>
             <h3 className="mt-12 font-semibold ">Price Per Hour ** </h3>
             <p className="mt-1.5 text-xs font-medium py-2">
-              Hourly Fee per baggage for each size
+              Small baggage
             </p>
             <input
               type="text"
               placeholder="Per hour fee"
-              name="hourlyFee"
+              name="smallHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${formik.touched.hourlyFee && formik.errors.hourlyFee ? 'border-red-400' : 'border-gray-300'}`}
-              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.hourlyFee} />
-            {formik.touched.hourlyFee && formik.errors.hourlyFee &&
-              (<span className='text-red-400'>{formik.errors.hourlyFee}</span>)}
+            ${formik.touched.smallHourlyFee && formik.errors.smallHourlyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.smallHourlyFee} />
+            {formik.touched.smallHourlyFee && formik.errors.smallHourlyFee &&
+              (<span className='text-red-400'>{formik.errors.smallHourlyFee}</span>)}
           </label>
           <label>
             <p className="mt-1.5 text-xs font-medium py-2">
-              Daily Fee per baggage
+              Medium baggage
             </p>
             <input
               type="text"
-              placeholder="Daily fee"
-              name="dailyFee"
+              placeholder="Per hour fee"
+              name="mediumHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${formik.touched.dailyFee && formik.errors.dailyFee ? 'border-red-400' : 'border-gray-300'}`}
-              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.dailyFee} />
-            {formik.touched.dailyFee && formik.errors.dailyFee &&
-              (<span className='text-red-400'>{formik.errors.dailyFee}</span>)}
+            ${formik.touched.mediumHourlyFee && formik.errors.mediumHourlyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.mediumHourlyFee} />
+            {formik.touched.mediumHourlyFee && formik.errors.mediumHourlyFee &&
+              (<span className='text-red-400'>{formik.errors.mediumHourlyFee}</span>)}
+          </label>
+          <label>
+            <p className="mt-1.5 text-xs font-medium py-2">
+              Large baggage
+            </p>
+            <input
+              type="text"
+              placeholder="Per hour fee"
+              name="largeHourlyFee"
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.largeHourlyFee && formik.errors.largeHourlyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.largeHourlyFee} />
+            {formik.touched.largeHourlyFee && formik.errors.largeHourlyFee &&
+              (<span className='text-red-400'>{formik.errors.largeHourlyFee}</span>)}
+          </label>
+          <label>
+            <h3 className="mt-12 font-semibold ">Price Per Day</h3>
+            <p className="mt-1.5 text-xs font-medium py-2">
+              Small baggage
+            </p>
+            <input
+              type="text"
+              placeholder="Per hour fee"
+              name="smallDailyFee"
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.smallDailyFee && formik.errors.smallDailyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.smallDailyFee} />
+            {formik.touched.smallDailyFee && formik.errors.smallDailyFee &&
+              (<span className='text-red-400'>{formik.errors.smallHourlyFee}</span>)}
+          </label>
+          <label>
+            <p className="mt-1.5 text-xs font-medium py-2">
+              Medium baggage
+            </p>
+            <input
+              type="text"
+              placeholder="Per hour fee"
+              name="mediumDailyFee"
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.mediumDailyFee && formik.errors.mediumDailyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.mediumDailyFee} />
+            {formik.touched.mediumDailyFee && formik.errors.mediumDailyFee &&
+              (<span className='text-red-400'>{formik.errors.mediumHourlyFee}</span>)}
+          </label>
+          <label>
+            <p className="mt-1.5 text-xs font-medium py-2">
+              Large baggage
+            </p>
+            <input
+              type="text"
+              placeholder="Per hour fee"
+              name="largeDailyFee"
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+            ${formik.touched.largeDailyFee && formik.errors.largeDailyFee ? 'border-red-400' : 'border-gray-300'}`}
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.largeDailyFee} />
+            {formik.touched.largeDailyFee && formik.errors.largeDailyFee &&
+              (<span className='text-red-400'>{formik.errors.largeDailyFee}</span>)}
           </label>
           <label>
             <h3 className="mt-12 font-semibold ">Images</h3>
@@ -186,10 +259,8 @@ const AddLocation = () => {
               Upload one or more images of the shop, preferably showing the street
             </p>
             <CloudinaryUploadWidget />
-            {/* <ImageUploadPreviewComponent /> */}
-            {/* <input type="file" multiple onChange={handleFileInput} /> */}
           </label>
-          <input type="submit" />
+          <input className='w-full bg-blue-500 rounded p-3 text-white mt-4' type="submit" />
         </form>
       </div>
     </div>

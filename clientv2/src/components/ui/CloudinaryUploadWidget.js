@@ -14,8 +14,8 @@ const CloudinaryUploadWidget = () => {
     }, [])
 
     return (
-        <button onClick={() => widgetref.current.open()}>
-            Upload!!!!!!!
+        <button className='w-full bg-green-500 rounded p-3 text-white' onClick={() => widgetref.current.open()}>
+            Upload
         </button>
     )
 }
