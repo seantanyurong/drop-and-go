@@ -1,24 +1,109 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUploadPreviewComponent from "../../ui/ImageUploadPreviewComponent";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import CloudinaryUploadWidget from "../../ui/CloudinaryUploadWidget";
-
-
+import MapWithSearchBox from '../../ui/Maps';
 
 const AddLocation = () => {
-  let [activeMenuItem, setActiveMenuItem] = useState(0);
-  const [inputs, setInputs, setSelectedFiles] = useState([]);
+  const [location, setLocation] = useState(null);
+  let [hours, setHours] = useState([]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert(inputs);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch(`http://localhost:6003/businessHours`);
 
+
+      if (!res.ok) {
+        const message = `An error has occurred: ${res.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const businessHours = await res.json();
+      if (!businessHours) {
+        window.alert(`Business Hours not found`);
+        return;
+      } else {
+        setHours(businessHours);
+        console.log(businessHours);
+
+      }
+    }
+
+    fetchData();
+    return;
+
+  }, []);
+
+  const handleUpload = (url) => {
+    formik.values.displayPicture = url;
   }
 
-  const handleFileInput = (event) => {
-    setSelectedFiles(event.target.files);
-  }
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation);
+  };
+
+  const handleSubmit = (e) => {
+
+    let body = {
+      shopName: formik.values.shopName,
+      capacity: formik.values.capacity,
+      address: formik.values.address,
+      about: formik.values.about,
+      openingHours: formik.values.openingHours,
+      postal: '098585',
+      latitude: 1.264787,
+      longitude: 103.823256,
+      pricePerDay: [formik.values.smallDailyFee, formik.values.mediumDailyFee, formik.values.largeDailyFee],
+      pricePerHour: [formik.values.smallHourlyFee, formik.values.mediumHourlyFee, formik.values.largeHourlyFee],
+      dateListed: new Date().toISOString(),
+      review_ids: [],
+      provider_id: 'to be filled in',
+      booking_ids: [],
+      displayPicture: formik.values.displayPicture
+    };
+
+    async function addData() {
+      const settings = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+      console.log("body" + JSON.stringify(body));
+
+      const duplicate = await fetch(`http://localhost:6003/listing/name/${body.shopName}`, settings);
+      if (!duplicate.ok) {
+        console.log("Error in finding by name")
+        const message = `An error has occurred: ${duplicate.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const duplicateRes = await duplicate.json();
+      // expected result: indicates there is no duplicate 
+      if (!duplicateRes) {
+        const response = await fetch(`http://localhost:6003/listing/add`, settings);
+
+        if (!response.ok) {
+          const message = `An error has occurred: ${response.statusText}`;
+          window.alert(message);
+          return;
+        }
+
+        // means a duplicate was found
+      } else {
+        const message = `You have another Listing with the same name of ${body.name}. Please use another name`;
+        window.alert(message);
+        return;
+      }
+      alert(`Listing with name ${body.shopName} has been added!`);
+    }
+    addData();
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -26,17 +111,22 @@ const AddLocation = () => {
       capacity: '',
       address: '',
       about: '',
-      openingHours: '',
+      openingHours: 'Select an option',
       smallHourlyFee: '',
       mediumHourlyFee: '',
       largeHourlyFee: '',
       smallDailyFee: '',
       mediumDailyFee: '',
       largeDailyFee: '',
+      latitude: '',
+      longitude: '',
+      postal: '',
+      dateListed: new Date().toISOString(),
+      displayPicture: ''
+
     },
     onSubmit: function (values) {
-      alert(`You are registered! Name: ${values.name}. Email: ${values.email}. Profession: ${values.profession}. 
-        Age: ${values.age}`);
+      handleSubmit();
     },
     validationSchema: yup.object({
       shopName: yup.string()
@@ -49,8 +139,16 @@ const AddLocation = () => {
       address: yup.string()
         .label("Address")
         .required(),
-      about: '',
-      openingHours: '',
+      about: yup.string()
+        .label('About')
+        .min(5, 'Must have more than 5 characters')
+        .required(),
+      openingHours: yup.string()
+        .label("Opening Hours")
+        .test('selected-option', 'Please select an option', function (value) {
+          return value !== 'Select an option'
+        })
+        .required(),
       smallHourlyFee: yup.number()
         .label("Hourly Fee")
         .required(),
@@ -129,7 +227,7 @@ const AddLocation = () => {
               placeholder="Capacity (bags)"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-primary-200
             ${formik.touched.capacity && formik.errors.capacity ? 'border-red-400' : 'border-gray-300'}`}
-              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
+              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.capacity} />
             {formik.touched.capacity && formik.errors.capacity &&
               (<span className='text-red-400'>{formik.errors.capacity}</span>)}
           </label>
@@ -139,7 +237,15 @@ const AddLocation = () => {
               Use the search field below to find the shop on Google Maps.
             </p>
             {/* Need to change to map */}
-
+            <MapWithSearchBox onLocationChange={handleLocationChange} />
+            {location && (
+              <div>
+                <h2>Selected location:</h2>
+                <p>Latitude: {location.lat}</p>
+                <p>Longitude: {location.lng}</p>
+                <p>Postal code: {location.postalCode}</p>
+              </div>
+            )}
             <input
               type="text"
               placeholder="Address"
@@ -156,14 +262,17 @@ const AddLocation = () => {
             <p className="mt-1.5 text-xs font-medium py-2">
               Indicate your weekly opening hours so customers know when they can drop their bags in your shop
             </p>
-            {/* Need to change to calendar */}
-            <input
-              type="text"
-              placeholder="Opening Hours"
+            <select
               name="openingHours"
-              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
+              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300 
             ${formik.touched.openingHours && formik.errors.openingHours ? 'border-red-400' : 'border-gray-300'}`}
-              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.openingHours} />
+              onChange={formik.handleChange} value={formik.values.openingHours}>
+              <option value='Select an option'>Select an option</option>
+              {hours.map(businessHourSetting => (
+                <option value={businessHourSetting._id} key={businessHourSetting.id} >{businessHourSetting.name}</option>
+              ))
+              }
+            </select>
             {formik.touched.openingHours && formik.errors.openingHours &&
               (<span className='text-red-400'>{formik.errors.openingHours}</span>)}
           </label>
@@ -173,7 +282,7 @@ const AddLocation = () => {
               Small baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="smallHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
@@ -187,7 +296,7 @@ const AddLocation = () => {
               Medium baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="mediumHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
@@ -201,7 +310,7 @@ const AddLocation = () => {
               Large baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="largeHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
@@ -216,35 +325,35 @@ const AddLocation = () => {
               Small baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="smallDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
             ${formik.touched.smallDailyFee && formik.errors.smallDailyFee ? 'border-red-400' : 'border-gray-300'}`}
               onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.smallDailyFee} />
             {formik.touched.smallDailyFee && formik.errors.smallDailyFee &&
-              (<span className='text-red-400'>{formik.errors.smallHourlyFee}</span>)}
+              (<span className='text-red-400'>{formik.errors.smallDailyFee}</span>)}
           </label>
           <label>
             <p className="mt-1.5 text-xs font-medium py-2">
               Medium baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="mediumDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
             ${formik.touched.mediumDailyFee && formik.errors.mediumDailyFee ? 'border-red-400' : 'border-gray-300'}`}
               onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.mediumDailyFee} />
             {formik.touched.mediumDailyFee && formik.errors.mediumDailyFee &&
-              (<span className='text-red-400'>{formik.errors.mediumHourlyFee}</span>)}
+              (<span className='text-red-400'>{formik.errors.mediumDailyFee}</span>)}
           </label>
           <label>
             <p className="mt-1.5 text-xs font-medium py-2">
               Large baggage
             </p>
             <input
-              type="text"
+              type="number"
               placeholder="Per hour fee"
               name="largeDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
@@ -258,9 +367,9 @@ const AddLocation = () => {
             <p className="mt-1.5 text-xs font-medium py-2">
               Upload one or more images of the shop, preferably showing the street
             </p>
-            <CloudinaryUploadWidget />
+            <CloudinaryUploadWidget onUpload={handleUpload} />
           </label>
-          <input className='w-full bg-blue-500 rounded p-3 text-white mt-4' type="submit" />
+          <input className='w-full cursor-pointer bg-blue-500 rounded p-3 text-white mt-4' type="submit" />
         </form>
       </div>
     </div>
