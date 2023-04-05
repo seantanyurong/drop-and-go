@@ -75,7 +75,7 @@ const SearchResults = (props) => {
         </div>
       </div>
       {popping && (
-        <BookingForm listingID={listingID} poppingHandler={setPopping} />
+        <BookingForm listing_id={listingID} poppingHandler={setPopping} />
       )}
       {popping && <BackgroundTint clickHandler={() => setPopping(false)} />}
     </div>

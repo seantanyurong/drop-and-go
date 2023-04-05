@@ -13,6 +13,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the bookings.
 bookingRoutes.route("/booking").get(function (req, res) {
+  console.log("Booking: Getting all bookings");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
@@ -57,6 +58,20 @@ bookingRoutes.route("/booking").get(function (req, res) {
     });
 });
 
+// This section will help you get a single booking by id
+bookingRoutes.route("/booking/:id").get(function (req, res) {
+  let db_connect = dbo.getDb("dropandgo");
+  console.log("Booking: Searching for id");
+  console.log(req.params.id);
+  console.log(ObjectId(req.params.id));
+  let myquery = { _id: ObjectId(req.params.id) };
+  db_connect.collection("booking").findOne(myquery, function (err, result) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+// The order matters. This won't ever trigger cause of above ID.
 // This section will help you get a list of all the bookings belonging to a user
 bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
@@ -164,6 +179,9 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     position: req.body.position,
     level: req.body.level,
     listing_id: req.body.listing_id,
+    user_id: req.body.user_id,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -172,14 +190,17 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
 });
 
 // This section will help you update a booking by id.
-bookingRoutes.route("/update/:id").post(function (req, response) {
-  let db_connect = dbo.getDb();
+bookingRoutes.route("/booking/update/:id").post(function (req, response) {
+  console.log("Booking: Updating");
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
+
+  console.log(req.body.status);
   let newvalues = {
     $set: {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      status: req.body.status,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
     },
   };
   db_connect
