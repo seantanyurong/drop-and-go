@@ -21,7 +21,7 @@ const BookingForm = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-      const id = props.listing_id;
+      const id = props.listingID;
       const response = await fetch(`http://localhost:6003/listing/${id}`);
 
       if (!response.ok) {
@@ -55,13 +55,13 @@ const BookingForm = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        listing_id: props.listingID,
         startDate: startDate,
         endDate: endDate,
         days: days(endDate, startDate),
         paynow: paynow,
         bags: bags,
         status: "active",
+        listing_id: props.listingID,
       }),
     }).catch((error) => {
       window.alert(error);

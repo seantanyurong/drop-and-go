@@ -154,7 +154,6 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");
   let db_connect = dbo.getDb();
   let myobj = {
-    listing_id: req.body.listing_id,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     days: req.body.days,
@@ -164,6 +163,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     name: req.body.name,
     position: req.body.position,
     level: req.body.level,
+    listing_id: req.body.listing_id,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
