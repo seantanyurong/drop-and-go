@@ -12,8 +12,8 @@ const SearchResults = (props) => {
 
   const location = {
     address: "1600 Amphitheatre Parkway, Mountain View, california.",
-    lat: 37.42216,
-    lng: -122.08427,
+    lat: 1.29027,
+    lng: 103.851959,
   };
 
   useEffect(() => {
@@ -64,13 +64,17 @@ const SearchResults = (props) => {
               key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
             }}
             defaultCenter={location}
-            defaultZoom={17}
+            defaultZoom={13}
           >
-            <LocationPin
-              lat={location.lat}
-              lng={location.lng}
-              text={location.address}
-            />
+            {listings.map((listing, index) => {
+              return (
+                <LocationPin
+                  lat={listing.latitude}
+                  lng={listing.longitude}
+                  text={listing.name}
+                />
+              );
+            })}
           </GoogleMapReact>
         </div>
       </div>
