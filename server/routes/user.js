@@ -15,7 +15,6 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 /* User Login Methods */
 
 // This section will help you to verify if a user is logged in
@@ -190,7 +189,7 @@ userRoutes.route("/user").get(function (req, res) {
 
 // This section will help you get a single user by id
 userRoutes.route("/user/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("User: Searching for id");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("user").findOne(myquery, function (err, result) {

@@ -28,7 +28,7 @@ const UserBookingDetails = () => {
         setBooking(bookingRes);
 
         const response2 = await fetch(
-          `http://localhost:6003/listing/${bookingRes.listingID}`
+          `http://localhost:6003/listing/${bookingRes.listing_id}`
         );
 
         if (!response2.ok) {
@@ -39,7 +39,7 @@ const UserBookingDetails = () => {
 
         const listingRes = await response2.json();
         if (!listingRes) {
-          window.alert(`listing with id ${bookingRes.listingID} not found`);
+          window.alert(`listing with id ${bookingRes.listing_id} not found`);
           return;
         } else {
           setListing(listingRes);

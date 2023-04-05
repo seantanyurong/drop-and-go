@@ -140,7 +140,7 @@ bookingRoutes.route("/booking/listings/:listingId").get(function (req, res) {
 
 // This section will help you get a single booking by id
 bookingRoutes.route("/booking/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("Booking: Searching for id");
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("booking").findOne(myquery, function (err, result) {
@@ -154,7 +154,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
   console.log("Add method running");
   let db_connect = dbo.getDb();
   let myobj = {
-    listingID: req.body.listingID,
+    listing_id: req.body.listing_id,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     days: req.body.days,
