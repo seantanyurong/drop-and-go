@@ -6,6 +6,11 @@ import ProviderListingCard from "../../ui/ProviderListingCard";
 const ViewLocations = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
   let [listings, setListings] = useState([]);
+  const navigate = useNavigate();
+
+  function addBusinessHours() {
+    navigate(`/provider/add-listing`);
+  }
 
 
   // need to modify this to only fetch listing related to owner

@@ -37,7 +37,7 @@ listingRoutes.route("/listing/name/:name").post(function (req, res) {
 // This section will help you get a single listing by id
 listingRoutes.route("/listing/:id").get(function (req, res) {
   console.log("Searching for id");
-  let db_connect = dbo.getDb();
+  let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("listing").findOne(myquery, function (err, result) {
     if (err) throw err;
@@ -57,7 +57,7 @@ listingRoutes.route("/listing/add").post(function (req, response) {
     openingHours: req.body.openingHours,
     postal: req.body.postal,
     latitude: req.body.latitude,
-    longitude: req.body.longtitude,
+    longitude: req.body.longitude,
     pricePerDay: req.body.pricePerDay,
     pricePerHour: req.body.pricePerHour,
     dateListed: req.body.dateListed,
@@ -72,19 +72,31 @@ listingRoutes.route("/listing/add").post(function (req, response) {
   });
 });
 
-// This section will help you update a listing by id.
-listingRoutes.route("/update/:id").post(function (req, response) {
+// This section will help you update a businessHours by id.
+businessHoursRoutes.route("/listing/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
     $set: {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      name: req.body.shopName,
+      capacity: req.body.capacity,
+      address: req.body.address,
+      about: req.body.about,
+      openingHours: req.body.openingHours,
+      postal: req.body.postal,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+      pricePerDay: req.body.pricePerDay,
+      pricePerHour: req.body.pricePerHour,
+      dateListed: req.body.dateListed,
+      review_ids: req.body.review_ids,
+      provider_id: req.body.provider_id,
+      booking_ids: req.body.booking_ids,
+      displayPicture: req.body.displayPicture
     },
   };
   db_connect
-    .collection("listings")
+    .collection("listing")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
       console.log("1 document updated");

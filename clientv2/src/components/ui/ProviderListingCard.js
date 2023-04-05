@@ -2,12 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const ProviderListingCard = (props) => {
-    const navigate = useNavigate();
 
-    function handleClick() {
-        // need to change this 
-        navigate(`/provider/edit/${props.listing._id}`);
+    const navigate = useNavigate();
+    function handleClick(id) {
+        navigate(`/provider/edit-listing/${props.listing._id}`);
     }
+
     return (
         <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
             <div className="flex items-center mb-1 justify-between">

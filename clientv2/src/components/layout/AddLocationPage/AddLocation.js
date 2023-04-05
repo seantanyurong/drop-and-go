@@ -2,28 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import CloudinaryUploadWidget from "../../ui/CloudinaryUploadWidget";
-
-
 import Map from "../../ui/Maps";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
-import "@reach/combobox/styles.css";
-
-import GoogleMapReact from "google-map-react";
-import LocationPin from "../../ui/LocationPin";
-
-
 
 
 const AddLocation = () => {
