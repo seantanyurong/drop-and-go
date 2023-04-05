@@ -71,7 +71,7 @@ const Header = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <div
-                              href="#"
+                              href="/user/bookings"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"

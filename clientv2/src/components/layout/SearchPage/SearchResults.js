@@ -43,8 +43,8 @@ const SearchResults = (props) => {
 
   return (
     <div className="grid grid-cols-8 gap-8 mx-auto">
-      <div className="col-span-5 px-5 sm:px-6 py-10">
-        <div className="grid grid-cols-3 gap-4">
+      <div className="col-span-8 lg:col-span-5 px-5 sm:px-6 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
           {listings.map((listing, index) => {
             return (
               <Listing
@@ -57,7 +57,7 @@ const SearchResults = (props) => {
           })}
         </div>
       </div>
-      <div className="col-span-3">
+      <div className="lg:col-span-3 hidden lg:block">
         <div className="google-map" style={{ height: "100%", width: "100%" }}>
           <GoogleMapReact
             bootstrapURLKeys={{
