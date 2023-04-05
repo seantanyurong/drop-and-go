@@ -13,7 +13,7 @@ const ProviderProfile = () => {
         email: "",
         password: "",
         phone: "",
-        bank: "",
+        bankAccount: "",
     };
 
     const [formState, setFormState] = useState(defaultState);
@@ -39,7 +39,7 @@ const ProviderProfile = () => {
             email: formState.email,
             password: formState.password,
             phone: formState.phone,
-            bank: formState.bank,
+            bankAccount: formState.bankAccount,
         }
 
         async function updateData() {
@@ -161,7 +161,7 @@ const ProviderProfile = () => {
                             <label className="text-l py-2 text-text-dark font-semibold" htmlFor="phone">
                                 Phone Number
                             </label>
-                            <label className="text-l py-2 text-text-dark font-semibold" htmlFor="bank">
+                            <label className="text-l py-2 text-text-dark font-semibold" htmlFor="bankAccount">
                                 Bank Account
                             </label>
                         </div>
@@ -203,9 +203,9 @@ const ProviderProfile = () => {
                             <input
                                 className={editState ? formStyle.active : formStyle.inactive}
                                 readOnly={!editState}
-                                id="bank"
+                                id="bankAccount"
                                 type="text"
-                                value={formState.bank}
+                                value={formState.bankAccount}
                                 onChange={handleChange}
                             />
                         </div>
