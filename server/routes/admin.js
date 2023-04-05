@@ -19,10 +19,27 @@ const bcrypt = require("bcrypt");
 
 /* Admin Login Methods */
 
-// This section will help you to verify if a provider is logged in
-adminRoutes.route("/admin/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.admin.email });
+// This section will help you to verify if a admin is logged in
+adminRoutes.route("/admin/authenticate").get(function (req, res) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Admin",
+        });
+      console.log(decoded.id);
+      return res.json({ isLoggedIn: true, id: decoded.id});
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
 });
 
 // This section will help you to allow admin to login
@@ -69,29 +86,6 @@ adminRoutes.route("/admin/login").post(async function (req, res) {
   });
 });
 
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate Admin",
-        });
-      req.admin = {};
-      req.admin.id = decoded.id;
-      req.admin.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-};
 
 /* Admin CRUD Methods */
 
@@ -145,16 +139,29 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
 });
 
 // This section will help you update a listing by id.
-adminRoutes.route("/admin/update/:id").post(function (req, response) {
+adminRoutes.route("/admin/update/:id").post(async function (req, response) {
   let db_connect = dbo.getDb("dropandgo");
-  let myquery = { _id: ObjectId(req.params.id) };
+  
+  const adminDB = await db_connect
+    .collection("admin")
+    .findOne({ _id: ObjectId(req.params.id) });
+  
+  if (adminDB.password !== req.body.password) {
+    console.log("Updating Password");
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
+  } else {
+    encryptedPassword = req.body.password;
+  }
+
   let newvalues = {
     $set: {
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: encryptedPassword,
     },
   };
+  let myquery = { _id: ObjectId(req.params.id) };
+
   db_connect
     .collection("admin")
     .updateOne(myquery, newvalues, function (err, res) {
@@ -194,6 +201,7 @@ adminRoutes.route("/admin/:id").get(function (req, res) {
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("admin").findOne(myquery, function (err, result) {
     if (err) throw err;
+    console.log(result);
     res.json(result);
   });
 });
