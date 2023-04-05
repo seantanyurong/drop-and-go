@@ -8,7 +8,7 @@ const UserBooking = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-      const id = props.booking.listingID;
+      const id = props.booking.listing_id;
       const response = await fetch(`http://localhost:6003/listing/${id}`);
 
       if (!response.ok) {

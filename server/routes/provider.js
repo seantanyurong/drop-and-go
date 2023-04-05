@@ -15,14 +15,15 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 /* Provider Login Methods */
 
 // This section will help you to verify if a provider is logged in
-providerRoutes.route("/provider/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.provider.email });
-});
+providerRoutes
+  .route("/provider/authenticate")
+  .get(verifyJWT, function (req, res) {
+    console.log("Authenticating");
+    res.json({ isLoggedIn: true, email: req.provider.email });
+  });
 
 // This section will help you to allow provider to login
 providerRoutes.route("/provider/login").post(async function (req, res) {
@@ -39,38 +40,40 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      console.log("Passwords Equal");
-      const payload = {
-        id: providerDB._id,
-        name: providerDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-          
-          console.log("JWT Signing");
-          
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
-    }
-  });
+  bcrypt
+    .compare(providerLogin.password, providerDB.password)
+    .then((isCorrect) => {
+      if (isCorrect) {
+        console.log("Passwords Equal");
+        const payload = {
+          id: providerDB._id,
+          name: providerDB.name,
+        };
+        jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          { expiresIn: 86400 },
+          (err, token) => {
+            if (err) return res.json({ message: err });
+
+            console.log("JWT Signing");
+
+            return res.json({
+              message: "Success",
+              token: "Bearer " + token,
+            });
+          }
+        );
+      } else {
+        console.log("Passwords Not Equal");
+        return res.json({ message: "Invalid Email or Password!" });
+      }
+    });
 });
 
 function verifyJWT(req, res, next) {
   console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
+  const token = req.headers["x-access-token"]?.split(" ")[1];
   console.log(token);
 
   if (token) {
@@ -90,7 +93,7 @@ function verifyJWT(req, res, next) {
     console.log("Incorrect Token Auth");
     res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
   }
-};
+}
 
 /* Provider CRUD Methods */
 
@@ -137,11 +140,13 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
       status: "active",
     };
 
-    db_connect.collection("provider").insertOne(myobj, function (err, response) {
-      console.log("Creating Provider");
-      if (err) throw err;
-      res.json(response);
-    });
+    db_connect
+      .collection("provider")
+      .insertOne(myobj, function (err, response) {
+        console.log("Creating Provider");
+        if (err) throw err;
+        res.json(response);
+      });
   }
 });
 
@@ -191,7 +196,7 @@ providerRoutes.route("/provider").get(function (req, res) {
 
 // This section will help you get a single provider by id
 providerRoutes.route("/provider/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("Provider: Searching for id");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("provider").findOne(myquery, function (err, result) {
