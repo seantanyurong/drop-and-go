@@ -92,14 +92,8 @@ const ListingDetails = () => {
           <div className="grid grid-rows-4 gap-4">
             <h4 className="text-l font-light"> {listing?.address} </h4>
             <h4 className="text-l font-light"> {listing?.postal} </h4>
-            <h4 className="text-l font-light">
-              {" "}
-              ${listing?.pricePerDaySimple}{" "}
-            </h4>
-            <h4 className="text-l font-light">
-              {" "}
-              ${listing?.pricePerHourSimple}{" "}
-            </h4>
+            <h4 className="text-l font-light"> ${listing?.pricePerDay[0]} </h4>
+            <h4 className="text-l font-light"> ${listing?.pricePerHour[0]} </h4>
           </div>
           <div className="grid grid-rows-5 gap-4">
             <div className="row-span-2 rounded bg-cyan-400 p-3">

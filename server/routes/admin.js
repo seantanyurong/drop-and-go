@@ -11,11 +11,9 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-
 // This help with the login authentication of user
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
 
 /* Admin Login Methods */
 
@@ -70,7 +68,7 @@ adminRoutes.route("/admin/login").post(async function (req, res) {
         { expiresIn: 86400 },
         (err, token) => {
           if (err) return res.json({ message: err });
-          
+
           console.log("JWT Signing");
 
           return res.json({
@@ -197,7 +195,7 @@ adminRoutes.route("/admin").get(function (req, res) {
 
 // This section will help you get a single admin by id
 adminRoutes.route("/admin/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("Admin: Searching for id");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("admin").findOne(myquery, function (err, result) {
