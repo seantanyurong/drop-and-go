@@ -243,9 +243,9 @@ const BookingForm = (props) => {
                   <p className="text-sm text-text-dark font-light">
                     {`${
                       paynow
-                        ? "$" + listing.pricePerHourSimple * bags + "/hour"
+                        ? "$" + listing.pricePerHour[0] * bags + "/hour"
                         : "$" +
-                          listing.pricePerDaySimple *
+                          listing.pricePerDay[0] *
                             bags *
                             days(endDate, startDate)
                     }`}
@@ -270,7 +270,7 @@ const BookingForm = (props) => {
                       paynow
                         ? "$0.00"
                         : "$" +
-                          (listing.pricePerDaySimple *
+                          (listing.pricePerDay[0] *
                             bags *
                             days(endDate, startDate) +
                             1)

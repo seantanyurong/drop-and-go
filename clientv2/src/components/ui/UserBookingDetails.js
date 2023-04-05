@@ -125,11 +125,9 @@ const UserBookingDetails = () => {
                   {" "}
                   {`${
                     booking.paynow
-                      ? "$" +
-                        listing.pricePerHourSimple * booking.bags +
-                        "/hour"
+                      ? "$" + listing.pricePerHour[0] * booking.bags + "/hour"
                       : "$" +
-                        listing.pricePerDaySimple * booking.bags * booking.days
+                        listing.pricePerDay[0] * booking.bags * booking.days
                   }`}
                 </p>
               </div>
@@ -150,9 +148,7 @@ const UserBookingDetails = () => {
                     booking.paynow
                       ? "$0.00"
                       : "$" +
-                        (listing.pricePerDaySimple *
-                          booking.bags *
-                          booking.days +
+                        (listing.pricePerDay[0] * booking.bags * booking.days +
                           1)
                   }`}
                 </p>
