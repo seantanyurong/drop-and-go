@@ -92,29 +92,34 @@ const UserBookingDetails = () => {
       {listing && (
         <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
           {/* Location details */}
-          <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover">
-            <div className="flex items-center mb-1 justify-between">
-              <div className="flex space-x-3 items-center">
-                <h3 className="font-semibold">{listing.name}</h3>
+          <a
+            target="_blank"
+            href={`https://maps.google.com/?q=${listing.latitude},${listing.longitude}`}
+            rel="noreferrer"
+          >
+            <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover">
+              <div className="flex items-center mb-1 justify-between">
+                <div className="flex space-x-3 items-center">
+                  <h3 className="font-semibold">{listing.name}</h3>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <p className="text-sm font-semibold text-primary-200">
+                    Get Directions
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center space-x-1">
-                <p className="text-sm font-semibold text-primary-200">
-                  Get Directions
-                </p>
+              <div>
+                <p className="text-sm font-light">{listing.address}</p>
+                <div className="flex items-center mt-1">
+                  <p className="text-sm font-light">4.7</p>
+                  <StarIcon
+                    className="h-4 w-4 ml-1 text-yellow-400"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
             </div>
-            <div>
-              <p className="text-sm font-light">{listing.address}</p>
-              <div className="flex items-center mt-1">
-                <p className="text-sm font-light">4.7</p>
-                <StarIcon
-                  className="h-4 w-4 ml-1 text-yellow-400"
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-          </div>
-
+          </a>
           <div className="flex justify-end">
             <button
               disabled={status === "Cancelled"}
