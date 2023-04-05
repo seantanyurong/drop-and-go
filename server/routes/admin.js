@@ -146,6 +146,7 @@ adminRoutes.route("/admin/update/:id").post(async function (req, response) {
     .collection("admin")
     .findOne({ _id: ObjectId(req.params.id) });
   
+  let encryptedPassword = "";
   if (adminDB.password !== req.body.password) {
     console.log("Updating Password");
     encryptedPassword = await bcrypt.hash(req.body.password, 10);
