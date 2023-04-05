@@ -2,11 +2,25 @@ import { useEffect, useState } from "react";
 import ImageUploadPreviewComponent from "../../ui/ImageUploadPreviewComponent";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import GoogleMapReact from "google-map-react";
 import CloudinaryUploadWidget from "../../ui/CloudinaryUploadWidget";
-import MapWithSearchBox from '../../ui/Maps';
+import Map from "../../ui/Maps";
+import LocationPin from "../../ui/LocationPin";
+
+
+
+
 
 const AddLocation = () => {
+
+  const location2 = {
+    address: "1600 Amphitheatre Parkway, Mountain View, california.",
+    lat: 37.42216,
+    lng: -122.08427,
+  };
+
   const [location, setLocation] = useState(null);
+
   let [hours, setHours] = useState([]);
 
   useEffect(() => {
@@ -39,10 +53,6 @@ const AddLocation = () => {
   const handleUpload = (url) => {
     formik.values.displayPicture = url;
   }
-
-  const handleLocationChange = (newLocation) => {
-    setLocation(newLocation);
-  };
 
   const handleSubmit = (e) => {
 
@@ -237,15 +247,45 @@ const AddLocation = () => {
               Use the search field below to find the shop on Google Maps.
             </p>
             {/* Need to change to map */}
-            <MapWithSearchBox onLocationChange={handleLocationChange} />
-            {location && (
-              <div>
-                <h2>Selected location:</h2>
-                <p>Latitude: {location.lat}</p>
-                <p>Longitude: {location.lng}</p>
-                <p>Postal code: {location.postalCode}</p>
+            <Map />
+
+            <div className="grid grid-cols-8 gap-8 mx-auto">
+              <div className="col-span-1 px-5 sm:px-6 py-10">
+                <div className="grid grid-cols-3 gap-4">
+                  {/* {listings.map((listing, index) => {
+                    return (
+                      <Listing
+                        listing={listing}
+                        listingIDHandler={setListingID}
+                        poppingHandler={setPopping}
+                        key={index}
+                      />
+                    );
+                  })} */}
+                </div>
               </div>
-            )}
+              <div className="col-span-7">
+                <div className="google-map" style={{ height: "100%", width: "100%" }}>
+                  <GoogleMapReact
+                    bootstrapURLKeys={{
+                      key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
+                    }}
+                    defaultCenter={location2}
+                    defaultZoom={17}
+                  >
+                    <LocationPin
+                      lat={location2.lat}
+                      lng={location2.lng}
+                      text={location2.address}
+                    />
+                  </GoogleMapReact>
+                </div>
+              </div>
+              {/* {popping && (
+                <BookingForm listingID={listingID} poppingHandler={setPopping} />
+              )}
+              {popping && <BackgroundTint clickHandler={() => setPopping(false)} />} */}
+            </div>
             <input
               type="text"
               placeholder="Address"

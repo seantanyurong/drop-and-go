@@ -1,47 +1,108 @@
-import React, { useState, useCallback } from 'react';
-import { GoogleMap, Marker, Autocomplete } from 'react-google-maps';
+import { useState, useMemo } from "react";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
 
-const MapWithSearchBox = ({ onLocationChange }) => {
-    const [location, setLocation] = useState(null);
+import usePlacesAutocomplete, {
+    getGeocode,
+    getLatLng,
+} from "use-places-autocomplete";
+import {
+    Combobox,
+    ComboboxInput,
+    ComboboxPopover,
+    ComboboxList,
+    ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
-    const handlePlaceSelect = useCallback((place) => {
-        const { lat, lng } = place.geometry.location;
-        const postalCode = getPostalCodeFromAddressComponents(place.address_components);
 
-        setLocation({
-            lat: lat(),
-            lng: lng(),
-            postalCode,
-        });
+const location = {
+    address: "1600 Amphitheatre Parkway, Mountain View, california.",
+    lat: 37.42216,
+    lng: -122.08427,
+};
 
-        onLocationChange({
-            lat: lat(),
-            lng: lng(),
-            postalCode,
-        });
-    }, [onLocationChange]);
+export default function Places() {
+    // const { isLoaded } = useLoadScript({
+    //     googleMapsApiKey: 'AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0',
+    //     libraries: ["places"],
+    // });
 
-    const getPostalCodeFromAddressComponents = (addressComponents) => {
-        const postalCodeComponent = addressComponents.find((component) =>
-            component.types.includes('postal_code')
-        );
+    // if (!isLoaded) return <div>Loading...</div>;
+    return <Map />;
+}
 
-        return postalCodeComponent ? postalCodeComponent.short_name : null;
+function Map() {
+    const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+    const [selected, setSelected] = useState(null);
+
+    return (
+        <>
+            <div className="places-container">
+                <PlacesAutocomplete setSelected={setSelected} />
+            </div>
+            <div className="google-map" style={{ height: "100%", width: "100%" }}>
+                <GoogleMapReact
+                    bootstrapURLKeys={{
+                        key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
+                    }}
+                    defaultCenter={location}
+                    defaultZoom={17}
+                >
+                    {/* <LocationPin
+                        lat={location.lat}
+                        lng={location.lng}
+                        text={location.address}
+                    /> */}
+                </GoogleMapReact>
+            </div>
+
+            {/* <GoogleMap
+                zoom={10}
+                center={center}
+                mapContainerClassName="map-container"
+            >
+                {selected && <Marker position={selected} />}
+            </GoogleMap> */}
+        </>
+    );
+}
+
+const PlacesAutocomplete = ({ setSelected }) => {
+    const {
+        ready,
+        value,
+        setValue,
+        suggestions: { status, data },
+        clearSuggestions,
+    } = usePlacesAutocomplete();
+
+    const handleSelect = async (address) => {
+        setValue(address, false);
+        clearSuggestions();
+
+        const results = await getGeocode({ address });
+        const { lat, lng } = await getLatLng(results[0]);
+        setSelected({ lat, lng });
     };
 
     return (
-        <GoogleMap center={{ lat: 37.7749, lng: -122.4194 }} zoom={12}>
-            {location && <Marker position={location} />}
-            <Autocomplete
-                onLoad={(autocomplete) => {
-                    autocomplete.setFields(['geometry', 'address_components']);
-                }}
-                onPlaceChanged={() => handlePlaceSelect(autocomplete.getPlace())}
-            >
-                <input type="text" placeholder="Enter a location" />
-            </Autocomplete>
-        </GoogleMap>
+        <Combobox onSelect={handleSelect}>
+            <ComboboxInput
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                disabled={!ready}
+                className="combobox-input"
+                placeholder="Search an address"
+            />
+            <ComboboxPopover>
+                <ComboboxList>
+                    {status === "OK" &&
+                        data.map(({ place_id, description }) => (
+                            <ComboboxOption key={place_id} value={description} />
+                        ))}
+                </ComboboxList>
+            </ComboboxPopover>
+        </Combobox>
     );
 };
-
-export default MapWithSearchBox;
