@@ -117,7 +117,12 @@ const UserBookingDetails = () => {
 
           <div className="flex justify-end">
             <button
-              className="rounded-md bg-box-gray p-1.5 px-4 text-xs font-medium"
+              disabled={status === "Cancelled"}
+              className={`rounded-md p-1.5 px-4 text-xs font-medium ${
+                status === "Cancelled"
+                  ? "bg-gray-100 text-slate-300"
+                  : "bg-box-gray"
+              }`}
               onClick={() => setStatus("Cancelled")}
             >
               Cancel Booking
@@ -148,7 +153,18 @@ const UserBookingDetails = () => {
               />
               <h4 className="font-semibold text-lg">Hand over luggage</h4>
               <button
-                className="rounded-md bg-box-gray p-1.5 px-4 text-md font-medium "
+                disabled={
+                  status === "Handed over" ||
+                  status === "Collected" ||
+                  status === "Cancelled"
+                }
+                className={`rounded-md p-1.5 px-4 text-md font-medium ${
+                  status === "Handed over" ||
+                  status === "Collected" ||
+                  status === "Cancelled"
+                    ? "bg-gray-100 text-slate-300"
+                    : "bg-box-gray"
+                }`}
                 onClick={() => {
                   setStartTime(new Date());
                   setStatus("Handed over");
@@ -157,7 +173,7 @@ const UserBookingDetails = () => {
                 Handed Over
               </button>
               {(status === "Handed over" || status === "Collected") && (
-                <h4 className="font-semibold text-lg">
+                <h4 className="font-semibold text-sm">
                   Time Started: {startTime?.toLocaleString()}
                 </h4>
               )}
@@ -171,7 +187,12 @@ const UserBookingDetails = () => {
               />
               <h4 className="font-semibold text-lg">Reclaim your baggage</h4>
               <button
-                className="rounded-md bg-box-gray p-1.5 px-4 text-md font-medium "
+                disabled={status === "Collected" || status === "Cancelled"}
+                className={`rounded-md p-1.5 px-4 text-md font-medium ${
+                  status === "Collected" || status === "Cancelled"
+                    ? "bg-gray-100 text-slate-300"
+                    : "bg-box-gray"
+                }`}
                 onClick={(e) => {
                   setEndTime(new Date());
                   setStatus("Collected");
@@ -180,8 +201,8 @@ const UserBookingDetails = () => {
                 Collected
               </button>
               {status === "Collected" && (
-                <h4 className="font-semibold text-lg">
-                  Time Started: {endTime?.toLocaleString()}
+                <h4 className="font-semibold text-sm">
+                  Time Ended: {endTime?.toLocaleString()}
                 </h4>
               )}
             </div>
