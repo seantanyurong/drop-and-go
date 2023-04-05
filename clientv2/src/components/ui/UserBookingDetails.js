@@ -116,7 +116,10 @@ const UserBookingDetails = () => {
           </div>
 
           <div className="flex justify-end">
-            <button className="rounded-md bg-box-gray p-1.5 px-4 text-xs font-medium">
+            <button
+              className="rounded-md bg-box-gray p-1.5 px-4 text-xs font-medium"
+              onClick={() => setStatus("Cancelled")}
+            >
               Cancel Booking
             </button>
           </div>

@@ -60,9 +60,9 @@ const BookingForm = (props) => {
         days: days(endDate, startDate),
         paynow: paynow,
         bags: bags,
-        status: "Booked",
+        status: "Active",
         listing_id: props.listing_id,
-        user_id: "Not implemented",
+        user_id: "63f59599494a62e3f48705cf", // replace with actual ID down the road
         startTime: null,
         endTime: null,
       }),

@@ -58,19 +58,6 @@ bookingRoutes.route("/booking").get(function (req, res) {
     });
 });
 
-// This section will help you get a single booking by id
-bookingRoutes.route("/booking/:id").get(function (req, res) {
-  let db_connect = dbo.getDb("dropandgo");
-  console.log("Booking: Searching for id");
-  console.log(req.params.id);
-  console.log(ObjectId(req.params.id));
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("booking").findOne(myquery, function (err, result) {
-    if (err) throw err;
-    res.json(result);
-  });
-});
-
 // The order matters. This won't ever trigger cause of above ID.
 // This section will help you get a list of all the bookings belonging to a user
 bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
@@ -174,7 +161,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     days: req.body.days,
     paynow: req.body.paynow,
     bags: req.body.bags,
-    status: req.body.active,
+    status: req.body.status,
     name: req.body.name,
     position: req.body.position,
     level: req.body.level,
