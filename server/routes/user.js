@@ -145,11 +145,21 @@ userRoutes.route("/user/update/:id").post(async function (req, response) {
     .collection("user")
     .findOne({ _id: ObjectId(req.params.id) });
 
-  if (userDB.password !== req.body.password) {
+  let encryptedPassword = "";
+  if (!req.body.password) {
+    encryptedPassword = userDB.password;
+  } else if (userDB.password !== req.body.password) {
     console.log("Updating Password");
     encryptedPassword = await bcrypt.hash(req.body.password, 10);
   } else {
     encryptedPassword = req.body.password;
+  }
+
+  let updatedStatus = "";
+  if (!req.body.status) {
+    updatedStatus = userDB.status;
+  } else {
+    updatedStatus = req.body.status;
   }
 
   let newvalues = {
@@ -158,7 +168,7 @@ userRoutes.route("/user/update/:id").post(async function (req, response) {
       email: req.body.email,
       password: encryptedPassword,
       phone: req.body.phone,
-      status: req.body.status,
+      status: updatedStatus,
     },
   };
   let myquery = { _id: ObjectId(req.params.id) };

@@ -150,11 +150,28 @@ providerRoutes.route("/provider/update/:id").post(async function (req, response)
     .collection("provider")
     .findOne({ _id: ObjectId(req.params.id) });
   
-  if (providerDB.password !== req.body.password) {
+  let encryptedPassword = "";
+  if (!req.body.password) {
+    encryptedPassword = providerDB.password;
+  } else if (providerDB.password !== req.body.password) {
     console.log("Updating Password");
     encryptedPassword = await bcrypt.hash(req.body.password, 10);
   } else {
     encryptedPassword = req.body.password;
+  }
+
+  let updatedBankAcc = "";
+  if (!req.body.bankAccount) {
+    updatedBankAcc = providerDB.bankAccount;
+  } else {
+    updatedBankAcc = req.body.bankAccount;
+  }
+
+  let updatedStatus = "";
+  if (!req.body.status) {
+    updatedStatus = providerDB.status;
+  } else {
+    updatedStatus = req.body.status;
   }
 
   let newvalues = {
@@ -163,7 +180,8 @@ providerRoutes.route("/provider/update/:id").post(async function (req, response)
       email: req.body.email,
       password: encryptedPassword,
       phone: req.body.phone,
-      status: req.body.status,
+      bankAccount: updatedBankAcc,
+      status: updatedStatus,
     },
   };
   let myquery = { _id: ObjectId(req.params.id) };
