@@ -26,12 +26,14 @@ const Header = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
-                <a
-                  href="#about"
-                  className="font-semibold text-text-main hover:text-main-hover px-5 flex items-center transition duration-150 ease-in-out underline"
+                <Link
+                  to="/"
+                  className="font-semibold text-text-main hover:text-main-hover
+                px-5 flex items-center transition duration-150 ease-in-out
+                underline"
                 >
                   How does it work?
-                </a>
+                </Link>
               </li>
               <li>
                 <Menu as="div" className="inline-block text-left">
@@ -71,7 +73,7 @@ const Header = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <div
-                              href="/user/bookings"
+                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
