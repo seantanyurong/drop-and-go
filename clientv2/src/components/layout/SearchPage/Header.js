@@ -3,7 +3,6 @@ import LogoImg from "../../../assets/Logo.png";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import { HashLink } from "react-router-hash-link";
 
 const Header = () => {
   function classNames(...classes) {
