@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
-import ImageUploadPreviewComponent from "../../ui/ImageUploadPreviewComponent";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import GoogleMapReact from "google-map-react";
 import CloudinaryUploadWidget from "../../ui/CloudinaryUploadWidget";
-import Map from "../../ui/Maps";
-import LocationPin from "../../ui/LocationPin";
 
+
+import Map from "../../ui/Maps";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
+
+import GoogleMapReact from "google-map-react";
+import LocationPin from "../../ui/LocationPin";
 
 
 
 
 const AddLocation = () => {
 
-  const location2 = {
-    address: "1600 Amphitheatre Parkway, Mountain View, california.",
-    lat: 37.42216,
-    lng: -122.08427,
-  };
-
-  const [location, setLocation] = useState(null);
 
   let [hours, setHours] = useState([]);
 
@@ -54,6 +62,20 @@ const AddLocation = () => {
     formik.values.displayPicture = url;
   }
 
+  const handleMapSearch = (address) => {
+    formik.values.address = address;
+    console.log("formik value is " + formik.values.address);
+
+  }
+
+  const handleAddressDetails = (lat, lng, postal) => {
+    formik.values.latitude = lat;
+    formik.values.longitude = lng;
+    formik.values.postal = postal;
+
+    console.log("lat long postal is " + lat + " " + lng + " " + postal);
+  }
+
   const handleSubmit = (e) => {
 
     let body = {
@@ -62,9 +84,9 @@ const AddLocation = () => {
       address: formik.values.address,
       about: formik.values.about,
       openingHours: formik.values.openingHours,
-      postal: '098585',
-      latitude: 1.264787,
-      longitude: 103.823256,
+      postal: formik.values.postal,
+      latitude: formik.values.latitude,
+      longitude: formik.values.longitude,
       pricePerDay: [formik.values.smallDailyFee, formik.values.mediumDailyFee, formik.values.largeDailyFee],
       pricePerHour: [formik.values.smallHourlyFee, formik.values.mediumHourlyFee, formik.values.largeHourlyFee],
       dateListed: new Date().toISOString(),
@@ -177,7 +199,12 @@ const AddLocation = () => {
       largeDailyFee: yup.number()
         .label("Daily Fee")
         .required(),
-
+      latitude: yup.number()
+        .label("Latitude")
+        .required(),
+      longitude: yup.number()
+        .label("Longitude")
+        .required()
     })
   })
 
@@ -195,7 +222,6 @@ const AddLocation = () => {
         </div>
       </div>
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
-        {/* {AddLocationForm()} */}
         <form onSubmit={formik.handleSubmit}>
           <label>
             <h3 className="font-semibold">Basic Profile</h3>
@@ -246,55 +272,11 @@ const AddLocation = () => {
             <p className="mt-1.5 text-xs font-medium py-2">
               Use the search field below to find the shop on Google Maps.
             </p>
-            {/* Need to change to map */}
-            <Map />
+            <p className="text-xs font-medium pb-2">
+              First, enter your address and select from the drop down. Then, enter your unit number.
+            </p>
 
-            <div className="grid grid-cols-8 gap-8 mx-auto">
-              <div className="col-span-1 px-5 sm:px-6 py-10">
-                <div className="grid grid-cols-3 gap-4">
-                  {/* {listings.map((listing, index) => {
-                    return (
-                      <Listing
-                        listing={listing}
-                        listingIDHandler={setListingID}
-                        poppingHandler={setPopping}
-                        key={index}
-                      />
-                    );
-                  })} */}
-                </div>
-              </div>
-              <div className="col-span-7">
-                <div className="google-map" style={{ height: "100%", width: "100%" }}>
-                  <GoogleMapReact
-                    bootstrapURLKeys={{
-                      key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
-                    }}
-                    defaultCenter={location2}
-                    defaultZoom={17}
-                  >
-                    <LocationPin
-                      lat={location2.lat}
-                      lng={location2.lng}
-                      text={location2.address}
-                    />
-                  </GoogleMapReact>
-                </div>
-              </div>
-              {/* {popping && (
-                <BookingForm listingID={listingID} poppingHandler={setPopping} />
-              )}
-              {popping && <BackgroundTint clickHandler={() => setPopping(false)} />} */}
-            </div>
-            <input
-              type="text"
-              placeholder="Address"
-              name="address"
-              className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${formik.touched.address && formik.errors.address ? 'border-red-400' : 'border-gray-300'}`}
-              onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.address} />
-            {formik.touched.address && formik.errors.address &&
-              (<span className='text-red-400'>{formik.errors.address}</span>)}
+            <Map onSelect={handleAddressDetails} failValidation={formik.touched.address && formik.errors.address} onSearch={handleMapSearch} formError={formik.errors.address} />
           </label>
 
           <label>
@@ -415,5 +397,6 @@ const AddLocation = () => {
     </div>
   );
 };
+
 
 export default AddLocation;
