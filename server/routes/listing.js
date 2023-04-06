@@ -23,7 +23,7 @@ listingRoutes.route("/listing").get(function (req, res) {
     });
 });
 
-// This section will help you get a single listing by name 
+// This section will help you get a single listing by name
 listingRoutes.route("/listing/name/:name").post(function (req, res) {
   console.log("Searching for name");
   let db_connect = dbo.getDb("dropandgo");
@@ -36,7 +36,6 @@ listingRoutes.route("/listing/name/:name").post(function (req, res) {
 
 // This section will help you get a single listing by id
 listingRoutes.route("/listing/:id").get(function (req, res) {
-  
   let db_connect = dbo.getDb("dropandgo");
   console.log("Listing: Searching for id");
 
@@ -66,7 +65,7 @@ listingRoutes.route("/listing/add").post(function (req, response) {
     review_ids: req.body.review_ids,
     provider_id: req.body.provider_id,
     booking_ids: req.body.booking_ids,
-    displayPicture: req.body.displayPicture
+    displayPicture: req.body.displayPicture,
   };
   db_connect.collection("listing").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -75,7 +74,7 @@ listingRoutes.route("/listing/add").post(function (req, response) {
 });
 
 // This section will help you update a businessHours by id.
-businessHoursRoutes.route("/listing/update/:id").post(function (req, response) {
+listingRoutes.route("/listing/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {
@@ -94,7 +93,7 @@ businessHoursRoutes.route("/listing/update/:id").post(function (req, response) {
       review_ids: req.body.review_ids,
       provider_id: req.body.provider_id,
       booking_ids: req.body.booking_ids,
-      displayPicture: req.body.displayPicture
+      displayPicture: req.body.displayPicture,
     },
   };
   db_connect

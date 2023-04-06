@@ -161,6 +161,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     days: req.body.days,
     paynow: req.body.paynow,
     bags: req.body.bags,
+    size: req.body.size,
     status: req.body.status,
     name: req.body.name,
     position: req.body.position,
