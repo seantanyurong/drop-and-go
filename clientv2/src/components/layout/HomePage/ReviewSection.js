@@ -1,10 +1,10 @@
-import { StarIcon } from "@heroicons/react/20/solid";
 import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+import { StarIcon } from "@heroicons/react/20/solid";
 import LeftArrow from "../../ui/LeftArrow";
 import RightArrow from "../../ui/RightArrow";
 import Review from "./Review";
-
-import "react-multi-carousel/lib/styles.css";
 
 const ReviewSection = () => {
   const responsive = {
