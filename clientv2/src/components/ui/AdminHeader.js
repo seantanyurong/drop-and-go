@@ -31,54 +31,54 @@ const AdminHeader = () => {
 
   useEffect(() => {
     async function fetchData() {
-        console.log("Check If Logged In");
-        const settings = {
-            method: "GET",
-            headers: {
-                "x-access-token": localStorage.getItem("token"),
-            },
-        };
+      console.log("Check If Logged In");
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
 
-        const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
+      const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
 
-        if (!responseAuth) {
-            const message = `An error has occurred: ${responseAuth.message}`;
-            window.alert(message);
-            return;
-        }
+      if (!responseAuth) {
+        const message = `An error has occurred: ${responseAuth.message}`;
+        window.alert(message);
+        return;
+      }
 
-        const authRes = await responseAuth.json();
-        console.log(authRes);
+      const authRes = await responseAuth.json();
+      console.log(authRes);
 
-        if (!authRes) {
-            const message = `An error has occurred: ${authRes.message}`;
-            window.alert(message);
-            return;
-        }
+      if (!authRes) {
+        const message = `An error has occurred: ${authRes.message}`;
+        window.alert(message);
+        return;
+      }
 
-        console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
-        
-        if (!responseDetails) {
-            const message = `An error has occurred: ${responseDetails.message}`;
-            window.alert(message);
-            return;
-        } 
+      console.log("Fetch Data Triggered");
+      const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
 
-        const detailsRes = await responseDetails.json();
-        console.log(detailsRes);
+      if (!responseDetails) {
+        const message = `An error has occurred: ${responseDetails.message}`;
+        window.alert(message);
+        return;
+      }
 
-        if (!detailsRes) {
-          navigate("/login/admin");          
-        } else {
-            setAuthState(authRes);
-        }
+      const detailsRes = await responseDetails.json();
+      console.log(detailsRes);
+
+      if (!detailsRes) {
+        navigate("/login/admin");
+      } else {
+        setAuthState(authRes);
+      }
     }
 
     fetchData();
     return;
     // eslint-disable-next-line
-}, []);
+  }, []);
 
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
@@ -87,7 +87,7 @@ const AdminHeader = () => {
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/admin/dashboard" className="flex items-center">
               <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
             </Link>
           </div>
@@ -97,12 +97,12 @@ const AdminHeader = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
-                <a
-                  href="#about"
-                  className="font-semibold text-text-main hover:text-main-hover px-5 flex items-center transition duration-150 ease-in-out underline"
+                {/* 
+                <Link to="/about-us" className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                 >
-                  How does it work?
-                </a>
+                  About Us
+                </Link>
+                */}
               </li>
               <li>
                 <Menu as="div" className="inline-block text-left">
@@ -148,13 +148,13 @@ const AdminHeader = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={ handleAccount }
+                              onClick={handleAccount}
                             >
                               Account
                             </div>
                           )}
                         </Menu.Button>
-                        <br/>
+                        <br />
                         <Menu.Button>
                           {({ active }) => (
                             <div
@@ -164,7 +164,7 @@ const AdminHeader = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={ handleLogout }
+                              onClick={handleLogout}
                             >
                               Logout
                             </div>

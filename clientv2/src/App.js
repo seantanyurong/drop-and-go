@@ -1,5 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+
 import TestPage from "./pages/TestPage";
+import PageNotFoundPage from "./pages/PageNotFoundPage";
+
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SearchResultPage from "./pages/SearchResultPage";
@@ -96,6 +99,7 @@ function App() {
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
     </main>
   );

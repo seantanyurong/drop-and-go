@@ -1,12 +1,14 @@
-import React from 'react'
-import Header from '../components/layout/LoginPage/Header'
-import UserLogin from '../components/layout/LoginPage/UserLogin'
+import React from 'react';
+import DefaultHeader from '../components/ui/DefaultHeader';
+import UserLogin from '../components/layout/LoginPage/UserLogin';
+import FooterBottom from "../components/ui/FooterBottom";
 
 const UserLoginPage = () => {
     return(
         <div>
-            <Header></Header>
+            <DefaultHeader></DefaultHeader>
             <UserLogin></UserLogin>
+            <FooterBottom></FooterBottom>
         </div>
     );
 }

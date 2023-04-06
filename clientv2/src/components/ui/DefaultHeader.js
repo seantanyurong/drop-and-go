@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import LogoImg from "../../../assets/Logo.png";
+import LogoImg from "../../assets/Logo.png";
 
-const Header = () => {
+const DefaultHeader = () => {
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
       <div className="mx-auto px-5 sm:px-6">
@@ -19,12 +19,10 @@ const Header = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
-                <a
-                  href="/AboutUs"
-                  className="font-semibold text-text-main hover:text-main-hover px-5 flex items-center transition duration-150 ease-in-out underline"
+                <Link to="/about-us" className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                 >
-                  About Us
-                </a>
+                    About Us
+                </Link>
               </li>
             </ul>
           </nav>
@@ -34,4 +32,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default DefaultHeader;

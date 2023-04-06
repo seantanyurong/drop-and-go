@@ -1,11 +1,11 @@
-import React from 'react'
-import Header from '../components/layout/LoginPage/Header'
-import Login from '../components/layout/LoginPage/Login'
+import React from 'react';
+import DefaultHeader from '../components/ui/DefaultHeader';
+import Login from '../components/layout/LoginPage/Login';
 
 const LoginPage = () => {
     return(
         <div>
-            <Header></Header>
+            <DefaultHeader></DefaultHeader>
             <Login></Login>
         </div>
     );
