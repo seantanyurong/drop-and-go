@@ -3,23 +3,34 @@ import { useState, useMemo, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import DataTable from "../../ui/DataTableBase";
 import FilterComponent from "../../ui/FilterComponent";
+import moment from "moment";
 
 const Records = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
 
-  const [redirState, setState] = useState(false);
+  const [redirectState, setRedirectState] = useState(false);
   const [id, setData] = useState("");
-  let userRedirect = redirState ? <Navigate to={`/admin/users/${id}`} /> : "";
-  let bookingsRedirect = redirState ? (
-    <Navigate to={`/admin/bookings/${id}`} />
+  let userRedirect = redirectState ? <Navigate to={`/admin/user/${id}`} /> : "";
+  let providerRedirect = redirectState ? (
+    <Navigate to={`/admin/provider/${id}`} />
+  ) : (
+    ""
+  );
+  let listingsRedirect = redirectState ? (
+    <Navigate to={`/admin/listing/${id}`} />
+  ) : (
+    ""
+  );
+  let bookingsRedirect = redirectState ? (
+    <Navigate to={`/admin/booking/${id}`} />
   ) : (
     ""
   );
 
   let [users, setUsers] = useState(data);
-  let [providers, setProviders] = useState(null);
-  let [listings, setListings] = useState(null);
-  let [bookings, setBookings] = useState(null);
+  let [providers, setProviders] = useState(data);
+  let [listings, setListings] = useState(data);
+  let [bookings, setBookings] = useState(data);
 
   useEffect(() => {
     async function fetchData() {
@@ -39,7 +50,6 @@ const Records = () => {
         window.alert(`Users not found`);
         return;
       } else {
-        console.log(userRes);
         setUsers(userRes);
       }
 
@@ -54,10 +64,9 @@ const Records = () => {
         window.alert(`Providers not found`);
         return;
       } else {
-        console.log(providerRes);
         setProviders(providerRes);
       }
-      
+
       if (!responseListing.ok) {
         const message = `An error has occurred: ${responseListing.statusText}`;
         window.alert(message);
@@ -69,7 +78,6 @@ const Records = () => {
         window.alert(`Listings not found`);
         return;
       } else {
-        console.log(listingRes);
         setListings(listingRes);
       }
 
@@ -88,19 +96,27 @@ const Records = () => {
         setBookings(bookingRes);
       }
     }
-
     fetchData();
-
     return;
     // eslint-disable-next-line
   }, []);
 
   const [filterText, setFilterText] = useState("");
-  const filteredData = data.filter(
+  const filteredUsers = users.filter(
     (item) =>
-      item.userName &&
-      item.userName.toLowerCase().includes(filterText.toLowerCase())
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
+
+  const filteredProviders = providers.filter(
+    (item) =>
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const filteredListings = listings.filter(
+    (item) =>
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   const subHeaderComponentMemo = useMemo(() => {
     return (
       <FilterComponent
@@ -174,9 +190,9 @@ const Records = () => {
             <DataTable
               title="Users"
               columns={userColumns}
-              data={users}
+              data={filteredUsers}
               onRowClicked={(rowData) => {
-                setState(true);
+                setRedirectState(true);
                 setData(rowData._id);
               }}
               subHeader
@@ -192,29 +208,34 @@ const Records = () => {
             <DataTable
               title="Location Providers"
               columns={userColumns}
-              data={providers}
+              data={filteredProviders}
               onRowClicked={(rowData) => {
-                setState(true);
-                setData(rowData.id);
+                setRedirectState(true);
+                setData(rowData._id);
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
               actions={actionsMemo}
             />
-            {userRedirect}
+            {providerRedirect}
           </div>
         );
       case 2:
         return (
           <div>
             <DataTable
-              title="Locations"
+              title="Listings"
               columns={locationsColumns}
-              data={listings}
+              data={filteredListings}
+              onRowClicked={(rowData) => {
+                setRedirectState(true);
+                setData(rowData._id);
+              }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
               actions={actionsMemo}
             />
+            {listingsRedirect}
           </div>
         );
       case 3:
@@ -225,18 +246,16 @@ const Records = () => {
               columns={bookingsColumns}
               data={bookings}
               onRowClicked={(rowData) => {
-                setState(true);
-                setData(rowData.id);
+                setRedirectState(true);
+                setData(rowData._id);
               }}
-              subHeader
-              subHeaderComponent={subHeaderComponentMemo}
               actions={actionsMemo}
             />
             {bookingsRedirect}
           </div>
         );
       default:
-        return <p> test</p>;
+        return <p></p>;
     }
   };
 
@@ -280,7 +299,7 @@ const Records = () => {
                       : "text-text-main"
                   } `}
                 >
-                  Locations
+                  Listings
                 </li>
                 <li
                   onClick={() => setActiveMenuItem(3)}
@@ -308,17 +327,17 @@ const Records = () => {
 const userColumns = [
   {
     name: "Name",
-    selector: (row) => row.name,
+    selector: (row) => row?.name,
     sortable: true,
   },
   {
     name: "Email Address",
-    selector: (row) => row.email,
+    selector: (row) => row?.email,
     sortable: true,
   },
   {
     name: "Phone Number",
-    selector: (row) => row.phone,
+    selector: (row) => row?.phone,
     sortable: true,
   },
 ];
@@ -344,21 +363,23 @@ const locationsColumns = [
 const bookingsColumns = [
   {
     name: "User Name",
-    selector: (row) => row.userName,
+    selector: (row) => row?.userName,
     sortable: true,
   },
   {
-    name: "Location Name",
-    selector: (row) => row.locationName,
+    name: "Listing Name",
+    selector: (row) => row?.listingName,
     sortable: true,
   },
   {
     name: "Start Date",
     selector: (row) => row.endDate,
+    format: (row) => moment(row.startDate).format("lll"),
   },
   {
     name: "End Date",
     selector: (row) => row.endDate,
+    format: (row) => moment(row.endDate).format("lll"),
   },
 ];
 
@@ -366,25 +387,15 @@ const bookingsColumns = [
 const data = [
   {
     id: 1,
-    userName: "Nevan Ng",
-    email: "nevan@mail.com",
-    phone: "91234567",
-    locationName: "Adidas @Orchard",
-    address: "2 Orchard Turn #B4-25/25A",
-    postalCode: "238801",
-    startDate: "23/02/23",
-    endDate: "24/02/23",
-  },
-  {
-    id: 2,
-    userName: "Mak Ting Xu Stanley",
-    email: "stanley@mail.com",
-    phone: "91234567",
-    locationName: "Apple @Jewel",
-    address: "78 Airport Boulevard #02-234",
-    postalCode: "819666",
-    startDate: "23/02/23",
-    endDate: "24/02/23",
+    userName: "",
+    email: "",
+    phone: "",
+    userDetails: {
+      name: "",
+    },
+    listingDetails: {
+      name: "",
+    },
   },
 ];
 

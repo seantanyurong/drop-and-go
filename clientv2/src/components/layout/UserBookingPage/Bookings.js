@@ -7,7 +7,11 @@ const Bookings = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:6003/booking`);
+      const response = await fetch(
+        `http://localhost:6003/booking/users/63f59599494a62e3f48705cf`
+      );
+
+      console.log(response);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -36,14 +40,32 @@ const Bookings = () => {
         return (
           <div>
             {bookings.map((booking, index) => {
-              return <UserBooking booking={booking} key={index} />;
+              if (
+                booking.status !== "Collected" &&
+                booking.status !== "Cancelled"
+              )
+                return <UserBooking booking={booking} key={index} />;
             })}
           </div>
         );
       case 1:
-        return <p>Completed bookings</p>;
+        return (
+          <div>
+            {bookings.map((booking, index) => {
+              if (booking.status === "Collected")
+                return <UserBooking booking={booking} key={index} />;
+            })}
+          </div>
+        );
       case 2:
-        return <p>Cancelled bookings</p>;
+        return (
+          <div>
+            {bookings.map((booking, index) => {
+              if (booking.status === "Cancelled")
+                return <UserBooking booking={booking} key={index} />;
+            })}
+          </div>
+        );
       default:
         return <p>All bookings</p>;
     }
@@ -80,6 +102,16 @@ const Bookings = () => {
                   } `}
                 >
                   Completed
+                </li>
+                <li
+                  onClick={() => setActiveMenuItem(2)}
+                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
+                    activeMenuItem === 2
+                      ? "bg-text-main text-text-dark"
+                      : "text-text-main"
+                  } `}
+                >
+                  Cancelled
                 </li>
               </ul>
             </nav>

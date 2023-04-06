@@ -10,10 +10,11 @@ const SearchResults = (props) => {
   let [popping, setPopping] = useState(false);
   let [listingID, setListingID] = useState("");
 
+  // test
   const location = {
     address: "1600 Amphitheatre Parkway, Mountain View, california.",
-    lat: 37.42216,
-    lng: -122.08427,
+    lat: 1.29027,
+    lng: 103.851959,
   };
 
   useEffect(() => {
@@ -43,8 +44,8 @@ const SearchResults = (props) => {
 
   return (
     <div className="grid grid-cols-8 gap-8 mx-auto">
-      <div className="col-span-5 px-5 sm:px-6 py-10">
-        <div className="grid grid-cols-3 gap-4">
+      <div className="col-span-8 lg:col-span-5 px-5 sm:px-6 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
           {listings.map((listing, index) => {
             return (
               <Listing
@@ -57,25 +58,29 @@ const SearchResults = (props) => {
           })}
         </div>
       </div>
-      <div className="col-span-3">
+      <div className="lg:col-span-3 hidden lg:block">
         <div className="google-map" style={{ height: "100%", width: "100%" }}>
           <GoogleMapReact
             bootstrapURLKeys={{
               key: "AIzaSyD13vaXXoPo1H2x6l4f69KxxTHsENHTCX0",
             }}
             defaultCenter={location}
-            defaultZoom={17}
+            defaultZoom={13}
           >
-            <LocationPin
-              lat={location.lat}
-              lng={location.lng}
-              text={location.address}
-            />
+            {listings.map((listing, index) => {
+              return (
+                <LocationPin
+                  lat={listing.latitude}
+                  lng={listing.longitude}
+                  text={listing.name}
+                />
+              );
+            })}
           </GoogleMapReact>
         </div>
       </div>
       {popping && (
-        <BookingForm listingID={listingID} poppingHandler={setPopping} />
+        <BookingForm listing_id={listingID} poppingHandler={setPopping} />
       )}
       {popping && <BackgroundTint clickHandler={() => setPopping(false)} />}
     </div>
