@@ -48,8 +48,8 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
     .collection("provider")
     .findOne({ email: providerLogin.email });
 
-  console.log(providerDB.password);
-  console.log(providerLogin.email);
+  // console.log(providerDB.password);
+  // console.log(providerLogin.email);
 
   if (!providerDB) {
     return res.json({ message: "Invalid Email Address!" });

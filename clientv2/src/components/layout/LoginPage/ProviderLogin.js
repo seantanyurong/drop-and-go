@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 
 const ProviderLogin = () => {
+
+    const credentials = {
+        loggedIn: "",
+        id: "",
+    };
 
     let defaultState = {
         email:"",
@@ -12,6 +17,7 @@ const ProviderLogin = () => {
     let navigate = useNavigate();
     
     const [formState, setFormState] = useState(defaultState);
+    const [authState, setAuthState] = useState(credentials);
 
     const handleChange = ({ target: { value, id } }) => {
         setFormState({ ...formState, [id]: value });
@@ -27,6 +33,9 @@ const ProviderLogin = () => {
         async function confirmLogin() {
             console.log("Submitting");
 
+            const providerId = authState.id;
+            console.log(providerId);
+
             const settings = {
                 method: "POST",
                 headers: {
@@ -37,23 +46,26 @@ const ProviderLogin = () => {
             };
             
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/provider/login", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data.token);
-                    localStorage.setItem("token", data.token);
+            const responseLogin = await fetch("http://localhost:6003/provider/login", settings);
 
-                    if (data.token) {
-                        navigate("/");
-                    } else {
-                        window.alert("Incorrect Email or Password!");
-                    }
-                });
-            
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseLogin) {
+                const message = `An error has occurred: ${responseLogin.message}`;
                 window.alert(message);
                 return;
+            }
+
+            const loginRes = await responseLogin.json();
+            if (!loginRes) {
+                window.alert(`Provider with id ${providerId} not found`);
+                return;
+            } else {
+                console.log(loginRes.token);
+                if (loginRes.token) {
+                    localStorage.setItem("token", loginRes.token);
+                    navigate("/");
+                } else {
+                    window.alert("Incorrect Email or Password!");
+                }
             }
         }
 
@@ -62,7 +74,7 @@ const ProviderLogin = () => {
 
     useEffect(() => {
         async function checkIsLoggedIn() {
-            console.log("Use Effect Triggered");
+            console.log("Checking If Logged In");
             const settings = {
                 method: "GET",
                 headers: {
@@ -70,20 +82,41 @@ const ProviderLogin = () => {
                 },
             };
 
-            const response = await fetch("http://localhost:6003/provider/authenticate", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
 
-                    if (data.isLoggedIn) {
-                        navigate("/");
-                    }
-                });
-
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseAuth) {
+                const message = `An error has occurred: ${responseAuth.message}`;
                 window.alert(message);
                 return;
+            }
+
+            const authRes = await responseAuth.json();
+            console.log(authRes);
+
+            if (!authRes) {
+                const message = `An error has occurred: ${authRes.message}`;
+                window.alert(message);
+                return;
+            } 
+            
+            if (authRes.isLoggedIn) {
+                console.log("Fetch Data Triggered");
+                const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
+                
+                if (!responseDetails) {
+                    const message = `An error has occurred: ${responseDetails.message}`;
+                    window.alert(message);
+                    return;
+                } 
+
+                const detailsRes = await responseDetails.json();
+                console.log(detailsRes);
+
+                if (detailsRes) {
+                    if (authRes.isLoggedIn) {
+                        navigate("/");
+                    }
+                } 
             }
         }
 
@@ -164,13 +197,8 @@ const ProviderLogin = () => {
                             </label>
                         </div>
 
-                        <div className="text-sm">
-                            <a 
-                                href="/signup/provider" 
-                                className="font-medium text-indigo-600 hover:text-indigo-500"
-                            >
-                                Don't Have An Account?
-                            </a>
+                        <div className="text-sm text-indigo-600">
+                            <Link to="/signup/provider">Don't Have An Account?</Link>
                         </div>
                     </div>
 
