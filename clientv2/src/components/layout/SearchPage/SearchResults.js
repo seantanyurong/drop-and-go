@@ -4,11 +4,14 @@ import GoogleMapReact from "google-map-react";
 import LocationPin from "../../ui/LocationPin";
 import BackgroundTint from "../../ui/BackgroundTint";
 import BookingForm from "../../ui/BookingForm";
+import { useParams } from "react-router-dom";
 
 const SearchResults = (props) => {
   let [listings, setListings] = useState([]);
   let [popping, setPopping] = useState(false);
   let [listingID, setListingID] = useState("");
+
+  const { text, date, bag } = useParams();
 
   // test
   const location = {
@@ -18,6 +21,8 @@ const SearchResults = (props) => {
   };
 
   useEffect(() => {
+    console.log(text, date, bag);
+
     async function fetchData() {
       const response = await fetch(`http://localhost:6003/listing`);
 
@@ -32,7 +37,8 @@ const SearchResults = (props) => {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
-        setListings(listingsRes);
+        console.log(listingsRes.filter((listing) => listing.name.search(text)));
+        setListings(listingsRes.filter((listing) => listing.name.search(text)));
       }
     }
 
