@@ -9,7 +9,39 @@ import Map from "../../ui/Maps";
 const AddLocation = () => {
 
   const navigate = useNavigate();
+  const [providerId, setProviderId] = useState(null);
   let [hours, setHours] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/user/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      setProviderId(userIDRes.id);
+      console.log(userIDRes.id);
+    }
+    fetchData();
+    console.log(providerId);
+    return;
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -58,6 +90,8 @@ const AddLocation = () => {
 
   const handleSubmit = (e) => {
 
+    const id = providerId;
+
     let body = {
       shopName: formik.values.shopName,
       capacity: formik.values.capacity,
@@ -71,7 +105,7 @@ const AddLocation = () => {
       pricePerHour: [formik.values.smallHourlyFee, formik.values.mediumHourlyFee, formik.values.largeHourlyFee],
       dateListed: new Date().toISOString(),
       review_ids: [],
-      provider_id: 'to be filled in',
+      provider_id: id,
       booking_ids: [],
       displayPicture: formik.values.displayPicture
     };

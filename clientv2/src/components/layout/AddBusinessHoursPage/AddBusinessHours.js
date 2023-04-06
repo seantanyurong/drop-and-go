@@ -6,6 +6,7 @@ import * as yup from "yup";
 const AddBusinessHours = () => {
 
   const navigate = useNavigate();
+  const [providerId, setProviderId] = useState(null);
   const [formState, setFormState] = useState({
     name: "",
     monOpening: "",
@@ -22,11 +23,45 @@ const AddBusinessHours = () => {
     satClosing: "",
     sunOpening: "",
     sunClosing: "",
+    provider_id: ""
 
   });
 
+  useEffect(() => {
+    async function fetchData() {
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/user/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      setProviderId(userIDRes.id);
+      console.log(userIDRes.id);
+    }
+    fetchData();
+    console.log(providerId);
+    return;
+  }, []);
+
+
   const handleSubmit = (e) => {
     // e.preventDefault();
+    const id = providerId;
 
     let body = {
       name: formik.values.name,
@@ -44,6 +79,7 @@ const AddBusinessHours = () => {
       satClosingHours: formik.values.satClosing,
       sunOpeningHours: formik.values.sunOpening,
       sunClosingHours: formik.values.sunClosing,
+      provider_id: id
     };
 
     async function addData() {
@@ -75,14 +111,6 @@ const AddBusinessHours = () => {
           window.alert(message);
           return;
         }
-
-        // const res = await response.json();
-        // if (!res) {
-        //   window.alert(`Business Hours not found`);
-        //   return;
-        // }
-        // return;
-
         // means a duplicate was found
       } else {
         const message = `You have another Business Hour with the same name of ${body.name}. Please use another name`;

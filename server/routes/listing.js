@@ -23,6 +23,27 @@ listingRoutes.route("/listing").get(function (req, res) {
     });
 });
 
+
+// This section will help you get a list of listings made by provider
+listingRoutes.route("/listing/provider/:providerId").get(function (req, res) {
+  console.log("Searching for listings related to provider");
+  let db_connect = dbo.getDb("dropandgo");
+  let myquery = [
+    {
+      $match: {
+        provider_id: req.params.providerId,
+      },
+    },
+  ];
+  db_connect
+    .collection("listing")
+    .aggregate(myquery)
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // This section will help you get a single listing by name
 listingRoutes.route("/listing/name/:name").post(function (req, res) {
   console.log("Searching for name");
@@ -67,6 +88,7 @@ listingRoutes.route("/listing/add").post(function (req, response) {
     provider_id: req.body.provider_id,
     booking_ids: req.body.booking_ids,
     displayPicture: req.body.displayPicture,
+    provider_id: req.body.provider_id
   };
   db_connect.collection("listing").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -95,6 +117,7 @@ listingRoutes.route("/listing/update/:id").post(function (req, response) {
       provider_id: req.body.provider_id,
       booking_ids: req.body.booking_ids,
       displayPicture: req.body.displayPicture,
+      provider_id: req.body.provider_id
     },
   };
   db_connect

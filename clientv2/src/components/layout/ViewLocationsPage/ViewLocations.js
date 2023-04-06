@@ -13,10 +13,33 @@ const ViewLocations = () => {
   }
 
 
-  // need to modify this to only fetch listing related to owner
   useEffect(() => {
     async function fetchData() {
-      const responseListings = await fetch(`http://localhost:6003/listing`);
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/user/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      console.log(userIDRes);
+
+      // get listings based on id
+      const responseListings = await fetch(`http://localhost:6003/listing/provider/${userIDRes.id}`);
 
 
       if (!responseListings.ok) {
@@ -72,8 +95,7 @@ const ViewLocations = () => {
           return (
             <ProviderListingCard
               listing={listing}
-              // listingIDHandler={setListingID}
-              // poppingHandler={setPopping}
+
               key={index}
             />
           );

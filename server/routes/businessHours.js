@@ -23,13 +23,32 @@ businessHoursRoutes.route("/businessHours").get(function (req, res) {
         });
 });
 
+// This section will help you get a list of business Hours made by the provider
+businessHoursRoutes.route("/businessHours/provider/:providerId").get(function (req, res) {
+    let db_connect = dbo.getDb("dropandgo");
+    let myquery = [
+        {
+            $match: {
+                provider_id: req.params.providerId,
+            },
+        },
+    ];
+    db_connect
+        .collection("businessHours")
+        .aggregate(myquery)
+        .toArray(function (err, result) {
+            if (err) throw err;
+            res.json(result);
+        });
+});
+
 // This section will help you update a businessHours by id.
 businessHoursRoutes.route("/businessHours/update/:id").post(function (req, response) {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     let newvalues = {
         $set: {
-            // name: req.body.name,
+            name: req.body.name,
             monOpeningHours: req.body.monOpeningHours,
             monClosingHours: req.body.monClosingHours,
             tueOpeningHours: req.body.tueOpeningHours,
@@ -44,6 +63,7 @@ businessHoursRoutes.route("/businessHours/update/:id").post(function (req, respo
             satClosingHours: req.body.satClosingHours,
             sunOpeningHours: req.body.sunOpeningHours,
             sunClosingHours: req.body.sunClosingHours,
+            provider_id: req.body.provider_id
         },
     };
     db_connect
@@ -99,6 +119,8 @@ businessHoursRoutes.route("/businessHours/add").post(function (req, response) {
         satClosingHours: req.body.satClosingHours,
         sunOpeningHours: req.body.sunOpeningHours,
         sunClosingHours: req.body.sunClosingHours,
+        provider_id: req.body.provider_id
+
     };
     db_connect.collection("businessHours").insertOne(myobj, function (err, res) {
         if (err) throw err;
