@@ -1,43 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   MagnifyingGlassIcon,
-  CalendarDaysIcon,
+  // CalendarDaysIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const SearchBar = (props) => {
-  const [searchInput, setSearchInput] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [numOfBags, setNumOfBags] = useState(1);
+  const navigate = useNavigate();
+  const { text, date, bag } = useParams();
 
-  const locations = [
-    "London",
-    "Paris",
-    "Pasir2",
-    "Pasir33",
-    "Pep",
-    "Pepper",
-    "Singapore",
-    "Sydney"
-  ];
+  const [searchInput, setSearchInput] = useState(text);
+  const [startDate, setStartDate] = useState(
+    date ? new Date(date) : new Date()
+  );
+  const [numOfBags, setNumOfBags] = useState(bag || 1);
 
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchInput(e.target.value);
   };
-
-  if (searchInput.length > 0) {
-    locations.filter((location) => {
-      return location.match(searchInput);
-    });
-  }
-
-  const onSearch = (searchTerm) => {
-    setSearchInput(searchTerm);
-  }
 
   const handleNumOfBagsChange = (e) => {
     e.preventDefault();
@@ -46,21 +31,41 @@ const SearchBar = (props) => {
     setNumOfBags(val);
   };
 
+  const onSubmit = () => {
+    console.log(searchInput);
+    console.log(startDate);
+    console.log(numOfBags);
+
+    if (searchInput && startDate && numOfBags) {
+      navigate(`/search/${searchInput}/${startDate}/${numOfBags}`);
+      navigate(0);
+    } else {
+      navigate(`/search`);
+      navigate(0);
+    }
+  };
+
   return (
     <div>
       <div className="mx-auto px-5 sm:px-6 py-10 shadow-xl">
-        <div className={`mx-auto ${props.maxWidth} grid ${props.gridCols} py-3 px-4 gap-6 rounded-3xl border-[1px] border-border-main shadow-md bg-white`}>
+        <div
+          className={`mx-auto ${props.maxWidth} grid ${props.gridCols} py-3 px-4 gap-6 rounded-3xl border-[1px] border-border-main shadow-md bg-white`}
+        >
           {/* Location */}
           <div className="col-span-3 flex items-center justify-between">
             <div className="flex items-center">
-              <MagnifyingGlassIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+              <MagnifyingGlassIcon
+                className="h-5 w-5 mr-2"
+                aria-hidden="true"
+              />
               <div>
                 <input
                   className="focus:outline-0"
                   type="text"
                   placeholder="Search here"
                   onChange={handleSearchChange}
-                  value={searchInput} />
+                  value={searchInput}
+                />
               </div>
             </div>
             <div className="w-[1px] h-full bg-gray-200"></div>
@@ -68,7 +73,7 @@ const SearchBar = (props) => {
 
           {/* Calendar */}
 
-          <div className="col-span-1 flex items-center justify-between">
+          {/* <div className="col-span-1 flex items-center justify-between">
             <div className="flex items-center">
               <CalendarDaysIcon className="h-5 w-5 mr-2" aria-hidden="true" />
               <div>
@@ -80,7 +85,7 @@ const SearchBar = (props) => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Bags */}
           <div className="col-span-1 flex items-center">
@@ -96,31 +101,35 @@ const SearchBar = (props) => {
           </div>
 
           {/* Button */}
-          {props.button &&
+          {props.button && (
             <div className="col-span-1 flex items-center justify-end">
               <button
                 className="bg-orange-600 rounded-xl text-white p-1.5 shadow-md"
-                onClick={() => onSearch(searchInput)}>
+                onClick={() => onSubmit()}
+              >
                 Drop&Go!
               </button>
             </div>
-          }
+          )}
         </div>
 
         {/* Search List */}
-        <div >
-          {locations.filter(location => {
-            const searchTerm = searchInput.toLowerCase();
-            const value = location.toLowerCase();
+        {/* <div>
+          {locations
+            .filter((location) => {
+              const searchTerm = searchInput.toLowerCase();
+              const value = location.toLowerCase();
 
-            return searchTerm && value.startsWith(searchTerm) && searchTerm !== value;
-          })
+              return (
+                searchTerm &&
+                value.startsWith(searchTerm) &&
+                searchTerm !== value
+              );
+            })
             .map((location) => (
-              <div
-                onClick={() => onSearch(location)}
-              >{location}</div>
+              <div onClick={() => onSearch(location)}>{location}</div>
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

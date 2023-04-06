@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const Header = () => {
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -39,7 +38,10 @@ const Header = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+      const responseAuth = await fetch(
+        "http://localhost:6003/user/authenticate",
+        settings
+      );
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.statusText}`;
@@ -54,7 +56,7 @@ const Header = () => {
         const message = `An error has occurred: ${authRes.statusText}`;
         window.alert(message);
         return;
-      //} else if (!authRes.isLoggedIn) {
+        //} else if (!authRes.isLoggedIn) {
         //navigate("/login/user");
       } else {
         setAuthState(authRes);
@@ -137,6 +139,7 @@ const Header = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={() => navigate(`/user/bookings`)}
                             >
                               My bookings
                             </div>

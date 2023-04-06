@@ -4,11 +4,14 @@ import GoogleMapReact from "google-map-react";
 import LocationPin from "../../ui/LocationPin";
 import BackgroundTint from "../../ui/BackgroundTint";
 import BookingForm from "../../ui/BookingForm";
+import { useParams } from "react-router-dom";
 
 const SearchResults = (props) => {
   let [listings, setListings] = useState([]);
   let [popping, setPopping] = useState(false);
   let [listingID, setListingID] = useState("");
+
+  const { text, date, bag } = useParams();
 
   // test
   const location = {
@@ -18,6 +21,8 @@ const SearchResults = (props) => {
   };
 
   useEffect(() => {
+    console.log(text, date, bag);
+
     async function fetchData() {
       const response = await fetch(`http://localhost:6003/listing`);
 
@@ -28,11 +33,62 @@ const SearchResults = (props) => {
       }
 
       const listingsRes = await response.json();
+
+      const response2 = await fetch(`http://localhost:6003/booking`);
+
+      if (!response2.ok) {
+        const message = `An error has occurred: ${response2.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const bookingsRes = await response2.json();
+      if (!bookingsRes) {
+        window.alert(`Bookings cannot be retrieved`);
+        return;
+      }
+
       if (!listingsRes) {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
-        setListings(listingsRes);
+        console.log(
+          listingsRes
+            .filter((listing) => listing.name.search(text) !== -1)
+            .filter((listing) => {
+              const remainingCapacity =
+                listing.capacity -
+                bookingsRes
+                  .filter((a) => a.listing_id === listing._id)
+                  .filter((a) => a.status === "Active")
+                  .reduce((prev, next) => prev + next.size, 0);
+
+              console.log(listing._id);
+              console.log(remainingCapacity);
+
+              return remainingCapacity >= 0;
+            })
+        );
+        setListings(
+          listingsRes
+            .filter((listing) => listing.name.search(text) !== -1)
+            .filter((listing) => {
+              const remainingCapacity =
+                listing.capacity -
+                bookingsRes
+                  .filter((a) => a.listing_id === listing._id)
+                  .filter((a) => a.status === "Active")
+                  .reduce(
+                    (prev, next) => prev + (next.size ? next.size : 0),
+                    0
+                  );
+
+              console.log(listing._id);
+              console.log(remainingCapacity);
+
+              return remainingCapacity >= 0;
+            })
+        );
       }
     }
 
