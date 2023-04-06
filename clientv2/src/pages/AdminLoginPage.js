@@ -1,12 +1,14 @@
-import React from 'react'
-import Header from '../components/layout/LoginPage/Header'
-import AdminLogin from '../components/layout/LoginPage/AdminLogin'
+import React from 'react';
+import DefaultHeader from '../components/ui/DefaultHeader';
+import AdminLogin from '../components/layout/LoginPage/AdminLogin';
+import FooterBottom from "../components/ui/FooterBottom";
 
 const AdminLoginPage = () => {
     return(
         <div>
-            <Header></Header>
+            <DefaultHeader></DefaultHeader>
             <AdminLogin></AdminLogin>
+            <FooterBottom></FooterBottom>
         </div>
     );
 }

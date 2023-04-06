@@ -1,11 +1,11 @@
 import React from "react";
 import AboutUs from "../components/layout/AboutUsPage/AboutUs";
-import Header from "../components/layout/UserBookingPage/Header";
+import DefaultHeader from '../components/ui/DefaultHeader';
 
 const AboutUsPage = () => {
   return (
     <div>
-      <Header />
+      <DefaultHeader />
       <AboutUs />
     </div>
   );
