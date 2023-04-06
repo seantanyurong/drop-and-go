@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import LogoImg from "../../../assets/Logo.png";
+import LogoImg from "../../assets/Logo.png";
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
@@ -95,7 +95,7 @@ const ProviderHeader = () => {
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/provider/view-locations" className="flex items-center">
               <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
             </Link>
           </div>
