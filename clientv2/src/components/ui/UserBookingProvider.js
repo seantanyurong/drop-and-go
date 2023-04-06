@@ -64,7 +64,7 @@ const UserBookingProvider = (props) => {
       {listing && (
         <div
           className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md cursor-pointer hover:bg-box-hover"
-          onClick={() => navigate(`/user/bookings/${props.booking._id}`)}
+          onClick={() => navigate(`/provider/bookings/${props.booking._id}`)}
         >
           <div className="flex items-center mb-1 justify-between">
             <div className="flex space-x-3 items-center">

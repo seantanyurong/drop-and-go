@@ -27,6 +27,7 @@ import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
 import AddBusinessHoursPage from "./pages/AddBusinessHoursPage";
 import ProviderBookingPage from "./pages/ProviderBookingPage";
 
+import ProviderBookingDetailsPage from "./pages/ProviderBookingDetailsPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import ListingDetailsPage from "./pages/ListingDetailsPage";
 
@@ -96,6 +97,10 @@ function App() {
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
+        />
+        <Route
+          path="/provider/bookings/:bookingId"
+          element={<ProviderBookingDetailsPage />}
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />

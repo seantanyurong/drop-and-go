@@ -28,12 +28,12 @@ const AddLocation = () => {
 
   });
 
-  const { listingId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:6003/listing/${listingId}
+      const response = await fetch(`http://localhost:6003/listing/${id}
       `);
 
       if (!response.ok) {
@@ -46,7 +46,7 @@ const AddLocation = () => {
       console.log(res);
       console.log(res.name);
       if (!res) {
-        window.alert(`Listing with id ${listingId} not found`);
+        window.alert(`Listing with id ${id} not found`);
         return;
       } else {
         const adrs = res.address;
@@ -164,7 +164,7 @@ const AddLocation = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      const response = await fetch(`http://localhost:6003/listing/update/${listingId}`, settings);
+      const response = await fetch(`http://localhost:6003/listing/update/${id}`, settings);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;

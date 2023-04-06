@@ -86,6 +86,14 @@ const ViewBusinessHours = () => {
                                 >
                                     Add Business Hours
                                 </li>
+                                <li
+                                    onClick={() => navigate(`/provider/view-locations`)}
+                                    className={`cursor-pointer rounded-t-sm  hover:text-orange-400  font-semibold px-6 flex items-center text-sm py-[0.6rem]
+                  bg-text-main text-text-dark mx-2
+                  ` }
+                                >
+                                    Listings
+                                </li>
 
                             </ul>
                         </nav>
