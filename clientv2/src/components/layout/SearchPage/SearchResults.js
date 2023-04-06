@@ -11,7 +11,7 @@ const SearchResults = (props) => {
   let [popping, setPopping] = useState(false);
   let [listingID, setListingID] = useState("");
 
-  const { text, date, bag } = useParams();
+  const { text, bag } = useParams();
 
   // test
   const location = {
@@ -21,7 +21,7 @@ const SearchResults = (props) => {
   };
 
   useEffect(() => {
-    console.log(text, date, bag);
+    console.log(text, bag);
 
     async function fetchData() {
       const response = await fetch(`http://localhost:6003/listing`);
@@ -52,43 +52,30 @@ const SearchResults = (props) => {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
-        console.log(
-          listingsRes
-            .filter((listing) => listing.name.search(text) !== -1)
-            .filter((listing) => {
-              const remainingCapacity =
-                listing.capacity -
-                bookingsRes
-                  .filter((a) => a.listing_id === listing._id)
-                  .filter((a) => a.status === "Active")
-                  .reduce((prev, next) => prev + next.size, 0);
+        if (text && bag) {
+          setListings(
+            listingsRes
+              .filter((listing) => listing.name.search(text) !== -1)
+              .filter((listing) => {
+                const remainingCapacity =
+                  listing.capacity -
+                  bookingsRes
+                    .filter((a) => a.listing_id === listing._id)
+                    .filter((a) => a.status === "Active")
+                    .reduce(
+                      (prev, next) => prev + (next.size ? next.size : 0),
+                      0
+                    );
 
-              console.log(listing._id);
-              console.log(remainingCapacity);
+                console.log(listing._id);
+                console.log(remainingCapacity);
 
-              return remainingCapacity >= 0;
-            })
-        );
-        setListings(
-          listingsRes
-            .filter((listing) => listing.name.search(text) !== -1)
-            .filter((listing) => {
-              const remainingCapacity =
-                listing.capacity -
-                bookingsRes
-                  .filter((a) => a.listing_id === listing._id)
-                  .filter((a) => a.status === "Active")
-                  .reduce(
-                    (prev, next) => prev + (next.size ? next.size : 0),
-                    0
-                  );
-
-              console.log(listing._id);
-              console.log(remainingCapacity);
-
-              return remainingCapacity >= 0;
-            })
-        );
+                return remainingCapacity >= bag;
+              })
+          );
+        } else {
+          setListings(listingsRes);
+        }
       }
     }
 
@@ -99,7 +86,7 @@ const SearchResults = (props) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-8 gap-8 mx-auto">
+    <div className="grid grid-cols-8 gap-8 mx-auto min-h-[1000px]">
       <div className="col-span-8 lg:col-span-5 px-5 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
           {listings.map((listing, index) => {

@@ -40,7 +40,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
-        <Route path="/search/:text?/:date?/:bag?" element={<SearchPage />} />
+        <Route path="/search/:text?/:bag?" element={<SearchPage />} />
         <Route path="/listing/:listingId" element={<ListingDetailsPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/provider/add-location" element={<AddLocationPage />} />

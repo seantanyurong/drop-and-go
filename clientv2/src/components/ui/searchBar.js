@@ -11,12 +11,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const SearchBar = (props) => {
   const navigate = useNavigate();
-  const { text, date, bag } = useParams();
+  const { text, bag } = useParams();
 
   const [searchInput, setSearchInput] = useState(text);
-  const [startDate, setStartDate] = useState(
-    date ? new Date(date) : new Date()
-  );
+  // const [startDate, setStartDate] = useState(
+  //   date ? new Date(date) : new Date()
+  // );
   const [numOfBags, setNumOfBags] = useState(bag || 1);
 
   const handleSearchChange = (e) => {
@@ -33,11 +33,10 @@ const SearchBar = (props) => {
 
   const onSubmit = () => {
     console.log(searchInput);
-    console.log(startDate);
     console.log(numOfBags);
 
-    if (searchInput && startDate && numOfBags) {
-      navigate(`/search/${searchInput}/${startDate}/${numOfBags}`);
+    if (searchInput && numOfBags) {
+      navigate(`/search/${searchInput}/${numOfBags}`);
       navigate(0);
     } else {
       navigate(`/search`);
