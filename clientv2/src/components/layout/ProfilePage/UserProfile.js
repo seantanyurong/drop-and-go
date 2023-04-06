@@ -59,7 +59,7 @@ const UserProfile = () => {
             const responseUpdate = await fetch(`http://localhost:6003/user/update/${userId}`, settings)
     
             if (!responseUpdate) {
-                const message = `An error has occurred: ${responseUpdate.statusText}`;
+                const message = `An error has occurred: ${responseUpdate.message}`;
                 window.alert(message);
                 return;
             }
@@ -93,7 +93,7 @@ const UserProfile = () => {
             const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
 
             if (!responseAuth) {
-                const message = `An error has occurred: ${responseAuth.statusText}`;
+                const message = `An error has occurred: ${responseAuth.message}`;
                 window.alert(message);
                 return;
             }
@@ -102,7 +102,7 @@ const UserProfile = () => {
             console.log(authRes);
 
             if (!authRes) {
-                const message = `An error has occurred: ${authRes.statusText}`;
+                const message = `An error has occurred: ${authRes.message}`;
                 window.alert(message);
                 return;
             } else {
@@ -113,7 +113,7 @@ const UserProfile = () => {
             const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
         
             if (!responseDetails) {
-                const message = `An error has occurred: ${responseDetails.statusText}`;
+                const message = `An error has occurred: ${responseDetails.message}`;
                 window.alert(message);
                 return;
             }
@@ -122,7 +122,7 @@ const UserProfile = () => {
             console.log(detailsRes);
 
             if (!detailsRes) {
-                const message = `An error has occurred: ${detailsRes.statusText}`;
+                const message = `An error has occurred: ${detailsRes.message}`;
                 window.alert(message);
                 return;
             } else {

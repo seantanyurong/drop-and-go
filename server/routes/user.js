@@ -48,8 +48,8 @@ userRoutes.route("/user/login").post(async function (req, res) {
     .collection("user")
     .findOne({ email: userLogin.email });
 
-  console.log(userDB.password);
-  console.log(userLogin.email);
+  // console.log(userDB.password);
+  // console.log(userLogin.email);
 
   if (!userDB) {
     return res.json({ message: "Invalid Email Address!" });

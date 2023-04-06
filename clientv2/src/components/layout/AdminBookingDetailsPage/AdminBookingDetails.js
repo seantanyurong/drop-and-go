@@ -202,14 +202,14 @@ const AdminBookingDetails = () => {
 const data = [
   {
     id: 1,
-    userName: "Nevan Ng",
-    email: "nevan@mail.com",
-    phone: "91234567",
-    locationName: "Adidas @Orchard",
-    address: "2 Orchard Turn #B4-25/25A",
-    postalCode: "238801",
-    startDate: "23/02/23",
-    endDate: "24/02/23",
+    userName: "",
+    email: "",
+    phone: "",
+    locationName: "",
+    address: "",
+    postalCode: "",
+    startDate: "",
+    endDate: "",
   },
 ];
 

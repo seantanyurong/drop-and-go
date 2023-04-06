@@ -17,6 +17,7 @@ const BookingForm = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [bags, setBags] = useState(1);
+  const [size, setSize] = useState(1);
   const [paynow, setPaynow] = useState(false);
   const [userID, setUserID] = useState("");
 
@@ -72,29 +73,68 @@ const BookingForm = (props) => {
     // When a post request is sent to the create url, we'll add a new record to the database.
     console.log("Submitting");
 
-    await fetch("http://localhost:6003/booking/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        startDate: startDate,
-        endDate: endDate,
-        days: days(endDate, startDate),
-        paynow: paynow,
-        bags: bags,
-        status: "Active",
-        listing_id: props.listing_id,
-        user_id: userID,
-        startTime: null,
-        endTime: null,
-      }),
-    }).catch((error) => {
-      window.alert(error);
-      return;
-    });
+    const response = await fetch(`http://localhost:6003/booking`);
 
-    props.poppingHandler(false);
+    if (!response.ok) {
+      const message = `An error has occurred: ${response.statusText}`;
+      window.alert(message);
+      return;
+    }
+
+    const bookingsRes = await response.json();
+    if (!bookingsRes) {
+      window.alert(`Listings cannot be retrieved`);
+      return;
+    }
+
+    // Get current capacity
+    console.log(
+      bookingsRes
+        .filter((a) => a.listing_id === props.listing_id)
+        .filter((a) => a.status === "Active")
+        .reduce((prev, next) => prev + next.size, 0)
+    );
+
+    const remainingCapacity =
+      listing.capacity -
+      bookingsRes
+        .filter((a) => a.listing_id === props.listing_id)
+        .filter((a) => a.status === "Active")
+        .reduce((prev, next) => prev + next.size, 0);
+
+    console.log(remainingCapacity);
+
+    if (remainingCapacity < size * bags) {
+      alert("Not sufficient space. Please decrease bag count or bag size.");
+    } else {
+      await fetch("http://localhost:6003/booking/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: startDate,
+          endDate: endDate,
+          days: days(endDate, startDate),
+          paynow: paynow,
+          bags: bags,
+          size: size * bags,
+          status: "Active",
+          listing_id: props.listing_id,
+          user_id: userID,
+          startTime: null,
+          endTime: null,
+          finalPrice: paynow
+            ? 0.0
+            : listing.pricePerDay[0] * bags * days(endDate, startDate) + 1,
+        }),
+      }).catch((error) => {
+        window.alert(error);
+        return;
+      });
+
+      props.poppingHandler(false);
+    }
   }
 
   const days = (date_1, date_2) => {
@@ -227,8 +267,39 @@ const BookingForm = (props) => {
                   </div>
                 </div>
 
-                {/* Payment Type */}
+                {/* Bag Sizing */}
                 <div className="flex space-x-6 mt-10">
+                  <div
+                    className={`flex-auto border-[1px] border-border-main p-2 rounded-xl mb-4 shadow-md cursor-pointer ${
+                      size === 1 ? "bg-teal-500" : ""
+                    }`}
+                    onClick={() => setSize(1)}
+                  >
+                    <h3 className="text-sm font-semibold">Small</h3>
+                    <p className="text-xs font-light">1m x 1m x 1m</p>
+                  </div>
+                  <div
+                    className={`flex-auto border-[1px] border-border-main p-2 rounded-xl mb-4 shadow-md cursor-pointer ${
+                      size === 2 ? "bg-teal-500" : ""
+                    }`}
+                    onClick={() => setSize(2)}
+                  >
+                    <h3 className="text-sm font-semibold">Medium</h3>
+                    <p className="text-xs font-light">2m x 2m x 2m</p>
+                  </div>
+                  <div
+                    className={`flex-auto border-[1px] border-border-main p-2 rounded-xl mb-4 shadow-md cursor-pointer ${
+                      size === 3 ? "bg-teal-500" : ""
+                    }`}
+                    onClick={() => setSize(3)}
+                  >
+                    <h3 className="text-sm font-semibold">Large</h3>
+                    <p className="text-xs font-light">3m x 3m x 3m</p>
+                  </div>
+                </div>
+
+                {/* Payment Type */}
+                <div className="flex space-x-6 mt-2">
                   <div
                     className={`flex-auto border-[1px] border-border-main p-2 rounded-xl mb-4 shadow-md cursor-pointer ${
                       paynow ? "bg-teal-500" : ""
