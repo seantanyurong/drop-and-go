@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
@@ -8,6 +8,8 @@ const Header = () => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
+  let navigate = useNavigate();
 
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
@@ -73,13 +75,13 @@ const Header = () => {
                         <Menu.Item>
                           {({ active }) => (
                             <div
-                              href="/user/bookings"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={() => navigate(`/user/bookings`)}
                             >
                               My bookings
                             </div>
