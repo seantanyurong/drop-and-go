@@ -136,9 +136,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
             />
             {failValidation &&
                 (<span className='text-red-400'>{formError}</span>)}
-            <div className="py-2 text-gray-700 leading-tight">
-                Postal Code is: {postalCode}
-            </div>
+
             <ComboboxPopover>
                 <ComboboxList>
                     {status === "OK" &&

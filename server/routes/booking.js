@@ -100,6 +100,7 @@ bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
     });
 });
 
+// This helps you get all the bookings at a certain listing ID
 bookingRoutes.route("/booking/listings/:listingId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
