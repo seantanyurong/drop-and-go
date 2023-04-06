@@ -73,7 +73,7 @@ const Searchbar = (props) => {
           {props.button &&
             <div className="col-span-1 flex items-center justify-end">
               <button
-                className="bg-orange-600 rounded-lg text-white p-1.5 shadow-md"
+                className="bg-orange-600 rounded-xl text-white p-1.5 shadow-md"
                 onClick={() => onSearch(searchInput)}>
                 Drop&Go!
               </button>
