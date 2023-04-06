@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { ArrowLeftIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon} from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 
