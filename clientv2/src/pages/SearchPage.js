@@ -7,9 +7,7 @@ const SearchPage = () => {
   return (
     <div>
       <Header />
-      <SearchBar
-        gridCols="grid-cols-5"
-        maxWidth="max-w-lg" />
+      <SearchBar button={true} gridCols="grid-cols-6" maxWidth="max-w-2xl" />
       <SearchResults />
     </div>
   );

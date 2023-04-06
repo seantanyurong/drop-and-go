@@ -35,7 +35,14 @@ const SearchBar = (props) => {
     console.log(searchInput);
     console.log(startDate);
     console.log(numOfBags);
-    navigate(`/search/${searchInput}/${startDate}/${numOfBags}`);
+
+    if (searchInput && startDate && numOfBags) {
+      navigate(`/search/${searchInput}/${startDate}/${numOfBags}`);
+      navigate(0);
+    } else {
+      navigate(`/search`);
+      navigate(0);
+    }
   };
 
   return (

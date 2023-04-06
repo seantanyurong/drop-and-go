@@ -37,8 +37,12 @@ const SearchResults = (props) => {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
-        console.log(listingsRes.filter((listing) => listing.name.search(text)));
-        setListings(listingsRes.filter((listing) => listing.name.search(text)));
+        console.log(
+          listingsRes.filter((listing) => listing.name.search(text) !== -1)
+        );
+        setListings(
+          listingsRes.filter((listing) => listing.name.search(text) !== -1)
+        );
       }
     }
 
