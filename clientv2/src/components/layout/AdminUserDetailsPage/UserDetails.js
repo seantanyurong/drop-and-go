@@ -111,6 +111,11 @@ const UserDetails = ({ entityType }) => {
     inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };
 
+  const statusStyle = {
+    active: "row-span-2 rounded bg-green-400 p-3",
+    inactive: "row-span-2 rounded bg-red-400 p-3",
+  }
+
   return (
     <div>
       {/* Name and Actions */}
@@ -216,7 +221,7 @@ const UserDetails = ({ entityType }) => {
                 {moment(formState.joinDate).format("DD/MM/YYYY")}
               </h3>
             </div>
-            <div className="row-span-2 rounded bg-green-400 p-3">
+            <div className={formState.status === "Active" ? statusStyle.active : statusStyle.inactive}>
               <p className="text-sm font-light text-white">Status</p>
               {editState ? (
                 <select

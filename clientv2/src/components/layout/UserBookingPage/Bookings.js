@@ -7,11 +7,31 @@ const Bookings = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(
-        `http://localhost:6003/booking/users/63f59599494a62e3f48705cf`
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/user/authenticate`,
+        settings
       );
 
-      console.log(response);
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+
+      console.log(userIDRes);
+
+      const response = await fetch(
+        `http://localhost:6003/booking/users/${userIDRes.id}`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -24,6 +44,7 @@ const Bookings = () => {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
+        console.log(bookingsRes);
         setBookings(bookingsRes);
       }
     }

@@ -32,7 +32,7 @@ adminRoutes.route("/admin/authenticate").get(function (req, res) {
           message: "Failed To Authenticate Admin",
         });
       console.log(decoded.id);
-      return res.json({ isLoggedIn: true, id: decoded.id});
+      return res.json({ isLoggedIn: true, id: decoded.id, name: decoded.name });
     });
   } else {
     console.log("Incorrect Token Auth");
