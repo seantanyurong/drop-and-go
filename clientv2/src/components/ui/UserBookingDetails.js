@@ -11,6 +11,9 @@ const UserBookingDetails = () => {
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const [finalPrice, setFinalPrice] = useState();
+  const [starNumber, setStarNumber] = useState(3);
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -265,6 +268,24 @@ const UserBookingDetails = () => {
                   {`$${finalPrice || 0.0}`}
                 </p>
               </div>
+            </div>
+          </div>
+
+          <div className="border-[1px] border-border-main p-4 rounded-md mt-8 mb-4 shadow-md">
+            <div className="flex items-center mb-1 justify-between">
+              <div className="flex space-x-3 items-center">
+                <h3 className="font-semibold">Write a review!</h3>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-light">How was your experience?</p>
+              <input
+                className="focus:outline-0 border-[1px] border-gray-400"
+                type="text"
+                placeholder="Subject"
+                onChange={(e) => setSubject(e.target.value)}
+                value={subject}
+              />
             </div>
           </div>
         </div>
