@@ -134,6 +134,9 @@ const BookingForm = (props) => {
       });
 
       props.poppingHandler(false);
+      alert(
+        "Booking successfully made. Please view your bookings to see the latest status."
+      );
     }
   }
 

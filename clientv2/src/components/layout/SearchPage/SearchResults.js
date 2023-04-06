@@ -11,7 +11,7 @@ const SearchResults = (props) => {
   let [popping, setPopping] = useState(false);
   let [listingID, setListingID] = useState("");
 
-  const { text, date, bag } = useParams();
+  const { text, bag } = useParams();
 
   // test
   const location = {
@@ -21,7 +21,7 @@ const SearchResults = (props) => {
   };
 
   useEffect(() => {
-    console.log(text, date, bag);
+    console.log(text, bag);
 
     async function fetchData() {
       const response = await fetch(`http://localhost:6003/listing`);
@@ -66,7 +66,7 @@ const SearchResults = (props) => {
               console.log(listing._id);
               console.log(remainingCapacity);
 
-              return remainingCapacity >= 0;
+              return remainingCapacity >= bag;
             })
         );
         setListings(
@@ -86,7 +86,7 @@ const SearchResults = (props) => {
               console.log(listing._id);
               console.log(remainingCapacity);
 
-              return remainingCapacity >= 0;
+              return remainingCapacity >= bag;
             })
         );
       }
