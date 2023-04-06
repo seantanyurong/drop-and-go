@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import BecomeAProviderPage from "./pages/BecomeAProviderPage";
+import AboutUsPage from "./pages/AboutUsPage";
 
 import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
@@ -94,6 +95,7 @@ function App() {
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
       </Routes>
     </main>
   );
