@@ -18,9 +18,32 @@ const BookingForm = (props) => {
   const [endDate, setEndDate] = useState(new Date());
   const [bags, setBags] = useState(1);
   const [paynow, setPaynow] = useState(false);
+  const [userID, setUserID] = useState("");
 
   useEffect(() => {
     async function fetchData() {
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const getUserID = await fetch(
+        `http://localhost:6003/user/authenticate`,
+        settings
+      );
+
+      if (!getUserID.ok) {
+        const message = `An error has occurred: ${getUserID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const getUserIDRes = await getUserID.json();
+
+      setUserID(getUserIDRes.id);
+
       const id = props.listing_id;
       const response = await fetch(`http://localhost:6003/listing/${id}`);
 
@@ -62,7 +85,7 @@ const BookingForm = (props) => {
         bags: bags,
         status: "Active",
         listing_id: props.listing_id,
-        user_id: "63f59599494a62e3f48705cf", // replace with actual ID down the road
+        user_id: userID,
         startTime: null,
         endTime: null,
       }),
