@@ -63,12 +63,6 @@ const UserBookingDetails = () => {
     // eslint-disable-next-line
   }, []);
 
-  const hours = (date_1, date_2) => {
-    let difference = date_1.getTime() - date_2.getTime();
-    let TotalHours = Math.ceil(difference / (1000 * 3600));
-    return TotalHours;
-  };
-
   useEffect(() => {
     async function onStatusChange() {
       console.log(status);
@@ -94,7 +88,13 @@ const UserBookingDetails = () => {
     onStatusChange();
 
     // eslint-disable-next-line
-  }, [status, endTime, startTime, finalPrice]);
+  }, [status, finalPrice, endTime, startTime]);
+
+  const hours = (date_1, date_2) => {
+    let difference = date_1.getTime() - date_2.getTime();
+    let TotalHours = Math.ceil(difference / (1000 * 3600));
+    return TotalHours;
+  };
 
   return (
     <div>
@@ -207,17 +207,17 @@ const UserBookingDetails = () => {
                     ? "bg-gray-100 text-slate-300"
                     : "bg-box-gray"
                 }`}
-                onClick={(e) => {
+                onClick={async (e) => {
                   setEndTime(new Date());
+                  setStatus("Collected");
                   if (booking.paynow) {
                     setFinalPrice(
                       listing.pricePerHour[0] *
                         booking.bags *
-                        hours(endTime, startTime) +
+                        hours(new Date(), startTime) +
                         1
                     );
                   }
-                  setStatus("Collected");
                 }}
               >
                 Collected
