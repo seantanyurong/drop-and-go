@@ -29,7 +29,8 @@ const ProviderLogin = () => {
         let body = {
             email: formState.email,
             password: formState.password,
-        }
+        };
+        
         async function confirmLogin() {
             console.log("Submitting");
 
@@ -62,7 +63,7 @@ const ProviderLogin = () => {
                 console.log(loginRes.token);
                 if (loginRes.token) {
                     localStorage.setItem("token", loginRes.token);
-                    navigate("/");
+                    navigate("/provider/view-locations");
                 } else {
                     window.alert("Incorrect Email or Password!");
                 }
@@ -112,10 +113,9 @@ const ProviderLogin = () => {
                 const detailsRes = await responseDetails.json();
                 console.log(detailsRes);
 
-                if (detailsRes) {
-                    if (authRes.isLoggedIn) {
-                        navigate("/");
-                    }
+                if (detailsRes._id === authRes.id) {
+                    setAuthState(authRes);
+                    navigate("/provider/view-locations");
                 } 
             }
         }
