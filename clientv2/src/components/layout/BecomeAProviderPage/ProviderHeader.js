@@ -14,7 +14,7 @@ const ProviderHeader = () => {
                         Do you own a business?
                     </h1>
 
-                    <h2 className="py-0 px-[10px] max-w-none text-white font-medium mx-auto mt-0 mb-[20px] text-center text-lg leading-5 tracking-wider">
+                    <h2 className="py-0 px-[10px] max-w-none text-white font-medium mx-auto mt-0 mb-[20px] text-center text-lg leading-5">
                         Whether you own a hotel, shop or cafe, you can monetise on any unused space
                     </h2>
 

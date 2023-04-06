@@ -126,61 +126,6 @@ const Records = () => {
     );
   }, [filterText]);
 
-  function convertArrayOfObjectsToCSV(array) {
-    let result;
-
-    const columnDelimiter = ",";
-    const lineDelimiter = "\n";
-    const keys = Object.keys(data[0]);
-
-    result = "";
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-
-    array.forEach((item) => {
-      let ctr = 0;
-      keys.forEach((key) => {
-        if (ctr > 0) result += columnDelimiter;
-        result += item[key];
-        // eslint-disable-next-line no-plusplus
-        ctr++;
-      });
-      result += lineDelimiter;
-    });
-    return result;
-  }
-
-  function downloadCSV(array) {
-    const link = document.createElement("a");
-    let csv = convertArrayOfObjectsToCSV(array);
-
-    if (csv == null) return;
-
-    const filename = "export.csv";
-
-    if (!csv.match(/^data:text\/csv/i)) {
-      csv = `data:text/csv;charset=utf-8,${csv}`;
-    }
-
-    link.setAttribute("href", encodeURI(csv));
-    link.setAttribute("download", filename);
-    link.click();
-    console.log(csv);
-  }
-
-  const Export = ({ onExport }) => (
-    <button
-      className="rounded-md bg-box-gray w-20 p-1.5 px-4 text-xs font-medium inline-flex items-center"
-      onClick={(e) => onExport(e.target.value)}
-    >
-      Export
-    </button>
-  );
-  const actionsMemo = useMemo(
-    () => <Export onExport={() => downloadCSV(data)} />,
-    // eslint-disable-next-line
-    []
-  );
 
   const renderSwitch = () => {
     switch (activeMenuItem) {
@@ -197,7 +142,6 @@ const Records = () => {
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
-              actions={actionsMemo}
             />
             {userRedirect}
           </div>
@@ -215,7 +159,6 @@ const Records = () => {
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
-              actions={actionsMemo}
             />
             {providerRedirect}
           </div>
@@ -233,7 +176,6 @@ const Records = () => {
               }}
               subHeader
               subHeaderComponent={subHeaderComponentMemo}
-              actions={actionsMemo}
             />
             {listingsRedirect}
           </div>
@@ -249,7 +191,6 @@ const Records = () => {
                 setRedirectState(true);
                 setData(rowData._id);
               }}
-              actions={actionsMemo}
             />
             {bookingsRedirect}
           </div>
