@@ -10,6 +10,7 @@ const UserBookingDetails = () => {
   const [status, setStatus] = useState();
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
+  const [finalPrice, setFinalPrice] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -34,6 +35,7 @@ const UserBookingDetails = () => {
         setStatus(bookingRes.status);
         setStartTime(bookingRes.startTime);
         setEndTime(bookingRes.endTime);
+        setFinalPrice(bookingRes.finalPrice || 0.0);
 
         const response2 = await fetch(
           `http://localhost:6003/listing/${bookingRes.listing_id}`
@@ -61,6 +63,12 @@ const UserBookingDetails = () => {
     // eslint-disable-next-line
   }, []);
 
+  const hours = (date_1, date_2) => {
+    let difference = date_1.getTime() - date_2.getTime();
+    let TotalHours = Math.ceil(difference / (1000 * 3600));
+    return TotalHours;
+  };
+
   useEffect(() => {
     async function onStatusChange() {
       console.log(status);
@@ -70,6 +78,7 @@ const UserBookingDetails = () => {
         status: status,
         startTime: startTime,
         endTime: endTime,
+        finalPrice: finalPrice,
       };
 
       // This will send a post request to update the data in the database.
@@ -85,7 +94,7 @@ const UserBookingDetails = () => {
     onStatusChange();
 
     // eslint-disable-next-line
-  }, [status, endTime, startTime]);
+  }, [status, endTime, startTime, finalPrice]);
 
   return (
     <div>
@@ -200,6 +209,14 @@ const UserBookingDetails = () => {
                 }`}
                 onClick={(e) => {
                   setEndTime(new Date());
+                  if (booking.paynow) {
+                    setFinalPrice(
+                      listing.pricePerHour[0] *
+                        booking.bags *
+                        hours(endTime, startTime) +
+                        1
+                    );
+                  }
                   setStatus("Collected");
                 }}
               >
@@ -245,14 +262,7 @@ const UserBookingDetails = () => {
               <div className="flex items-center justify-between mb-6">
                 <p className="text-lg text-text-dark font-bold">Total</p>
                 <p className="text-lg text-text-dark font-bold">
-                  {" "}
-                  {`${
-                    booking.paynow
-                      ? "$0.00"
-                      : "$" +
-                        (listing.pricePerDay[0] * booking.bags * booking.days +
-                          1)
-                  }`}
+                  {`$${finalPrice || 0.0}`}
                 </p>
               </div>
             </div>

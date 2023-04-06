@@ -17,7 +17,7 @@ const BookingForm = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [bags, setBags] = useState(1);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(1);
   const [paynow, setPaynow] = useState(false);
   const [userID, setUserID] = useState("");
 
@@ -124,6 +124,9 @@ const BookingForm = (props) => {
           user_id: userID,
           startTime: null,
           endTime: null,
+          finalPrice: paynow
+            ? 0.0
+            : listing.pricePerDay[0] * bags * days(endDate, startDate) + 1,
         }),
       }).catch((error) => {
         window.alert(error);
