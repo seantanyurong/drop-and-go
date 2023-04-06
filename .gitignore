@@ -30,3 +30,5 @@
 /server/.pnp
 /server/.pnp.js
 /server/config.env
+
+/node_modules
