@@ -43,20 +43,21 @@ const AdminSignUp = () => {
             };
 
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/admin/add", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            const responseCreate = await fetch("http://localhost:6003/admin/add", settings);
 
-                    if (data) {
-                        setShowModal(true);
-                    }
-                });
-
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseCreate) {
+                const message = `An error has occurred: ${responseCreate.message}`;
                 window.alert(message);
                 return;
+            }
+    
+            const createRes = await responseCreate.json();
+            if (!createRes) {
+                const message = `An error has occurred: ${createRes.message}`;
+                window.alert(message);
+                return;
+            } else {
+                setShowModal(true);
             }
         }
 
@@ -194,9 +195,9 @@ const AdminSignUp = () => {
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
                                         d="M5 13l4 4L19 7"
                                     ></path>
                                 </svg>
