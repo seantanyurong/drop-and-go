@@ -21,6 +21,7 @@ const EditBusinessHours = () => {
     satClosing: "",
     sunOpening: "",
     sunClosing: "",
+    provider_id: ""
 
   });
 
@@ -61,6 +62,7 @@ const EditBusinessHours = () => {
           satClosing: res.satClosingHours,
           sunOpening: res.sunOpeningHours,
           sunClosing: res.sunClosingHours,
+          provider_id: res.provider_id
         });
       }
     }
@@ -78,6 +80,7 @@ const EditBusinessHours = () => {
     // e.preventDefault();
 
     let body = {
+      name: formik.values.name,
       monOpeningHours: formik.values.monOpening,
       monClosingHours: formik.values.monClosing,
       tueOpeningHours: formik.values.tueOpening,
@@ -92,6 +95,7 @@ const EditBusinessHours = () => {
       satClosingHours: formik.values.satClosing,
       sunOpeningHours: formik.values.sunOpening,
       sunClosingHours: formik.values.sunClosing,
+      provider_id: formik.values.provider_id
     };
 
     async function updateData() {

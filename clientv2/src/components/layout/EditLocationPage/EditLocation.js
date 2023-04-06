@@ -24,6 +24,7 @@ const AddLocation = () => {
     postal: "",
     dateListed: "",
     displayPicture: "",
+    provider_id: ""
 
   });
 
@@ -68,7 +69,8 @@ const AddLocation = () => {
           longitude: res.longitude,
           postal: res.postal,
           dateListed: res.dateListed,
-          displayPicture: res.displayPicture
+          displayPicture: res.displayPicture,
+          provider_id: res.provider_id
         });
       }
     }
@@ -146,7 +148,7 @@ const AddLocation = () => {
       pricePerHour: [formik.values.smallHourlyFee, formik.values.mediumHourlyFee, formik.values.largeHourlyFee],
       dateListed: formik.values.dateListed,
       review_ids: [],
-      provider_id: 'to be filled in',
+      provider_id: formik.values.provider_id,
       booking_ids: [],
       displayPicture: formik.values.displayPicture
     };
