@@ -1,11 +1,11 @@
 import React from 'react'
-import Header from '../components/layout/UserBookingPage/Header'
+import ProviderHeader from "../components/ui/ProviderHeader";
 import ProviderProfile from "../components/layout/ProfilePage/ProviderProfile"
 
 const ProviderProfilePage = () => {
     return (
         <div>
-            <Header></Header>
+            <ProviderHeader></ProviderHeader>
             <ProviderProfile></ProviderProfile>
         </div>
     )
