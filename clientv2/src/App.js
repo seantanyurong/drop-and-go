@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import BecomeAProviderPage from "./pages/BecomeAProviderPage";
+import AboutUsPage from "./pages/AboutUsPage";
 
 import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
@@ -23,7 +24,6 @@ import AddLocationPage from "./pages/AddLocationPage";
 import ViewLocationsPage from "./pages/ViewLocationsPage";
 import EditLocationPage from "./pages/EditLocationPage";
 import ViewBusinessHoursPage from "./pages/ViewBusinessHoursPage";
-import TestBusinessHoursPage from "./pages/TestBusinessHoursPage";
 import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
 import AddBusinessHoursPage from "./pages/AddBusinessHoursPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
@@ -49,7 +49,6 @@ function App() {
         <Route path="/provider/view-locations" element={<ViewLocationsPage />} />
         <Route path="/provider/edit-listing/:id" element={<EditLocationPage />} />
         <Route path="/provider/view-business-hours" element={<ViewBusinessHoursPage />} />
-        <Route path="/provider/test-business-hours" element={<TestBusinessHoursPage />} />
         <Route path="/provider/add-business-hours" element={<AddBusinessHoursPage />} />
         <Route path="/provider/edit-business-hours/:businessHoursId" element={<EditBusinessHoursPage />} />
         <Route path="/login/menu" element={<LoginPage />} />
@@ -81,6 +80,7 @@ function App() {
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
       </Routes>
     </main>
   );
