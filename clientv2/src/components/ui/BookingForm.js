@@ -123,9 +123,7 @@ const BookingForm = (props) => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-light">
-                    Wet Designs Pte Ltd, 22 New Industrial Road #06-11 Primax
-                  </p>
+                  <p className="text-sm font-light">{listing.address}</p>
                   <div className="flex items-center mt-1">
                     <p className="text-sm font-light">4.7</p>
                     <StarIcon
