@@ -1,13 +1,70 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoImg from "../../../assets/Logo.png";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const Header = () => {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
+  let navigate = useNavigate();
+
+  const credentials = {
+    loggedIn: "",
+    id: "",
+    name: "",
+  };
+
+  const [authState, setAuthState] = useState(credentials);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login/user");
+  };
+
+  const handleAccount = () => {
+    navigate(`/user/profile/${authState.id}`);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log("Check If Logged In");
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+
+      if (!responseAuth) {
+        const message = `An error has occurred: ${responseAuth.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const authRes = await responseAuth.json();
+      console.log(authRes);
+
+      if (!authRes) {
+        const message = `An error has occurred: ${authRes.statusText}`;
+        window.alert(message);
+        return;
+      //} else if (!authRes.isLoggedIn) {
+        //navigate("/login/user");
+      } else {
+        setAuthState(authRes);
+      }
+    }
+
+    fetchData();
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
@@ -65,12 +122,12 @@ const Header = () => {
                             className="text-text-dark
                               block px-4 text-lg font-semibold"
                           >
-                            Sean Tan
+                            {authState.name}
                           </h3>
                         </div>
                       </div>
                       <div className="py-1">
-                        <Menu.Item>
+                        <Menu.Button>
                           {({ active }) => (
                             <div
                               href="#"
@@ -84,37 +141,39 @@ const Header = () => {
                               My bookings
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleAccount}
                             >
                               Account
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleLogout}
                             >
                               Logout
                             </div>
                           )}
-                        </Menu.Item>
+                        </Menu.Button>
                       </div>
                     </Menu.Items>
                   </Transition>
