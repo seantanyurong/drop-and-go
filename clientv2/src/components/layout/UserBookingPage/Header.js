@@ -56,24 +56,28 @@ const Header = () => {
         const message = `An error has occurred: ${authRes.message}`;
         window.alert(message);
         return;
-      }
-
-      console.log("Fetch Data Triggered");
-      const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
-      
-      if (!responseDetails) {
-          const message = `An error has occurred: ${responseDetails.message}`;
-          window.alert(message);
-          return;
       } 
 
-      const detailsRes = await responseDetails.json();
-      console.log(detailsRes);
-
-      if (!detailsRes) {
-        navigate("/login/user"); 
+      if (!authRes.isLoggedIn) {
+        navigate("/login/user");
       } else {
-        setAuthState(authRes);
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+        
+        if (!responseDetails) {
+            const message = `An error has occurred: ${responseDetails.message}`;
+            window.alert(message);
+            return;
+        } 
+
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
+
+        if (detailsRes._id === authRes.id) {
+          setAuthState(authRes);
+        } else {
+          navigate("/login/user");
+        }
       }
     }
 

@@ -4,7 +4,8 @@ import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const Header = () => {
+const ProviderHeader = () => {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -21,11 +22,15 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login/user");
+    navigate("/login/provider");
   };
 
   const handleAccount = () => {
-    navigate(`/user/profile/${authState.id}`);
+    navigate(`/provider/profile/${authState.id}`);
+  };
+
+  const handleListings = () => {
+    navigate(`/provider/view-locations`);
   };
 
   useEffect(() => {
@@ -38,10 +43,7 @@ const Header = () => {
         },
       };
 
-      const responseAuth = await fetch(
-        "http://localhost:6003/user/authenticate",
-        settings
-      );
+      const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.message}`;
@@ -59,10 +61,10 @@ const Header = () => {
       }
 
       if (!authRes.isLoggedIn) {
-        navigate("/login/user");
+        navigate("/login/provider");
       } else {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+        const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
         
         if (!responseDetails) {
             const message = `An error has occurred: ${responseDetails.message}`;
@@ -74,9 +76,9 @@ const Header = () => {
         console.log(detailsRes);
 
         if (detailsRes._id === authRes.id) {
-          setAuthState(authRes);
+            setAuthState(authRes);
         } else {
-          navigate("/login/user");
+            navigate("/login/provider");
         }
       }
     }
@@ -150,16 +152,15 @@ const Header = () => {
                         <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={() => navigate(`/user/bookings`)}
+                              onClick={handleListings}
                             >
-                              My bookings
+                              My Listings
                             </div>
                           )}
                         </Menu.Button>
@@ -208,4 +209,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ProviderHeader;

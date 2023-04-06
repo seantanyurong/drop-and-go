@@ -113,10 +113,9 @@ const UserLogin = () => {
                 const detailsRes = await responseDetails.json();
                 console.log(detailsRes);
 
-                if (detailsRes) {
-                    if (authRes.isLoggedIn) {
-                        navigate("/");
-                    }
+                if (detailsRes._id === authRes.id) {
+                    setAuthState(authRes);
+                    navigate("/");
                 } 
             }
 
