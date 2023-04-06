@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
   MagnifyingGlassIcon,
-  CalendarDaysIcon,
+  // CalendarDaysIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/20/solid";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -73,7 +73,7 @@ const SearchBar = (props) => {
 
           {/* Calendar */}
 
-          <div className="col-span-1 flex items-center justify-between">
+          {/* <div className="col-span-1 flex items-center justify-between">
             <div className="flex items-center">
               <CalendarDaysIcon className="h-5 w-5 mr-2" aria-hidden="true" />
               <div>
@@ -85,7 +85,7 @@ const SearchBar = (props) => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Bags */}
           <div className="col-span-1 flex items-center">

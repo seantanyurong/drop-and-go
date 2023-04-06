@@ -33,15 +33,61 @@ const SearchResults = (props) => {
       }
 
       const listingsRes = await response.json();
+
+      const response2 = await fetch(`http://localhost:6003/booking`);
+
+      if (!response2.ok) {
+        const message = `An error has occurred: ${response2.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const bookingsRes = await response2.json();
+      if (!bookingsRes) {
+        window.alert(`Bookings cannot be retrieved`);
+        return;
+      }
+
       if (!listingsRes) {
         window.alert(`Listings cannot be retrieved`);
         return;
       } else {
         console.log(
-          listingsRes.filter((listing) => listing.name.search(text) !== -1)
+          listingsRes
+            .filter((listing) => listing.name.search(text) !== -1)
+            .filter((listing) => {
+              const remainingCapacity =
+                listing.capacity -
+                bookingsRes
+                  .filter((a) => a.listing_id === listing._id)
+                  .filter((a) => a.status === "Active")
+                  .reduce((prev, next) => prev + next.size, 0);
+
+              console.log(listing._id);
+              console.log(remainingCapacity);
+
+              return remainingCapacity >= 0;
+            })
         );
         setListings(
-          listingsRes.filter((listing) => listing.name.search(text) !== -1)
+          listingsRes
+            .filter((listing) => listing.name.search(text) !== -1)
+            .filter((listing) => {
+              const remainingCapacity =
+                listing.capacity -
+                bookingsRes
+                  .filter((a) => a.listing_id === listing._id)
+                  .filter((a) => a.status === "Active")
+                  .reduce(
+                    (prev, next) => prev + (next.size ? next.size : 0),
+                    0
+                  );
+
+              console.log(listing._id);
+              console.log(remainingCapacity);
+
+              return remainingCapacity >= 0;
+            })
         );
       }
     }
