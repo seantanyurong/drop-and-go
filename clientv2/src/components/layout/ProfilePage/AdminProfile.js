@@ -57,7 +57,7 @@ const AdminProfile = () => {
             const responseUpdate = await fetch(`http://localhost:6003/admin/update/${adminId}`, settings)
     
             if (!responseUpdate) {
-                const message = `An error has occurred: ${responseUpdate.statusText}`;
+                const message = `An error has occurred: ${responseUpdate.message}`;
                 window.alert(message);
                 return;
             }
@@ -91,7 +91,7 @@ const AdminProfile = () => {
             const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
 
             if (!responseAuth) {
-                const message = `An error has occurred: ${responseAuth.statusText}`;
+                const message = `An error has occurred: ${responseAuth.message}`;
                 window.alert(message);
                 return;
             }
@@ -100,7 +100,7 @@ const AdminProfile = () => {
             console.log(authRes);
 
             if (!authRes) {
-                const message = `An error has occurred: ${authRes.statusText}`;
+                const message = `An error has occurred: ${authRes.message}`;
                 window.alert(message);
                 return;
             } else {
@@ -111,7 +111,7 @@ const AdminProfile = () => {
             const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
             
             if (!responseDetails) {
-                const message = `An error has occurred: ${responseDetails.statusText}`;
+                const message = `An error has occurred: ${responseDetails.message}`;
                 window.alert(message);
                 return;
             } 
@@ -120,7 +120,7 @@ const AdminProfile = () => {
             console.log(detailsRes);
 
             if (!detailsRes) {
-                const message = `An error has occurred: ${detailsRes.statusText}`;
+                const message = `An error has occurred: ${detailsRes.message}`;
                 window.alert(message);
                 return;
             } else {

@@ -1,15 +1,91 @@
 import { Link, useNavigate } from "react-router-dom";
-import LogoImg from "../../../assets/Logo.png";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const Header = () => {
+const ProviderHeader = () => {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
   let navigate = useNavigate();
+
+  const credentials = {
+    loggedIn: "",
+    id: "",
+    name: "",
+  };
+
+  const [authState, setAuthState] = useState(credentials);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login/provider");
+  };
+
+  const handleAccount = () => {
+    navigate(`/provider/profile/${authState.id}`);
+  };
+
+  const handleListings = () => {
+    navigate(`/provider/view-locations`);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log("Check If Logged In");
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
+
+      if (!responseAuth) {
+        const message = `An error has occurred: ${responseAuth.message}`;
+        window.alert(message);
+        return;
+      }
+
+      const authRes = await responseAuth.json();
+      console.log(authRes);
+
+      if (!authRes) {
+        const message = `An error has occurred: ${authRes.message}`;
+        window.alert(message);
+        return;
+      }
+
+      if (!authRes.isLoggedIn) {
+        navigate("/login/provider");
+      } else {
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
+
+        if (!responseDetails) {
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
+
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
+
+        if (detailsRes._id === authRes.id) {
+          setAuthState(authRes);
+        } else {
+          navigate("/login/provider");
+        }
+      }
+    }
+
+    fetchData();
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
@@ -19,7 +95,8 @@ const Header = () => {
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
+              test
+              {/* <img className="mx-auto h-8" src={LogoImg} alt="Logo" /> */}
             </Link>
           </div>
 
@@ -67,12 +144,12 @@ const Header = () => {
                             className="text-text-dark
                               block px-4 text-lg font-semibold"
                           >
-                            Sean Tan
+                            {authState.name}
                           </h3>
                         </div>
                       </div>
                       <div className="py-1">
-                        <Menu.Item>
+                        <Menu.Button>
                           {({ active }) => (
                             <div
                               className={classNames(
@@ -81,42 +158,44 @@ const Header = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={() => navigate(`/user/bookings`)}
+                              onClick={handleListings}
                             >
-                              My bookings
+                              My Listings
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleAccount}
                             >
                               Account
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleLogout}
                             >
                               Logout
                             </div>
                           )}
-                        </Menu.Item>
+                        </Menu.Button>
                       </div>
                     </Menu.Items>
                   </Transition>
@@ -130,4 +209,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ProviderHeader;

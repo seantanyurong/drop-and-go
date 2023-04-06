@@ -109,28 +109,6 @@ bookingRoutes.route("/booking/listings/:listingId").get(function (req, res) {
         listing_id: req.params.listingId,
       },
     },
-    {
-      $addFields: {
-        convertedUserId: { $toObjectId: "$user_id" },
-        convertedListingId: { $toObjectId: "$listing_id" },
-      },
-    },
-    {
-      $lookup: {
-        from: "user",
-        localField: "convertedUserId",
-        foreignField: "_id",
-        as: "userDetails",
-      },
-    },
-    {
-      $lookup: {
-        from: "listing",
-        localField: "convertedListingId",
-        foreignField: "_id",
-        as: "listingDetails",
-      },
-    },
   ];
   db_connect
     .collection("booking")

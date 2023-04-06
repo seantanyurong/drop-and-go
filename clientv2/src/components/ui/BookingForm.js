@@ -134,6 +134,9 @@ const BookingForm = (props) => {
       });
 
       props.poppingHandler(false);
+      alert(
+        "Booking successfully made. Please view your bookings to see the latest status."
+      );
     }
   }
 
@@ -155,7 +158,10 @@ const BookingForm = (props) => {
                   <div className="flex space-x-3 items-center">
                     <h3 className="font-semibold">{listing.name}</h3>
                   </div>
-                  <div className="flex items-center space-x-1">
+                  <div
+                    className="flex items-center space-x-1 cursor-pointer"
+                    onClick={() => props.poppingHandler(false)}
+                  >
                     <XCircleIcon
                       className="h-10 w-10 ml-1 "
                       aria-hidden="true"

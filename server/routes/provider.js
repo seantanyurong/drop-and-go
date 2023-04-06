@@ -48,8 +48,8 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
     .collection("provider")
     .findOne({ email: providerLogin.email });
 
-  console.log(providerDB.password);
-  console.log(providerLogin.email);
+  // console.log(providerDB.password);
+  // console.log(providerLogin.email);
 
   if (!providerDB) {
     return res.json({ message: "Invalid Email Address!" });
@@ -149,7 +149,7 @@ providerRoutes.route("/provider/update/:id").post(async function (req, response)
   const providerDB = await db_connect
     .collection("provider")
     .findOne({ _id: ObjectId(req.params.id) });
-  
+
   let encryptedPassword = "";
   if (!req.body.password) {
     encryptedPassword = providerDB.password;

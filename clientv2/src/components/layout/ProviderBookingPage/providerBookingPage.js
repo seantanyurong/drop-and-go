@@ -7,14 +7,14 @@ const ProviderBookings = () => {
     const [specificListing, setSpecificListing] = useState(null);
     const [bookings, setBookings] = useState([]);
 
-    const { listingId } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchData() {
 
             const response = await fetch(
-                `http://localhost:6003/booking/listings/${listingId}`
+                `http://localhost:6003/booking/listings/${id}`
             );
 
             if (!response.ok) {
@@ -43,7 +43,7 @@ const ProviderBookings = () => {
         async function fetchData() {
 
             const response = await fetch(
-                `http://localhost:6003/listing/${listingId}`
+                `http://localhost:6003/listing/${id}`
             );
 
             if (!response.ok) {

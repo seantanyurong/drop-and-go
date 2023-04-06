@@ -1,11 +1,11 @@
 import React from "react";
 import Bookings from "../components/layout/ViewLocationsPage/ViewLocations";
-import Header from "../components/layout/UserBookingPage/Header";
+import ProviderHeader from "../components/ui/ProviderHeader";
 
 const ViewLocationsPage = () => {
   return (
     <div>
-      <Header />
+      <ProviderHeader />
       <Bookings />
     </div>
   );
