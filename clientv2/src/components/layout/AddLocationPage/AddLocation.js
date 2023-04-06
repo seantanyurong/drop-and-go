@@ -112,7 +112,7 @@ const AddLocation = () => {
         window.alert(message);
         return;
       }
-      alert(`Listing with name ${body.shopName} has been added!`);
+      // alert(`Listing with name ${body.shopName} has been added!`);
     }
     addData();
   };
