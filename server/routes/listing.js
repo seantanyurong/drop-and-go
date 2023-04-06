@@ -36,7 +36,7 @@ listingRoutes.route("/listing/name/:name").post(function (req, res) {
 
 // This section will help you get a single listing by id
 listingRoutes.route("/listing/:id").get(function (req, res) {
-  
+
   let db_connect = dbo.getDb("dropandgo");
   console.log("Listing: Searching for id");
 
@@ -74,8 +74,8 @@ listingRoutes.route("/listing/add").post(function (req, response) {
   });
 });
 
-// This section will help you update a businessHours by id.
-businessHoursRoutes.route("/listing/update/:id").post(function (req, response) {
+// This section will help you update a listing by id.
+listingRoutes.route("/listing/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId(req.params.id) };
   let newvalues = {

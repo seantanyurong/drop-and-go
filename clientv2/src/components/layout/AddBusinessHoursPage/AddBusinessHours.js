@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 const AddBusinessHours = () => {
 
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
     monOpening: "",
@@ -88,7 +89,7 @@ const AddBusinessHours = () => {
         window.alert(message);
         return;
       }
-      alert(`${body.name} Business Hours has been added!`);
+      // alert(`${body.name} Business Hours has been added!`);
     }
     addData();
   };
@@ -100,6 +101,8 @@ const AddBusinessHours = () => {
 
     onSubmit: function (values) {
       handleSubmit();
+      alert(`${formik.values.name} Business Hours has been created!`);
+      navigate(`/provider/view-business-hours`);
     },
 
     validationSchema: yup.object({

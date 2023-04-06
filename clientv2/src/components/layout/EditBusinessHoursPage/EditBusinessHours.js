@@ -25,6 +25,8 @@ const EditBusinessHours = () => {
   });
 
   const { businessHoursId } = useParams();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     async function fetchData() {
@@ -128,6 +130,7 @@ const EditBusinessHours = () => {
     onSubmit: function (values) {
       handleSubmit();
       alert(`${formState.name} Business Hours has been updated!`);
+      navigate(`/provider/view-business-hours`);
     },
 
     validationSchema: yup.object({

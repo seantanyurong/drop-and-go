@@ -8,8 +8,8 @@ const ViewLocations = () => {
   let [listings, setListings] = useState([]);
   const navigate = useNavigate();
 
-  function addBusinessHours() {
-    navigate(`/provider/add-listing`);
+  function addListing() {
+    navigate(`/provider/add-location`);
   }
 
 
@@ -55,22 +55,12 @@ const ViewLocations = () => {
             <nav className="flex grow mt-4 sm:mt-0">
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li
-                  onClick={() => setActiveMenuItem(0)}
-                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 0
-                    ? "bg-text-main text-text-dark"
-                    : "text-text-main"
-                    } `}
+                  onClick={() => addListing()}
+                  className={`cursor-pointer rounded-t-sm  hover:text-primary-200  font-semibold px-6 flex items-center text-sm py-[0.6rem]
+                  bg-text-main text-text-dark
+                  `}
                 >
-                  Active
-                </li>
-                <li
-                  onClick={() => setActiveMenuItem(1)}
-                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 1
-                    ? "bg-text-main text-text-dark"
-                    : "text-text-main"
-                    } `}
-                >
-                  Completed
+                  Add Listing
                 </li>
               </ul>
             </nav>

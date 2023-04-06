@@ -46,7 +46,7 @@ function App() {
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/provider/add-location" element={<AddLocationPage />} />
         <Route path="/provider/view-locations" element={<ViewLocationsPage />} />
-        <Route path="/provider/edit-listing/:id" element={<EditLocationPage />} />
+        <Route path="/provider/edit-listing/:listingId" element={<EditLocationPage />} />
         <Route path="/provider/view-business-hours" element={<ViewBusinessHoursPage />} />
         <Route path="/provider/add-business-hours" element={<AddBusinessHoursPage />} />
         <Route path="/provider/edit-business-hours/:businessHoursId" element={<EditBusinessHoursPage />} />

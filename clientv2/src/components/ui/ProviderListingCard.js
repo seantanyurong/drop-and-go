@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ProviderListingCard = (props) => {
 
     const navigate = useNavigate();
-    function handleClick(id) {
+    function handleClick() {
         navigate(`/provider/edit-listing/${props.listing._id}`);
     }
 

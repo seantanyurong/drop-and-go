@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -7,7 +8,7 @@ import Map from "../../ui/Maps";
 
 const AddLocation = () => {
 
-
+  const navigate = useNavigate();
   let [hours, setHours] = useState([]);
 
   useEffect(() => {
@@ -138,6 +139,8 @@ const AddLocation = () => {
     },
     onSubmit: function (values) {
       handleSubmit();
+      alert(`${formik.values.shopName} Listing has been created!`);
+      navigate(`/provider/view-locations`);
     },
     validationSchema: yup.object({
       shopName: yup.string()
