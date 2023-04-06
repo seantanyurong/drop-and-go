@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { ArrowLeftIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon} from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from 'moment';
+import moment from "moment";
 
 const AdminBookingDetails = () => {
   const navigate = useNavigate();
@@ -11,22 +11,27 @@ const AdminBookingDetails = () => {
     navigate(path);
   };
 
-  const {bookingId} = useParams();
+  const { bookingId } = useParams();
   const [booking, setBooking] = useState(data);
   const [user, setUser] = useState(data);
   const [listing, setListing] = useState(data);
+
+  const statusStyle = {
+    active: "row-span-2 rounded bg-green-400 p-3",
+    inactive: "row-span-2 rounded bg-red-400 p-3",
+  }
 
   useEffect(() => {
     async function fetchData() {
       const dbUrl = `http://localhost:6003/booking/${bookingId}`;
       const responseBooking = await fetch(dbUrl);
-      
+
       if (!responseBooking.ok) {
         const message = `An error has occurred: ${responseBooking.statusText}`;
         window.alert(message);
         return;
       }
-      
+
       const bookingRes = await responseBooking.json();
       console.log(bookingRes);
       if (!bookingRes) {
@@ -36,9 +41,13 @@ const AdminBookingDetails = () => {
         setBooking(bookingRes);
       }
 
-      const responseUser = await fetch(`http://localhost:6003/user/${bookingRes.user_id}`);
-      const responseListing = await fetch(`http://localhost:6003/listing/${bookingRes.listing_id}`)
-      
+      const responseUser = await fetch(
+        `http://localhost:6003/user/${bookingRes.user_id}`
+      );
+      const responseListing = await fetch(
+        `http://localhost:6003/listing/${bookingRes.listing_id}`
+      );
+
       console.log(responseUser);
       if (!responseUser.ok) {
         const message = `An error has occurred: ${responseUser.statusText}`;
@@ -52,7 +61,7 @@ const AdminBookingDetails = () => {
         return;
       } else {
         setUser(userRes);
-      } 
+      }
 
       if (!responseListing.ok) {
         const message = `An error has occurred: ${responseListing.statusText}`;
@@ -89,50 +98,43 @@ const AdminBookingDetails = () => {
           </button>
           <div className="grid grid-cols-2 gap-4 pt-6">
             <h1 className="text-3xl font-semibold">Booking Details</h1>
-            <div className="flex justify-end space-x-4"></div>
           </div>
         </div>
       </div>
 
       {/* User details */}
       <div className="max-w-5xl md:max-w-3xl mx-auto px-6 sm:px-10 py-8 text-text-dark">
-        {/* Progress bar */}
-        <div className="grid grid-cols-3" >
-        <div className="grid grid-rows-2 flex justify-items-center mb-10">
-          <CheckCircleIcon
-            className="h-10 w-10 text-emerald-400"
-            aria-hidden="true"
-          />
-          <h4 className="font-semibold text-lg text-gray-300">
-            Booked
-          </h4>
-        </div>
-        <div className="grid grid-rows-2 flex justify-items-center mb-10">
-          <CheckCircleIcon className="h-10 w-10" aria-hidden="true" />
-          <h4 className="font-semibold text-lg">Luggage Handed Over</h4>
-        </div>
-        <div className="grid grid-rows-2 flex justify-items-center mb-10">
-          <CheckCircleIcon className="h-10 w-10" aria-hidden="true" />
-          <h4 className="font-semibold text-lg">Luggage Reclaimed</h4>
-        </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="grid grid-rows-4 gap-4 py-8">
+        <div className="grid grid-rows-1 gap-4 divide-y divide-solid"> 
+        <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-rows-3 gap-4 py-4">
+            <h4 className="text-l text-text-dark font-semibold">Payment Option</h4>
             <h4 className="text-l text-text-dark font-semibold">Start Date</h4>
-            <h4 className="text-l text-text-dark font-semibold">
-              End Date
-            </h4>
+            <h4 className="text-l text-text-dark font-semibold">End Date</h4>
           </div>
           {/* Actual Data */}
-          <div className="grid grid-rows-4 gap-4 py-8">
-            <h4 className="text-l font-light"> {moment(booking.startDate).format("lll")} </h4>
-            <h4 className="text-l font-light"> {moment(booking.endDate).format("lll")} </h4>
+          <div className="grid grid-rows-3 gap-4 py-4">
+            <h4 className="text-l font-light">{booking.paynow ? "Flat Rate" : "Pay As You Go"}</h4>
+            <h4 className="text-l font-light">
+              {" "}
+              {moment(booking.startDate).format("lll")}{" "}
+            </h4>
+            <h4 className="text-l font-light">
+              {" "}
+              {moment(booking.endDate).format("lll")}{" "}
+            </h4>
+          </div>
+          <div className="py-4 row-span-2">
+          <div className={booking.status === "Cancelled" ? statusStyle.inactive : statusStyle.active}>
+              <p className="text-sm font-light text-white">Status</p>
+                <h3 className="text-white font-semibold">{booking.status}</h3>
+            </div>
           </div>
         </div>
         {/* Column Headings*/}
+        <div className="py-8">
         <h1 className="text-2xl font-semibold">User Details</h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="grid grid-rows-4 gap-4 py-8">
+          <div className="grid grid-rows-3 gap-4 py-4">
             <h4 className="text-l text-text-dark font-semibold">Name</h4>
             <h4 className="text-l text-text-dark font-semibold">
               Email Address
@@ -142,30 +144,29 @@ const AdminBookingDetails = () => {
             </h4>
           </div>
           {/* Actual Data */}
-          <div className="grid grid-rows-4 gap-4 py-8">
+          <div className="grid grid-rows-3 gap-4 py-4">
             <h4 className="text-l font-light"> {user.name} </h4>
             <h4 className="text-l font-light"> {user.email} </h4>
             <h4 className="text-l font-light"> {user.phone} </h4>
           </div>
         </div>
+        </div>
 
+       <div className="py-8"> 
         <h1 className="text-2xl font-semibold">Listing Details</h1>
         <div className="grid grid-cols-2 gap-4">
-          <div className="grid grid-rows-4 gap-4 py-8">
+          <div className="grid grid-rows-3 gap-4 py-4">
             <h4 className="text-l text-text-dark font-semibold">Name</h4>
-            <h4 className="text-l text-text-dark font-semibold">
-              Address
-            </h4>
-            <h4 className="text-l text-text-dark font-semibold">
-              About
-            </h4>
+            <h4 className="text-l text-text-dark font-semibold">Address</h4>
+            <h4 className="text-l text-text-dark font-semibold">About</h4>
           </div>
           {/* Actual Data */}
-          <div className="grid grid-rows-4 gap-4 py-8">
+          <div className="grid grid-rows-3 gap-4 py-4">
             <h4 className="text-l font-light"> {listing.name} </h4>
             <h4 className="text-l font-light"> {listing.address} </h4>
             <h4 className="text-l font-light"> {listing.about} </h4>
           </div>
+        </div>
         </div>
         {/* Summary */}
         <div className="bg-box-gray p-8">
@@ -192,6 +193,7 @@ const AdminBookingDetails = () => {
             <p className="text-lg text-text-dark font-bold">$7.50</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
