@@ -15,13 +15,29 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 /* Provider Login Methods */
 
 // This section will help you to verify if a provider is logged in
-providerRoutes.route("/provider/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  res.json({ isLoggedIn: true, email: req.provider.email });
+providerRoutes.route("/provider/authenticate").get(function (req, res) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({
+          isLoggedIn: false,
+          message: "Failed To Authenticate Provider",
+        });
+      console.log(decoded.id);
+      return res.json({ isLoggedIn: true, id: decoded.id});
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
 });
 
 // This section will help you to allow provider to login
@@ -39,58 +55,37 @@ providerRoutes.route("/provider/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
-  bcrypt.compare(providerLogin.password, providerDB.password).then((isCorrect) => {
-    if (isCorrect) {
-      console.log("Passwords Equal");
-      const payload = {
-        id: providerDB._id,
-        name: providerDB.name,
-      };
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET,
-        { expiresIn: 86400 },
-        (err, token) => {
-          if (err) return res.json({ message: err });
-          
-          console.log("JWT Signing");
-          
-          return res.json({
-            message: "Success",
-            token: "Bearer " + token,
-          });
-        }
-      );
-    } else {
-      console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
-    }
-  });
+  bcrypt
+    .compare(providerLogin.password, providerDB.password)
+    .then((isCorrect) => {
+      if (isCorrect) {
+        console.log("Passwords Equal");
+        const payload = {
+          id: providerDB._id,
+          name: providerDB.name,
+        };
+        jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          { expiresIn: 86400 },
+          (err, token) => {
+            if (err) return res.json({ message: err });
+
+            console.log("JWT Signing");
+
+            return res.json({
+              message: "Success",
+              token: "Bearer " + token,
+            });
+          }
+        );
+      } else {
+        console.log("Passwords Not Equal");
+        return res.json({ message: "Invalid Email or Password!" });
+      }
+    });
 });
 
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(' ')[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate Provider",
-        });
-      req.provider = {};
-      req.provider.id = decoded.id;
-      req.provider.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-};
 
 /* Provider CRUD Methods */
 
@@ -137,26 +132,60 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
       status: "active",
     };
 
-    db_connect.collection("provider").insertOne(myobj, function (err, response) {
-      console.log("Creating Provider");
-      if (err) throw err;
-      res.json(response);
-    });
+    db_connect
+      .collection("provider")
+      .insertOne(myobj, function (err, response) {
+        console.log("Creating Provider");
+        if (err) throw err;
+        res.json(response);
+      });
   }
 });
 
 // This section will help you update a provider by id.
-providerRoutes.route("/provider/update/:id").post(function (req, response) {
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
+providerRoutes.route("/provider/update/:id").post(async function (req, response) {
+  let db_connect = dbo.getDb("dropandgo");
+
+  const providerDB = await db_connect
+    .collection("provider")
+    .findOne({ _id: ObjectId(req.params.id) });
+  
+  let encryptedPassword = "";
+  if (!req.body.password) {
+    encryptedPassword = providerDB.password;
+  } else if (providerDB.password !== req.body.password) {
+    console.log("Updating Password");
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
+  } else {
+    encryptedPassword = req.body.password;
+  }
+
+  let updatedBankAcc = "";
+  if (!req.body.bankAccount) {
+    updatedBankAcc = providerDB.bankAccount;
+  } else {
+    updatedBankAcc = req.body.bankAccount;
+  }
+
+  let updatedStatus = "";
+  if (!req.body.status) {
+    updatedStatus = providerDB.status;
+  } else {
+    updatedStatus = req.body.status;
+  }
+
   let newvalues = {
     $set: {
       name: req.body.name,
       email: req.body.email,
+      password: encryptedPassword,
       phone: req.body.phone,
-      status: req.body.status,
+      bankAccount: updatedBankAcc,
+      status: updatedStatus,
     },
   };
+  let myquery = { _id: ObjectId(req.params.id) };
+
   db_connect
     .collection("provider")
     .updateOne(myquery, newvalues, function (err, res) {
@@ -191,11 +220,12 @@ providerRoutes.route("/provider").get(function (req, res) {
 
 // This section will help you get a single provider by id
 providerRoutes.route("/provider/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("Provider: Searching for id");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("provider").findOne(myquery, function (err, result) {
     if (err) throw err;
+    console.log(result);
     res.json(result);
   });
 });

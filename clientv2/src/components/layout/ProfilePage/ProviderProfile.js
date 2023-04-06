@@ -1,26 +1,30 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 const ProviderProfile = () => {
 
-    const { providerId } = useParams();
+    const credentials = {
+        loggedIn: "",
+        id: "",
+    };
 
     const defaultState = {
-        name: "Provider 1",
-        email: "provider1@gmail.com",
-        password: "password",
-        phone: "90000001",
-        bank: "0001",
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        bankAccount: "",
     };
 
     const [formState, setFormState] = useState(defaultState);
     const [initialState, setInitialState] = useState(defaultState);
     const [editState, setEditState] = useState(false);
+    const [authState, setAuthState] = useState(credentials);
 
     const handleChange = ({ target: { value, id } }) => {
         setFormState({ ...formState, [id]: value });
     };
+
     const handleCancel = () => {
         setEditState(false);
         setFormState(initialState);
@@ -31,65 +35,101 @@ const ProviderProfile = () => {
         setEditState(false);
 
         let body = {
-            "name": formState.name,
-            "email": formState.email,
-            "password": formState.password,
-            "phone": formState.phone,
-            "bank": formState.bank,
+            name: formState.name,
+            email: formState.email,
+            password: formState.password,
+            phone: formState.phone,
+            bankAccount: formState.bankAccount,
         }
 
         async function updateData() {
+            console.log("Submitting");
+
+            const providerId = authState.id;
+            console.log(providerId);
+
             const settings = {
                 method: 'POST',
                 headers: {
-                    Accept: 'application/json', 'Content-Type': 'application/json',
+                    Accept: 'application/json', 
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(body),
             };
 
             console.log("body" + JSON.stringify(body));
-            const response = await fetch(`http://localhost:6003/provider/update/${providerId}`, settings)
+            const responseUpdate = await fetch(`http://localhost:6003/provider/update/${providerId}`, settings)
     
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseUpdate) {
+                const message = `An error has occurred: ${responseUpdate.statusText}`;
                 window.alert(message);
                 return;
             }
     
-            const providerRes = await response.json();
-            if (!providerRes) {
+            const updateRes = await responseUpdate.json();
+            if (!updateRes) {
                 window.alert(`Provider with id ${providerId} not found`);
                 return;
             }
-    
         }
+
         updateData();
         setInitialState(formState);
     };
 
     const formStyle = {
-        active:
-            "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
+        active: "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
         inactive: "text-l font-light py-4 px-3 focus:outline-none",
     };
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`http://localhost:6003/provider/${providerId}`);
+            console.log("Check If Logged In");
+            const settings = {
+                method: "GET",
+                headers: {
+                    "x-access-token": localStorage.getItem("token"),
+                },
+            };
+
+            const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
+
+            if (!responseAuth) {
+                const message = `An error has occurred: ${responseAuth.statusText}`;
+                window.alert(message);
+                return;
+            }
+
+            const authRes = await responseAuth.json();
+            console.log(authRes);
+
+            if (!authRes) {
+                const message = `An error has occurred: ${authRes.statusText}`;
+                window.alert(message);
+                return;
+            } else {
+                setAuthState(authRes);
+            }
+
+            console.log("Fetch Data Triggered");
+            const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
         
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseDetails) {
+                const message = `An error has occurred: ${responseDetails.statusText}`;
                 window.alert(message);
                 return;
             }
         
-            const providerRes = await response.json();
-            if (!providerRes) {
-                window.alert(`Provider with id ${providerId} not found`);
+            const detailsRes = await responseDetails.json();
+            console.log(detailsRes);
+
+            if (!detailsRes) {
+                const message = `An error has occurred: ${detailsRes.statusText}`;
+                window.alert(message);
                 return;
             } else {
-                setFormState(providerRes);
-                setInitialState(initialState);
+                setFormState(detailsRes);
+                setInitialState(detailsRes);
             }
         }
 
@@ -99,13 +139,13 @@ const ProviderProfile = () => {
     }, []);
 
     return (
-        <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">Profile Information</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details.</p>
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+                <h3 className="text-base font-semibold leading-6 text-gray-900">Profile Information</h3>
+                <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details.</p>
             </div>
-            <div class="border-t border-gray-200">
-
+            
+            <div className="border-t border-gray-200">
                 <div className="max-w-5xl md:max-w-3xl mx-auto px-10 sm:px-5 py-2 text-text-dark">
                     <form className="grid grid-cols-3 gap-0 py-8" onSubmit={handleSubmit}>
                         <div className="grid grid-rows-4 gap-4">
@@ -121,7 +161,7 @@ const ProviderProfile = () => {
                             <label className="text-l py-2 text-text-dark font-semibold" htmlFor="phone">
                                 Phone Number
                             </label>
-                            <label className="text-l py-2 text-text-dark font-semibold" htmlFor="bank">
+                            <label className="text-l py-2 text-text-dark font-semibold" htmlFor="bankAccount">
                                 Bank Account
                             </label>
                         </div>
@@ -163,9 +203,9 @@ const ProviderProfile = () => {
                             <input
                                 className={editState ? formStyle.active : formStyle.inactive}
                                 readOnly={!editState}
-                                id="bank"
+                                id="bankAccount"
                                 type="text"
-                                value={formState.bank}
+                                value={formState.bankAccount}
                                 onChange={handleChange}
                             />
                         </div>

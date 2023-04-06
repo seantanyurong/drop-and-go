@@ -36,8 +36,10 @@ listingRoutes.route("/listing/name/:name").post(function (req, res) {
 
 // This section will help you get a single listing by id
 listingRoutes.route("/listing/:id").get(function (req, res) {
-  console.log("Searching for id");
+  
   let db_connect = dbo.getDb("dropandgo");
+  console.log("Listing: Searching for id");
+
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("listing").findOne(myquery, function (err, result) {
     if (err) throw err;

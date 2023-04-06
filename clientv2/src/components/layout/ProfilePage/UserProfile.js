@@ -1,21 +1,24 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
 
-    const { userId } = useParams();
+    const credentials = {
+        loggedIn: "",
+        id: "",
+    };
 
     const defaultState = {
-        name: "User 1",
-        email: "user1@gmail.com",
-        password: "password",
-        phone: "80000001",
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
     };
 
     const [formState, setFormState] = useState(defaultState);
     const [initialState, setInitialState] = useState(defaultState);
     const [editState, setEditState] = useState(false);
+    const [authState, setAuthState] = useState(credentials);
     
     const handleChange = ({ target: { value, id } }) => {
         setFormState({ ...formState, [id]: value });
@@ -31,64 +34,100 @@ const UserProfile = () => {
         setEditState(false);
 
         let body = {
-            "name": formState.name,
-            "email": formState.email,
-            "password": formState.password,
-            "phone": formState.phone,
+            name: formState.name,
+            email: formState.email,
+            password: formState.password,
+            phone: formState.phone,
         }
       
         async function updateData() {
+            console.log("Submitting");
+
+            const userId = authState.id;
+            console.log(userId);
+
             const settings = {
                 method: 'POST',
                 headers: {
-                    Accept: 'application/json', 'Content-Type': 'application/json',
+                    Accept: 'application/json', 
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(body),
             };
 
             console.log("body" + JSON.stringify(body));
-            const response = await fetch(`http://localhost:6003/user/update/${userId}`, settings)
+            const responseUpdate = await fetch(`http://localhost:6003/user/update/${userId}`, settings)
     
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseUpdate) {
+                const message = `An error has occurred: ${responseUpdate.statusText}`;
                 window.alert(message);
                 return;
             }
     
-            const userRes = await response.json();
-            if (!userRes) {
+            const updateRes = await responseUpdate.json();
+            if (!updateRes) {
                 window.alert(`User with id ${userId} not found`);
                 return;
             }
-    
         }
+
         updateData();
         setInitialState(formState);
     };
 
     const formStyle = {
-        active:
-            "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
+        active: "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
         inactive: "text-l font-light py-4 px-3 focus:outline-none",
     };
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`http://localhost:6003/user/${userId}`);
+            console.log("Check If Logged In");
+            const settings = {
+                method: "GET",
+                headers: {
+                    "x-access-token": localStorage.getItem("token"),
+                },
+            };
+
+            const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+
+            if (!responseAuth) {
+                const message = `An error has occurred: ${responseAuth.statusText}`;
+                window.alert(message);
+                return;
+            }
+
+            const authRes = await responseAuth.json();
+            console.log(authRes);
+
+            if (!authRes) {
+                const message = `An error has occurred: ${authRes.statusText}`;
+                window.alert(message);
+                return;
+            } else {
+                setAuthState(authRes);
+            }
+
+            console.log("Fetch Data Triggered");
+            const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
         
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseDetails) {
+                const message = `An error has occurred: ${responseDetails.statusText}`;
                 window.alert(message);
                 return;
             }
         
-            const userRes = await response.json();
-            if (!userRes) {
-                window.alert(`User with id ${userId} not found`);
+            const detailsRes = await responseDetails.json();
+            console.log(detailsRes);
+
+            if (!detailsRes) {
+                const message = `An error has occurred: ${detailsRes.statusText}`;
+                window.alert(message);
                 return;
             } else {
-                setFormState(userRes);
-                setInitialState(initialState);
+                setFormState(detailsRes);
+                setInitialState(detailsRes);
             }
         }
 
@@ -98,13 +137,13 @@ const UserProfile = () => {
     }, []);
 
     return (
-        <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-                <h3 class="text-base font-semibold leading-6 text-gray-900">Profile Information</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details.</p>
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+                <h3 className="text-base font-semibold leading-6 text-gray-900">Profile Information</h3>
+                <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details.</p>
             </div>
-            <div class="border-t border-gray-200">
 
+            <div className="border-t border-gray-200">
                 <div className="max-w-5xl md:max-w-3xl mx-auto px-10 sm:px-5 py-2 text-text-dark">
                     <form className="grid grid-cols-3 gap-0 py-8" onSubmit={handleSubmit}>
                         <div className="grid grid-rows-4 gap-4">

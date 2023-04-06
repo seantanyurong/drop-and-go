@@ -15,13 +15,29 @@ const ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 /* User Login Methods */
 
 // This section will help you to verify if a user is logged in
-userRoutes.route("/user/authenticate").get(verifyJWT, function (req, res) {
-  console.log("Authenticating");
-  return res.json({ isLoggedIn: true, email: req.user.email });
+userRoutes.route("/user/authenticate").get(function (req, res) {
+  console.log("Verifying JWT");
+  const token = req.headers["x-access-token"]?.split(' ')[1];
+  console.log(token);
+
+  if (token) {
+    console.log("Authenticating Token");
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err)
+        return res.json({ 
+          isLoggedIn: false, 
+          message: "Failed To Authenticate User",
+        });
+      console.log(decoded.id);
+      return res.json({ isLoggedIn: true, id: decoded.id});
+    });
+  } else {
+    console.log("Incorrect Token Auth");
+    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
+  }
 });
 
 // This section will help you to allow user to login
@@ -68,29 +84,6 @@ userRoutes.route("/user/login").post(async function (req, res) {
   });
 });
 
-function verifyJWT(req, res, next) {
-  console.log("Verifying JWT");
-  const token = req.headers["x-access-token"]?.split(" ")[1];
-  console.log(token);
-
-  if (token) {
-    console.log("Authenticating Token");
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err)
-        return res.json({
-          isLoggedIn: false,
-          message: "Failed To Authenticate User",
-        });
-      req.user = {};
-      req.user.id = decoded.id;
-      req.user.email = decoded.email;
-      next();
-    });
-  } else {
-    console.log("Incorrect Token Auth");
-    res.json({ message: "Incorrect Token Provided", isLoggedIn: false });
-  }
-}
 
 /* User CRUD Methods */
 
@@ -145,17 +138,41 @@ userRoutes.route("/user/add").post(async function (req, res) {
 });
 
 // This section will help you update a user by id.
-userRoutes.route("/user/update/:id").post(function (req, response) {
+userRoutes.route("/user/update/:id").post(async function (req, response) {
   let db_connect = dbo.getDb("dropandgo");
-  let myquery = { _id: ObjectId(req.params.id) };
+
+  const userDB = await db_connect
+    .collection("user")
+    .findOne({ _id: ObjectId(req.params.id) });
+
+  let encryptedPassword = "";
+  if (!req.body.password) {
+    encryptedPassword = userDB.password;
+  } else if (userDB.password !== req.body.password) {
+    console.log("Updating Password");
+    encryptedPassword = await bcrypt.hash(req.body.password, 10);
+  } else {
+    encryptedPassword = req.body.password;
+  }
+
+  let updatedStatus = "";
+  if (!req.body.status) {
+    updatedStatus = userDB.status;
+  } else {
+    updatedStatus = req.body.status;
+  }
+
   let newvalues = {
     $set: {
       name: req.body.name,
       email: req.body.email,
+      password: encryptedPassword,
       phone: req.body.phone,
-      status: req.body.status,
+      status: updatedStatus,
     },
   };
+  let myquery = { _id: ObjectId(req.params.id) };
+
   db_connect
     .collection("user")
     .updateOne(myquery, newvalues, function (err, res) {
@@ -190,11 +207,12 @@ userRoutes.route("/user").get(function (req, res) {
 
 // This section will help you get a single user by id
 userRoutes.route("/user/:id").get(function (req, res) {
-  console.log("Searching for id");
+  console.log("User: Searching for id");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect.collection("user").findOne(myquery, function (err, result) {
     if (err) throw err;
+    console.log(result);
     res.json(result);
   });
 });
