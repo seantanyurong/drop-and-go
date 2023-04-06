@@ -42,7 +42,7 @@ const Header = () => {
       const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
 
       if (!responseAuth) {
-        const message = `An error has occurred: ${responseAuth.statusText}`;
+        const message = `An error has occurred: ${responseAuth.message}`;
         window.alert(message);
         return;
       }
@@ -51,11 +51,25 @@ const Header = () => {
       console.log(authRes);
 
       if (!authRes) {
-        const message = `An error has occurred: ${authRes.statusText}`;
+        const message = `An error has occurred: ${authRes.message}`;
         window.alert(message);
         return;
-      //} else if (!authRes.isLoggedIn) {
-        //navigate("/login/user");
+      }
+
+      console.log("Fetch Data Triggered");
+      const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+      
+      if (!responseDetails) {
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+      } 
+
+      const detailsRes = await responseDetails.json();
+      console.log(detailsRes);
+
+      if (!detailsRes) {
+        navigate("/login/user");
       } else {
         setAuthState(authRes);
       }
