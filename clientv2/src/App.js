@@ -19,6 +19,12 @@ import ProviderProfilePage from "./pages/ProviderProfilePage";
 import AdminProfilePage from "./pages/AdminProfilePage";
 
 import UserBookingPage from "./pages/UserBookingPage";
+import AddLocationPage from "./pages/AddLocationPage";
+import ViewLocationsPage from "./pages/ViewLocationsPage";
+import EditLocationPage from "./pages/EditLocationPage";
+import ViewBusinessHoursPage from "./pages/ViewBusinessHoursPage";
+import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
+import AddBusinessHoursPage from "./pages/AddBusinessHoursPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import ListingDetailsPage from "./pages/ListingDetailsPage";
 
@@ -28,16 +34,36 @@ import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
 
-
 function App() {
   return (
     <main>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/test" element={<TestPage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:text?/:date?/:bag?" element={<SearchPage />} />
         <Route path="/listing/:listingId" element={<ListingDetailsPage />} />
         <Route path="/user/bookings" element={<UserBookingPage />} />
+        <Route path="/provider/add-location" element={<AddLocationPage />} />
+        <Route
+          path="/provider/view-locations"
+          element={<ViewLocationsPage />}
+        />
+        <Route
+          path="/provider/edit-listing/:id"
+          element={<EditLocationPage />}
+        />
+        <Route
+          path="/provider/view-business-hours"
+          element={<ViewBusinessHoursPage />}
+        />
+        <Route
+          path="/provider/add-business-hours"
+          element={<AddBusinessHoursPage />}
+        />
+        <Route
+          path="/provider/edit-business-hours/:businessHoursId"
+          element={<EditBusinessHoursPage />}
+        />
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
         <Route path="/login/provider" element={<ProviderLoginPage />} />
@@ -49,18 +75,19 @@ function App() {
         <Route path="/provider/profile/:id" element={<ProviderProfilePage />} />
         <Route path="/admin/profile/:id" element={<AdminProfilePage />} />
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route
-          path="/admin/user/:userId"
-          element={<AdminUserDetailsPage />} />
+        <Route path="/admin/user/:userId" element={<AdminUserDetailsPage />} />
         <Route
           path="/admin/provider/:providerId"
-          element={<AdminProviderDetailsPage />} />
+          element={<AdminProviderDetailsPage />}
+        />
         <Route
           path="/admin/listing/:listingId"
-          element={<AdminListingDetailsPage />} />
+          element={<AdminListingDetailsPage />}
+        />
         <Route
           path="/admin/booking/:bookingId"
-          element={<AdminBookingDetailsPage />} />
+          element={<AdminBookingDetailsPage />}
+        />
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}

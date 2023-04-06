@@ -10,7 +10,7 @@ const Listing = (props) => {
       <img
         src={
           props.listing.displayPicture ||
-          "https://img.freepik.com/free-vector/shop-with-we-are-open-sign_23-2148557016.jpg?w=2000"
+          "https://res.cloudinary.com/djy7am9b5/image/upload/v1680770327/default_kqdvf0.png"
         }
         alt="Shop with open sign."
         className="mb-6 max-h-[500px]"

@@ -161,6 +161,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     days: req.body.days,
     paynow: req.body.paynow,
     bags: req.body.bags,
+    size: req.body.size,
     status: req.body.status,
     name: req.body.name,
     position: req.body.position,
@@ -169,6 +170,7 @@ bookingRoutes.route("/booking/add").post(function (req, response) {
     user_id: req.body.user_id,
     startTime: req.body.startTime,
     endTime: req.body.endTime,
+    finalPrice: req.body.finalPrice,
   };
   db_connect.collection("booking").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -188,6 +190,7 @@ bookingRoutes.route("/booking/update/:id").post(function (req, response) {
       status: req.body.status,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
+      finalPrice: req.body.finalPrice,
     },
   };
   db_connect
