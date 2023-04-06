@@ -32,7 +32,7 @@ userRoutes.route("/user/authenticate").get(function (req, res) {
           message: "Failed To Authenticate User",
         });
       console.log(decoded.id);
-      return res.json({ isLoggedIn: true, id: decoded.id});
+      return res.json({ isLoggedIn: true, id: decoded.id, name: decoded.name });
     });
   } else {
     console.log("Incorrect Token Auth");
