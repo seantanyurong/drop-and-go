@@ -8,11 +8,15 @@ import {
   MinusCircleIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingForm = (props) => {
+
+  let navigate = useNavigate();
+
   let [listing, setListing] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -103,9 +107,12 @@ const BookingForm = (props) => {
         .reduce((prev, next) => prev + next.size, 0);
 
     console.log(remainingCapacity);
+    console.log(userID);
 
     if (remainingCapacity < size * bags) {
       alert("Not sufficient space. Please decrease bag count or bag size.");
+    } else if (userID === undefined) {
+      navigate("/login/user");
     } else {
       await fetch("http://localhost:6003/booking/add", {
         method: "POST",
