@@ -36,7 +36,7 @@ reviewRoutes.route("/review/booking/:bookingId").get(function (req, res) {
   });
 });
 
-reviewRoutes.route("/review/listings/:listingId").get(function (req, res) {
+reviewRoutes.route("/review/listing/:listingId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {

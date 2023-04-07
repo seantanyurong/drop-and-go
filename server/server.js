@@ -12,6 +12,7 @@ app.use(require("./routes/provider"));
 app.use(require("./routes/admin"));
 app.use(require("./routes/booking"));
 app.use(require("./routes/businessHours"));
+app.use(require("./routes/reviews"));
 // get driver connection
 const dbo = require("./db/conn");
 const bodyParser = require("body-parser");
