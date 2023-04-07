@@ -14,6 +14,7 @@ const UserBookingDetails = () => {
   const [endTime, setEndTime] = useState();
   const [finalPrice, setFinalPrice] = useState();
   const [reviewed, setReviewed] = useState(false);
+  const [reviewScore, setReviewScore] = useState(3);
 
   const defaultReviewState = {
     starNumber: 5,
@@ -80,6 +81,25 @@ const UserBookingDetails = () => {
             setReview(reviewRes);
           }
         }
+
+        const response4 = await fetch(
+          `http://localhost:6003/review/listing/${bookingRes.listing_id}`
+        );
+
+        if (!response4.ok) {
+          const message = `An error has occurred: ${response4.statusText}`;
+          window.alert(message);
+          return;
+        }
+
+        const reviewScoreRes = await response4.json();
+        if (!reviewScoreRes) {
+          window.alert(`review with listing id ${bookingRes.listing_id} not found`);
+          return;
+        } else {
+          console.log(reviewScoreRes);
+          setReviewScore(reviewScoreRes[0]?.reviewScore);
+        } 
       }
     }
     fetchData();
@@ -192,7 +212,7 @@ const UserBookingDetails = () => {
               <div>
                 <p className="text-sm font-light">{listing.address}</p>
                 <div className="flex items-center mt-1">
-                  <p className="text-sm font-light">4.7</p>
+                  <p className="text-sm font-light">{reviewScore}</p>
                   <StarIcon
                     className="h-4 w-4 ml-1 text-yellow-400"
                     aria-hidden="true"
