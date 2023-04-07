@@ -2,6 +2,8 @@ import React from "react";
 import { CheckCircleIcon, StarIcon } from "@heroicons/react/20/solid";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const UserBookingDetails = () => {
   let { bookingId } = useParams();
@@ -11,9 +13,15 @@ const UserBookingDetails = () => {
   const [startTime, setStartTime] = useState();
   const [endTime, setEndTime] = useState();
   const [finalPrice, setFinalPrice] = useState();
-  const [starNumber, setStarNumber] = useState(3);
-  const [subject, setSubject] = useState("");
-  const [description, setDescription] = useState("");
+  const [reviewed, setReviewed] = useState(false);
+
+  const defaultReviewState = {
+    starNumber: 5,
+    subject: "",
+    description: "",
+  };
+
+  const [review, setReview] = useState(defaultReviewState);
 
   useEffect(() => {
     async function fetchData() {
@@ -57,11 +65,24 @@ const UserBookingDetails = () => {
         } else {
           setListing(listingRes);
         }
+
+        if (status === "Collected") {
+          const response3 = await fetch(
+            `http://localhost:6003/review/booking/${bookingRes._id}`
+          );
+
+          const reviewRes = await response3.json();
+          console.log(reviewRes);
+          if (!reviewRes || !response3.ok) {
+            setReviewed(false);
+          } else {
+            setReviewed(true);
+            setReview(reviewRes);
+          }
+        }
       }
     }
-
     fetchData();
-
     return;
     // eslint-disable-next-line
   }, []);
@@ -99,6 +120,54 @@ const UserBookingDetails = () => {
     return TotalHours;
   };
 
+  const reviewSchema = Yup.object().shape({
+    subject: Yup.string().required("Subject is required"),
+    description: Yup.string().required("Description is required"),
+    starNumber: Yup.number()
+      .required("Number of Stars is required")
+      .min(0)
+      .max(5),
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: review,
+
+    onSubmit: function (values) {
+      handleSubmit();
+    },
+
+    validationSchema: reviewSchema,
+  });
+
+  const handleSubmit = (e) => {
+    let body = {
+      starNumber: formik.values.starNumber,
+      subject: formik.values.subject,
+      description: formik.values.description,
+      userId: booking.user_id,
+      listingId: listing._id,
+      bookingId: booking._id,
+    };
+
+    async function addReview() {
+      const settings = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+      console.log("body" + JSON.stringify(body));
+
+      let dbUrl = `http://localhost:6003/review/add`;
+
+      await fetch(dbUrl, settings);
+    }
+    addReview();
+    setReviewed(true);
+  };
   return (
     <div>
       {listing && (
@@ -271,23 +340,131 @@ const UserBookingDetails = () => {
             </div>
           </div>
 
-          <div className="border-[1px] border-border-main p-4 rounded-md mt-8 mb-4 shadow-md">
+{status === "Collected" && (
+          <form
+            className="border-[1px] border-border-main p-4 rounded-md mt-8 mb-4 shadow-md"
+            onSubmit={formik.handleSubmit}
+          >
             <div className="flex items-center mb-1 justify-between">
               <div className="flex space-x-3 items-center">
-                <h3 className="font-semibold">Write a review!</h3>
+                <h3 className="text-lg font-semibold">
+                  {reviewed ? "Thanks for your review!" : "Write a review!"}
+                </h3>
               </div>
             </div>
-            <div>
-              <p className="text-sm font-light">How was your experience?</p>
-              <input
-                className="focus:outline-0 border-[1px] border-gray-400"
-                type="text"
-                placeholder="Subject"
-                onChange={(e) => setSubject(e.target.value)}
-                value={subject}
-              />
+            <div className="grid grid-rows-3 gap-4">
+              <div className="grid grid-rows-2">
+                <label
+                  className="text-l text-text-dark font-semibold"
+                  htmlFor="Subject"
+                >
+                  Subject
+                </label>
+                <input
+                  className={
+                    !reviewed
+                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                          formik.touched.subject && formik.errors.subject
+                            ? "border-red-400 text-red-400"
+                            : "border-gray-300"
+                        }`
+                      : "text-l font-light focus:outline-none"
+                  }
+                  type="text"
+                  readOnly={reviewed}
+                  id="subject"
+                  placeholder="Subject"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.subject}
+                />
+                {formik.touched.subject && formik.errors.subject && (
+                  <span className="text-red-500 text-xs italic">
+                    {formik.errors.subject}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-rows-2">
+                <label
+                  className="text-l text-text-dark font-semibold"
+                  htmlFor="stars"
+                >
+                  Number of Stars
+                </label>
+                <input
+                  className={
+                    !reviewed
+                      ? `shadow appearance-none border rounded w-14 px-3 text-gray-700 focus:shadow-outline ${
+                          formik.touched.starNumber && formik.errors.starNumber
+                            ? "border-red-400 text-red-400"
+                            : "border-gray-300"
+                        }`
+                      : "text-l font-light focus:outline-none"
+                  }
+                  type="number"
+                  readOnly={reviewed}
+                  id="starNumber"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.starNumber}
+                />
+                {formik.touched.starNumber && formik.errors.starNumber && (
+                  <span className="text-red-500 text-xs italic">
+                    {formik.errors.starNumber}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-rows-2">
+                <label
+                  className="text-l py-2 text-text-dark font-semibold"
+                  htmlFor="bankAccount"
+                >
+                  Description
+                </label>
+                <input
+                  className={
+                    !reviewed
+                      ? `shadow appearance-none border rounded h-full w-full px-3 text-gray-700 focus:shadow-outline ${
+                          formik.touched.description &&
+                          formik.errors.description
+                            ? "border-red-400 text-red-400"
+                            : "border-gray-300"
+                        }`
+                      : "text-l font-light focus:outline-none"
+                  }
+                  type="textarea"
+                  readOnly={reviewed}
+                  id="description"
+                  placeholder="Description"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.description}
+                />
+                {formik.touched.description && formik.errors.description && (
+                  <span className="text-red-500 text-xs italic">
+                    {formik.errors.description}
+                  </span>
+                )}
+              </div>
+              {!reviewed && (
+                <div className="flex gap-4 justify-end">
+                  <button
+                    className="rounded-md bg-box-gray w-20 p-1.5 text-s font-medium"
+                    onClick={formik.handleReset}
+                  >
+                    Reset
+                  </button>
+                  <button
+                    className="rounded-md bg-green-500 w-20 text-white p-1.5 text-s font-medium"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
+          </form>
+          )}
         </div>
       )}
     </div>
