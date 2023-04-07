@@ -56,22 +56,24 @@ const AdminHeader = () => {
         return;
       }
 
-      console.log("Fetch Data Triggered");
-      const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
+      if (authRes.isLoggedIn) {
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
 
-      if (!responseDetails) {
-        const message = `An error has occurred: ${responseDetails.message}`;
-        window.alert(message);
-        return;
-      }
+        if (!responseDetails) {
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
 
-      const detailsRes = await responseDetails.json();
-      console.log(detailsRes);
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
 
-      if (!detailsRes) {
-        navigate("/login/admin");
-      } else {
-        setAuthState(authRes);
+        if (detailsRes === null) {
+          navigate("/login/admin");
+        } else {
+          setAuthState(authRes);
+        }
       }
     }
 
@@ -150,7 +152,7 @@ const AdminHeader = () => {
                               )}
                               onClick={handleAccount}
                             >
-                              Account
+                              My Account
                             </div>
                           )}
                         </Menu.Button>

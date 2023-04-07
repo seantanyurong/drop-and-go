@@ -1,11 +1,11 @@
 import React from 'react';
-import DefaultHeader from '../components/ui/DefaultHeader';
+import DefaultAdminHeader from '../components/ui/DefaultAdminHeader';
 import Login from '../components/layout/LoginPage/Login';
 
 const LoginPage = () => {
     return(
         <div>
-            <DefaultHeader></DefaultHeader>
+            <DefaultAdminHeader></DefaultAdminHeader>
             <Login></Login>
         </div>
     );

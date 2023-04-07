@@ -22,7 +22,7 @@ const ProviderHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login/provider");
+    navigate("/become-a-provider");
   };
 
   const handleAccount = () => {
@@ -60,25 +60,23 @@ const ProviderHeader = () => {
         return;
       }
 
-      if (!authRes.isLoggedIn) {
-        navigate("/login/provider");
-      } else {
+      if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
         const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
-        
+
         if (!responseDetails) {
-            const message = `An error has occurred: ${responseDetails.message}`;
-            window.alert(message);
-            return;
-        } 
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
 
         const detailsRes = await responseDetails.json();
         console.log(detailsRes);
 
-        if (detailsRes._id === authRes.id) {
-            setAuthState(authRes);
+        if (detailsRes === null) {
+          navigate("/login/provider");
         } else {
-            navigate("/login/provider");
+          setAuthState(authRes);
         }
       }
     }
@@ -105,14 +103,6 @@ const ProviderHeader = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
-                <Link
-                  to="/"
-                  className="font-semibold text-text-main hover:text-main-hover
-                px-5 flex items-center transition duration-150 ease-in-out
-                underline"
-                >
-                  How does it work?
-                </Link>
               </li>
               <li>
                 <Menu as="div" className="inline-block text-left">
@@ -176,7 +166,7 @@ const ProviderHeader = () => {
                               )}
                               onClick={handleAccount}
                             >
-                              Account
+                              My Account
                             </div>
                           )}
                         </Menu.Button>

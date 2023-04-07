@@ -55,7 +55,7 @@ const ProviderSignUp = () => {
             }
     
             const createRes = await responseCreate.json();
-            if (!createRes) {
+            if (!createRes._id) {
                 const message = `An error has occurred: ${createRes.message}`;
                 window.alert(message);
                 return;
