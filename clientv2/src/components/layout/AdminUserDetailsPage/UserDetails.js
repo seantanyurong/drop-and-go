@@ -55,7 +55,8 @@ const UserDetails = ({ entityType }) => {
   const phoneRegExp = "(6|8|9)[0-9]{7}";
   const userDetailsSchema = Yup.object().shape({
     name: Yup.string()
-      .max(50, "Name exceeds 50 characters")
+    .min(3, "Name must be at least 3 characters")
+      .max(32, "Name exceeds 32 characters")
       .required("Name is required"),
     email: Yup.string()
       .email("Invalid email")
@@ -285,7 +286,7 @@ const UserDetails = ({ entityType }) => {
                 readOnly={!editState}
                 id="bankAccount"
                 type="number"
-                value={formState.phone}
+                value={formState.bankAccount}
                 onChange={handleChange}
               />
             )}
