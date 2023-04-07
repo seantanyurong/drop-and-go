@@ -1,12 +1,12 @@
 import React from 'react';
-import DefaultHeader from '../components/ui/DefaultHeader';
+import DefaultAdminHeader from '../components/ui/DefaultAdminHeader';
 import AdminSignUp from '../components/layout/SignUpPage/AdminSignUp';
 import FooterBottom from "../components/ui/FooterBottom";
 
 const AdminSignUpPage = () => {
     return(
         <div>
-            <DefaultHeader></DefaultHeader>
+            <DefaultAdminHeader></DefaultAdminHeader>
             <AdminSignUp></AdminSignUp>
             <FooterBottom></FooterBottom>
         </div>
