@@ -102,8 +102,8 @@ userRoutes.route("/user/add").post(async function (req, res) {
     .collection("user")
     .findOne({ email: user.email });
 
-  console.log(takenUsername);
-  console.log(takenEmail);
+  // console.log(takenUsername);
+  // console.log(takenEmail);
 
   // checks if password matches reenterPassword
   const pw = user.password;
