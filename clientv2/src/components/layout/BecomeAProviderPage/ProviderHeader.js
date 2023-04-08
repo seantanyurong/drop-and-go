@@ -19,7 +19,7 @@ const ProviderHeader = () => {
                     </h2>
 
                     <a className="mx-0 my-[18px] min-w-[160px] h-[48px] leading-[48px] text-lg text-center font-medium bg-gray-100 text-gray-600 shadow-md rounded-md inline-block px-6 border-none transition duration-200 ease-in-out hover:bg-gray-200 hover:text-gray-800"
-                        href="/login/provider">
+                        href="/signup/provider">
                         Get started today
                     </a>
                 </div>
