@@ -4,7 +4,6 @@ import ProviderHowItWorks from "../components/layout/BecomeAProviderPage/Provide
 import SignUpBanner from "../components/layout/BecomeAProviderPage/SignUpBanner";
 import DefaultProviderHeader from '../components/ui/DefaultProviderHeader';
 import Footer from "../components/ui/Footer";
-import FooterBottom from "../components/ui/FooterBottom";
 
 const BecomeAProviderPage = () => {
     return (
@@ -15,7 +14,6 @@ const BecomeAProviderPage = () => {
             <ProviderHowItWorks />
             <SignUpBanner />
             <Footer />
-            <FooterBottom />
         </div>
     );
 }

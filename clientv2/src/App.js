@@ -8,6 +8,8 @@ import SearchPage from "./pages/SearchPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import BecomeAProviderPage from "./pages/BecomeAProviderPage";
 import AboutUsPage from "./pages/AboutUsPage";
+import ContactUs from "./pages/ContactUs";
+import FAQPage from "./pages/FAQPage";
 
 import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
@@ -40,8 +42,7 @@ import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
-import ContactUs from "./pages/ContactUs";
-import FAQPage from "./pages/FAQPage";
+
 
 function App() {
   return (
@@ -54,43 +55,26 @@ function App() {
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/provider/add-location" element={<AddLocationPage />} />
         <Route
-
           path="/provider/view-locations"
-
           element={<ViewLocationsPage />}
-
         />
         <Route
-
           path="/provider/edit-listing/:id"
-
           element={<EditLocationPage />}
-
         />
         <Route
-
           path="/provider/view-business-hours"
-
           element={<ViewBusinessHoursPage />}
-
         />
         <Route
-
           path="/provider/add-business-hours"
-
           element={<AddBusinessHoursPage />}
-
         />
         <Route
-
           path="/provider/edit-business-hours/:businessHoursId"
-
           element={<EditBusinessHoursPage />}
-
         />
         <Route path="/provider/listing/bookings/:id" element={<ProviderBookingPage />} />
-
-
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
         <Route path="/login/provider" element={<ProviderLoginPage />} />

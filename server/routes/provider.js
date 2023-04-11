@@ -129,7 +129,7 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
       phone: provider.phone,
       bankAccount: provider.bank,
       joinDate: provider.joinDate,
-      status: "active",
+      status: "Active",
     };
 
     db_connect

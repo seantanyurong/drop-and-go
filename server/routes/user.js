@@ -126,7 +126,7 @@ userRoutes.route("/user/add").post(async function (req, res) {
       password: encryptedPassword,
       phone: user.phone,
       joinDate: user.joinDate,
-      status: "active",
+      status: "Active",
     };
 
     db_connect.collection("user").insertOne(myobj, function (err, response) {

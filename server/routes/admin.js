@@ -125,7 +125,7 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
       email: admin.email,
       password: encryptedPassword,
       joinDate: admin.joinDate,
-      status: "active",
+      status: "Active",
     };
 
     db_connect.collection("admin").insertOne(myobj, function (err, response) {
