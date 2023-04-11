@@ -12,7 +12,7 @@ const AboutUs = () => {
             <div className="text-center mb-40 mt-32">
               <h1 className="text-5xl font-bold text-white">About Us</h1>
               <p className="text-3xl text-white">
-                Learn more about our team and our company.
+                Meet the faces behind our company
               </p>
             </div>
           </div>
@@ -22,7 +22,7 @@ const AboutUs = () => {
     <div className="flex flex-wrap -mx-4 max-w-8xl md:max-w-8xl mx-auto px-5 sm:px-6 mt-50 w-5/6">
 
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
@@ -37,7 +37,7 @@ const AboutUs = () => {
       </div> 
       
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
@@ -52,7 +52,7 @@ const AboutUs = () => {
       </div>          
 
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
@@ -67,7 +67,7 @@ const AboutUs = () => {
       </div>
 
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
@@ -82,7 +82,7 @@ const AboutUs = () => {
       </div>
 
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
@@ -97,7 +97,7 @@ const AboutUs = () => {
       </div>
 
       <div className="w-full md:w-1/3 px-4 mb-8">
-        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
+        <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
           <div className="mb-4">
             <img className="mx-auto h-8" src={Image} alt="Pic1" />
           </div>
