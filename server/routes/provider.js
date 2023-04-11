@@ -104,8 +104,8 @@ providerRoutes.route("/provider/add").post(async function (req, res) {
     .collection("provider")
     .findOne({ email: provider.email });
 
-  console.log(takenUsername);
-  console.log(takenEmail);
+  // console.log(takenUsername);
+  // console.log(takenEmail);
 
   // checks if password matches reenterPassword
   const pw = provider.password;

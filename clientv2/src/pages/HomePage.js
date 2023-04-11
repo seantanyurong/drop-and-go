@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/layout/UserBookingPage/Header";
+import DefaultHeader from '../components/ui/DefaultHeader';
 import ReviewSection from "../components/layout/HomePage/ReviewSection";
 import Pricing from "../components/layout/HomePage/Pricing";
 import HowItWorks from "../components/layout/HomePage/HowItWorks";
@@ -11,7 +11,7 @@ import FooterBottom from "../components/ui/FooterBottom";
 const HomePage = () => {
   return (
     <div>
-      <Header />
+      <DefaultHeader />
       <SearchBarSection />
       <ReviewSection />
       <Pricing />

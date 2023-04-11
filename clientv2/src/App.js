@@ -1,9 +1,13 @@
 import { Routes, Route } from "react-router-dom";
+
 import TestPage from "./pages/TestPage";
+import PageNotFoundPage from "./pages/PageNotFoundPage";
+
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SearchResultPage from "./pages/SearchResultPage";
 import BecomeAProviderPage from "./pages/BecomeAProviderPage";
+import AboutUsPage from "./pages/AboutUsPage";
 
 import LoginPage from "./pages/LoginPage";
 import UserLoginPage from "./pages/UserLoginPage";
@@ -48,24 +52,39 @@ function App() {
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/provider/add-location" element={<AddLocationPage />} />
         <Route
+
           path="/provider/view-locations"
+
           element={<ViewLocationsPage />}
+
         />
         <Route
+
           path="/provider/edit-listing/:id"
+
           element={<EditLocationPage />}
+
         />
         <Route
+
           path="/provider/view-business-hours"
+
           element={<ViewBusinessHoursPage />}
+
         />
         <Route
+
           path="/provider/add-business-hours"
+
           element={<AddBusinessHoursPage />}
+
         />
         <Route
+
           path="/provider/edit-business-hours/:businessHoursId"
+
           element={<EditBusinessHoursPage />}
+
         />
         <Route path="/provider/listing/bookings/:id" element={<ProviderBookingPage />} />
 
@@ -104,6 +123,8 @@ function App() {
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
     </main>
   );

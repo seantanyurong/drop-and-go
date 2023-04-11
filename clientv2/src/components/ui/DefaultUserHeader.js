@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const ProviderHeader = () => {
+const DefaultUserHeader = () => {
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -22,15 +22,15 @@ const ProviderHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/become-a-provider");
+    navigate("/");
   };
 
   const handleAccount = () => {
-    navigate(`/provider/profile/${authState.id}`);
+    navigate(`/user/profile/${authState.id}`);
   };
 
-  const handleListings = () => {
-    navigate(`/provider/view-locations`);
+  const handleBookings = () => {
+    navigate(`/user/bookings/${authState.id}`);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const ProviderHeader = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
+      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.message}`;
@@ -62,7 +62,7 @@ const ProviderHeader = () => {
 
       if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
+        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
 
         if (!responseDetails) {
           const message = `An error has occurred: ${responseDetails.message}`;
@@ -74,7 +74,7 @@ const ProviderHeader = () => {
         console.log(detailsRes);
 
         if (detailsRes === null) {
-          navigate("/login/provider");
+          navigate("/login/user");
         } else {
           setAuthState(authRes);
         }
@@ -148,9 +148,9 @@ const ProviderHeader = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={handleListings}
+                              onClick={handleBookings}
                             >
-                              My Listings
+                              My Bookings
                             </div>
                           )}
                         </Menu.Button>
@@ -199,4 +199,4 @@ const ProviderHeader = () => {
   );
 };
 
-export default ProviderHeader;
+export default DefaultUserHeader;

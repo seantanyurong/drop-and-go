@@ -102,8 +102,8 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
     .collection("admin")
     .findOne({ email: admin.email });
 
-  console.log(takenUsername);
-  console.log(takenEmail);
+  // console.log(takenUsername);
+  // console.log(takenEmail);
 
   // checks if password matches reenterPassword
   const pw = admin.password;

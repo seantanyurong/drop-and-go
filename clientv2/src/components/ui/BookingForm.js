@@ -8,11 +8,15 @@ import {
   MinusCircleIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingForm = (props) => {
+
+  let navigate = useNavigate();
+
   let [listing, setListing] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -20,6 +24,7 @@ const BookingForm = (props) => {
   const [size, setSize] = useState(1);
   const [paynow, setPaynow] = useState(false);
   const [userID, setUserID] = useState("");
+  const [reviewScore, setReviewScore] = useState(3);
 
   useEffect(() => {
     async function fetchData() {
@@ -61,6 +66,25 @@ const BookingForm = (props) => {
       } else {
         setListing(listingRes);
       }
+      const review = await fetch(
+        `http://localhost:6003/review/listing/${props.listing_id}`
+      );
+
+      if (!review.ok) {
+        const message = `An error has occurred: ${review.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const reviewScoreRes = await review.json();
+      if (!reviewScoreRes) {
+        window.alert(`review with listing id ${props.listing_id} not found`);
+        return;
+      } else {
+        console.log(reviewScoreRes);
+        setReviewScore(reviewScoreRes[0]?.reviewScore);
+      } 
+      
     }
 
     fetchData();
@@ -103,9 +127,12 @@ const BookingForm = (props) => {
         .reduce((prev, next) => prev + next.size, 0);
 
     console.log(remainingCapacity);
+    console.log(userID);
 
     if (remainingCapacity < size * bags) {
       alert("Not sufficient space. Please decrease bag count or bag size.");
+    } else if (userID === undefined) {
+      navigate("/login/user");
     } else {
       await fetch("http://localhost:6003/booking/add", {
         method: "POST",
@@ -171,7 +198,7 @@ const BookingForm = (props) => {
                 <div>
                   <p className="text-sm font-light">{listing.address}</p>
                   <div className="flex items-center mt-1">
-                    <p className="text-sm font-light">4.7</p>
+                    <p className="text-sm font-light">{reviewScore}</p>
                     <StarIcon
                       className="h-4 w-4 ml-1 text-yellow-400"
                       aria-hidden="true"
