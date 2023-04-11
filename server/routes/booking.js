@@ -90,6 +90,7 @@ bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
         as: "listingDetails",
       },
     },
+    
   ];
   db_connect
     .collection("booking")
