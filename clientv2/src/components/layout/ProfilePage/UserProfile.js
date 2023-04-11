@@ -28,7 +28,7 @@ const UserProfile = () => {
   const [editState, setEditState] = useState(false);
   const [authState, setAuthState] = useState(credentials);
 
-  const phoneRegExp = "(6|8|9)[0-9]{7}";
+  const phoneRegExp = "^(6|8|9)[0-9]{7}$";
   const userDetailsSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "Name must be at least 3 characters")

@@ -52,7 +52,7 @@ const UserDetails = ({ entityType }) => {
     // eslint-disable-next-line
   }, []);
 
-  const phoneRegExp = "(6|8|9)[0-9]{7}";
+  const phoneRegExp = "^(6|8|9)[0-9]{7}$";
   const userDetailsSchema = Yup.object().shape({
     name: Yup.string()
     .min(3, "Name must be at least 3 characters")
