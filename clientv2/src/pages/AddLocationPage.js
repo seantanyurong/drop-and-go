@@ -1,11 +1,11 @@
 import React from "react";
 import AddLocation from "../components/layout/AddLocationPage/AddLocation";
-import Header from "../components/layout/UserBookingPage/Header";
+import ProviderHeader from "../components/ui/ProviderHeader";
 
 const AddLocationPage = () => {
   return (
     <div>
-      <Header />
+      <ProviderHeader />
       <AddLocation />
     </div>
   );

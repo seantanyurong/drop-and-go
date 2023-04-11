@@ -1,6 +1,6 @@
 import React from "react";
 import Bookings from "../components/layout/UserBookingPage/Bookings";
-import Header from "../components/layout/UserBookingPage/Header";
+import Header from "../components/ui/DefaultUserHeader";
 
 const UserBookingPage = () => {
   return (

@@ -6,11 +6,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const ProviderProfile = () => {
-    const navigate = useNavigate();
-    const goBack = () => {
-        let path = "/provider/view-locations";
-        navigate(path);
-      };
+  const navigate = useNavigate();
+  const goBack = () => {
+    let path = "/provider/view-locations";
+    navigate(path);
+  };
   const credentials = {
     loggedIn: "",
     id: "",
@@ -59,8 +59,8 @@ const ProviderProfile = () => {
 
   const handleCancel = () => {
     setEditState(false);
-  formik.handleReset();
-};
+    formik.handleReset();
+  };
 
   const handleSubmit = (e) => {
     setEditState(false);
@@ -178,7 +178,7 @@ const ProviderProfile = () => {
 
   return (
     <div className="overflow-hidden bg-white shadow sm:rounded-lg">
-         <div className="shadow-md px-6 py-8">
+      <div className="shadow-md px-6 py-8">
         <div className="max-w-5xl md:max-w-3xl mx-auto sm:px-10">
           <button
             className="rounded-md bg-box-gray w-24 p-1.5 px-4 text-s font-medium inline-flex items-center"
@@ -247,14 +247,13 @@ const ProviderProfile = () => {
             <div className="grid grid-rows-5 gap-4">
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.name && formik.errors.name
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="name"
                 name="name"
@@ -270,14 +269,13 @@ const ProviderProfile = () => {
               )}
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.email && formik.errors.email
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="email"
                 type="email"
@@ -292,14 +290,13 @@ const ProviderProfile = () => {
               )}
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.password && formik.errors.password
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="password"
                 type="password"
@@ -314,14 +311,13 @@ const ProviderProfile = () => {
               )}
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.phone && formik.errors.phone
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="phone"
                 type="text"
@@ -336,14 +332,13 @@ const ProviderProfile = () => {
               )}
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.bankAccount && formik.errors.bankAccount
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.bankAccount && formik.errors.bankAccount
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="bankAccount"
                 type="text"
@@ -374,7 +369,7 @@ const ProviderProfile = () => {
                   </button>
                 </div>
               )}
-              
+
             </div>
           </form>
         </div>

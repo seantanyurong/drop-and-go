@@ -7,7 +7,7 @@ import Footer from "../components/ui/Footer";
 import FooterBottom from "../components/ui/FooterBottom";
 
 const BecomeAProviderPage = () => {
-    return(
+    return (
         <div>
             <DefaultProviderHeader />
             <ProviderHeader />

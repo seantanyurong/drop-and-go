@@ -52,7 +52,7 @@ const UserSignUp = () => {
                 window.alert(message);
                 return;
             }
-    
+
             const createRes = await responseCreate.json();
             console.log(createRes);
             if (!createRes.acknowledged) {
@@ -245,7 +245,7 @@ const UserSignUp = () => {
                     </div>
                 </div>
             )}
-            
+
         </div>
     );
 }

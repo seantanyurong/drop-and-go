@@ -18,7 +18,30 @@ const ViewBusinessHours = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`http://localhost:6003/businessHours`);
+
+            // getting the user ID
+            const settings = {
+                method: "GET",
+                headers: {
+                    "x-access-token": localStorage.getItem("token"),
+                },
+            };
+
+            const userID = await fetch(
+                `http://localhost:6003/provider/authenticate`,
+                settings
+            );
+
+            if (!userID.ok) {
+                const message = `An error has occurred: ${userID.statusText}`;
+                window.alert(message);
+                return;
+            }
+
+            const userIDRes = await userID.json();
+            console.log(userIDRes);
+
+            const res = await fetch(`http://localhost:6003/businessHours/provider/${userIDRes.id}`);
 
 
             if (!res.ok) {
@@ -62,6 +85,14 @@ const ViewBusinessHours = () => {
                                         `}
                                 >
                                     Add Business Hours
+                                </li>
+                                <li
+                                    onClick={() => navigate(`/provider/view-locations`)}
+                                    className={`cursor-pointer rounded-t-sm  hover:text-orange-400  font-semibold px-6 flex items-center text-sm py-[0.6rem]
+                  bg-text-main text-text-dark mx-2
+                  ` }
+                                >
+                                    Listings
                                 </li>
 
                             </ul>

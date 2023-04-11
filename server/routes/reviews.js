@@ -24,9 +24,9 @@ reviewRoutes.route("/review").get(function (req, res) {
     });
 });
 
-// This section will help you get review by booking id 
+// This section will help you get review by booking id
 reviewRoutes.route("/review/booking/:bookingId").get(function (req, res) {
-    console.log("Review: BookingId")
+  console.log("Review: BookingId");
   let db_connect = dbo.getDb("dropandgo");
   let myquery = { booking_id: req.params.bookingId };
   db_connect.collection("review").findOne(myquery, function (err, result) {
@@ -40,30 +40,27 @@ reviewRoutes.route("/review/listing/:listingId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
-      $match:
-        {
-          listing_id: req.params.listingId,
-        },
+      $match: {
+        listing_id: req.params.listingId,
+      },
     },
     {
-      $group:
-        {
-          _id: null,
-          totalStars: {
-            $sum: "$starNumber",
-          },
-          numReviews: {
-            $sum: 1,
-          },
+      $group: {
+        _id: null,
+        totalStars: {
+          $sum: "$starNumber",
         },
+        numReviews: {
+          $sum: 1,
+        },
+      },
     },
     {
-      $addFields:
-        {
-          reviewScore: {
-            $divide: ["$totalStars", "$numReviews"],
-          },
+      $addFields: {
+        reviewScore: {
+          $divide: ["$totalStars", "$numReviews"],
         },
+      },
     },
   ];
   db_connect

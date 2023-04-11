@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import LogoImg from "../../assets/Logo.png";
+import LogoImg from "../../../assets/Logo.png";
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const DefaultUserHeader = () => {
+const Header = () => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -21,15 +21,11 @@ const DefaultUserHeader = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate("/login/user");
   };
 
   const handleAccount = () => {
     navigate(`/user/profile/${authState.id}`);
-  };
-
-  const handleBookings = () => {
-    navigate(`/user/bookings`);
   };
 
   useEffect(() => {
@@ -62,28 +58,26 @@ const DefaultUserHeader = () => {
         return;
       }
 
-      if (authRes.isLoggedIn) {
+      if (!authRes.isLoggedIn) {
+        navigate("/login/user");
+      } else {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(
-          `http://localhost:6003/user/${authRes.id}`
-        );
-
+        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+        
         if (!responseDetails) {
-          const message = `An error has occurred: ${responseDetails.message}`;
-          window.alert(message);
-          return;
-        }
+            const message = `An error has occurred: ${responseDetails.message}`;
+            window.alert(message);
+            return;
+        } 
 
         const detailsRes = await responseDetails.json();
         console.log(detailsRes);
 
-        if (detailsRes === null) {
-          navigate("/login/user");
-        } else {
+        if (detailsRes._id === authRes.id) {
           setAuthState(authRes);
+        } else {
+          navigate("/login/user");
         }
-      } else {
-        navigate("/login/user");
       }
     }
 
@@ -99,7 +93,7 @@ const DefaultUserHeader = () => {
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
-            <Link to="/provider/view-locations" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
             </Link>
           </div>
@@ -108,7 +102,16 @@ const DefaultUserHeader = () => {
           <nav className="flex grow mt-4 sm:mt-0">
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
-              <li></li>
+              <li>
+                <Link
+                  to="/"
+                  className="font-semibold text-text-main hover:text-main-hover
+                px-5 flex items-center transition duration-150 ease-in-out
+                underline"
+                >
+                  How does it work?
+                </Link>
+              </li>
               <li>
                 <Menu as="div" className="inline-block text-left">
                   <div>
@@ -147,15 +150,16 @@ const DefaultUserHeader = () => {
                         <Menu.Button>
                           {({ active }) => (
                             <div
+                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={handleBookings}
+                              onClick={() => navigate(`/user/bookings`)}
                             >
-                              My Bookings
+                              My bookings
                             </div>
                           )}
                         </Menu.Button>
@@ -171,7 +175,7 @@ const DefaultUserHeader = () => {
                               )}
                               onClick={handleAccount}
                             >
-                              My Account
+                              Account
                             </div>
                           )}
                         </Menu.Button>
@@ -204,4 +208,4 @@ const DefaultUserHeader = () => {
   );
 };
 
-export default DefaultUserHeader;
+export default Header;

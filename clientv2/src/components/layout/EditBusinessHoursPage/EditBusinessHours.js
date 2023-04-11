@@ -21,10 +21,43 @@ const EditBusinessHours = () => {
     satClosing: "",
     sunOpening: "",
     sunClosing: "",
+    provider_id: ""
 
   });
 
   const { businessHoursId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/provider/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      console.log(userIDRes);
+    }
+    fetchData();
+    return;
+
+  }, []);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -59,6 +92,7 @@ const EditBusinessHours = () => {
           satClosing: res.satClosingHours,
           sunOpening: res.sunOpeningHours,
           sunClosing: res.sunClosingHours,
+          provider_id: res.provider_id
         });
       }
     }
@@ -76,6 +110,7 @@ const EditBusinessHours = () => {
     // e.preventDefault();
 
     let body = {
+      name: formik.values.name,
       monOpeningHours: formik.values.monOpening,
       monClosingHours: formik.values.monClosing,
       tueOpeningHours: formik.values.tueOpening,
@@ -90,6 +125,7 @@ const EditBusinessHours = () => {
       satClosingHours: formik.values.satClosing,
       sunOpeningHours: formik.values.sunOpening,
       sunClosingHours: formik.values.sunClosing,
+      provider_id: formik.values.provider_id
     };
 
     async function updateData() {
@@ -128,6 +164,7 @@ const EditBusinessHours = () => {
     onSubmit: function (values) {
       handleSubmit();
       alert(`${formState.name} Business Hours has been updated!`);
+      navigate(`/provider/view-business-hours`);
     },
 
     validationSchema: yup.object({
@@ -166,7 +203,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Monday:</p>
 
                   <div>
@@ -187,8 +224,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.monOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="monClosing"
@@ -217,7 +253,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Tuesday:</p>
 
                   <div>
@@ -238,8 +274,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.tueOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="tueClosing"
@@ -268,7 +303,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Wednesday:</p>
 
                   <div>
@@ -289,8 +324,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.wedOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="wedClosing"
@@ -319,7 +353,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Thursday:</p>
 
                   <div>
@@ -340,8 +374,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.thurOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="thurClosing"
@@ -370,7 +403,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Friday:</p>
 
                   <div>
@@ -391,8 +424,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.friOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="friClosing"
@@ -421,7 +453,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Saturday:</p>
 
                   <div>
@@ -442,8 +474,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.satOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="satClosing"
@@ -472,7 +503,7 @@ const EditBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Sunday:</p>
 
                   <div>
@@ -493,8 +524,7 @@ const EditBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.sunOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
-                  <div>
+                  <div className="pt-3 text-center">to</div>                  <div>
                     <input
                       type="time"
                       name="sunClosing"

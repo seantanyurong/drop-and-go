@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const DefaultHeader = () => {
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -31,7 +30,7 @@ const DefaultHeader = () => {
   };
 
   const handleBookings = () => {
-    navigate(`/user/bookings/${authState.id}`);
+    navigate(`/user/bookings`);
   };
 
   useEffect(() => {
@@ -44,7 +43,10 @@ const DefaultHeader = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+      const responseAuth = await fetch(
+        "http://localhost:6003/user/authenticate",
+        settings
+      );
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.message}`;
@@ -63,7 +65,9 @@ const DefaultHeader = () => {
 
       if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+        const responseDetails = await fetch(
+          `http://localhost:6003/user/${authRes.id}`
+        );
 
         if (!responseDetails) {
           const message = `An error has occurred: ${responseDetails.message}`;
@@ -102,26 +106,30 @@ const DefaultHeader = () => {
                 <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
               </Link>
             </div>
-  
+
             {/* Desktop navigation */}
             <nav className="flex grow mt-4 sm:mt-0">
               {/* Desktop sign in links */}
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li>
-                  <Link to="/about-us" 
-                        className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+                  <Link
+                    to="/about-us"
+                    className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                   >
-                      About Us
+                    About Us
                   </Link>
                 </li>
                 <li>
                   <Menu as="div" className="inline-block text-left">
                     <div>
                       <Menu.Button>
-                        <UserCircleIcon className="h-8 w-8" aria-hidden="true" />
+                        <UserCircleIcon
+                          className="h-8 w-8"
+                          aria-hidden="true"
+                        />
                       </Menu.Button>
                     </div>
-  
+
                     <Transition
                       as={Fragment}
                       enter="transition ease-out duration-100"
@@ -219,16 +227,17 @@ const DefaultHeader = () => {
                 <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
               </Link>
             </div>
-  
+
             {/* Desktop navigation */}
             <nav className="flex grow mt-4 sm:mt-0">
               {/* Desktop sign in links */}
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li>
-                  <Link to="/login/user" 
-                        className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+                  <Link
+                    to="/login/user"
+                    className="flex-none rounded-full bg-white-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
                   >
-                      Log In <span aria-hidden="true">&rarr;</span>
+                    Log In <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </li>
               </ul>

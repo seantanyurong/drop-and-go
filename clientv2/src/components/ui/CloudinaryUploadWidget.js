@@ -7,7 +7,7 @@ const CloudinaryUploadWidget = ({ onUpload }) => {
     useEffect(() => {
         ref.current = window.cloudinary;
         widgetref.current = ref.current.createUploadWidget({
-            cloudName: 'dt2nnnvpe',
+            cloudName: 'djy7am9b5',
             uploadPreset: 'dropandgo'
         }, function (error, result) {
             // returns url
