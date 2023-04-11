@@ -25,6 +25,13 @@ const Footer = () => {
 
                             <li className="mb-[3px]">
                                 <a className="font-normal pointer-events-auto text-gray-700 inline-block py-[2px] px-0 transition-colors duration-150 hover:text-gray-900 focus:outline-none"
+                                    href="/faq">
+                                    FAQ Page
+                                </a>
+                            </li>
+
+                            <li className="mb-[3px]">
+                                <a className="font-normal pointer-events-auto text-gray-700 inline-block py-[2px] px-0 transition-colors duration-150 hover:text-gray-900 focus:outline-none"
                                     href="/about-us">
                                     About us
                                 </a>

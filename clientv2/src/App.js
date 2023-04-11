@@ -38,6 +38,7 @@ import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
 import ContactUs from "./pages/ContactUs";
+import FAQPage from "./pages/FAQPage";
 
 function App() {
   return (
@@ -102,6 +103,7 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
+        <Route path="/faq" element={<FAQPage />} />
       </Routes>
     </main>
   );

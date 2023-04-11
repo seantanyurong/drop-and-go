@@ -43,8 +43,6 @@ const ContactUsSection = () => {
                             href="/faq">
                             FAQ
                         </a>
-
-                        .
                     </p>
 
                 </div>
