@@ -74,6 +74,8 @@ const AdminHeader = () => {
         } else {
           setAuthState(authRes);
         }
+      } else {
+        navigate("/login/admin");
       }
     }
 
