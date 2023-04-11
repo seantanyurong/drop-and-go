@@ -78,6 +78,8 @@ const DefaultUserHeader = () => {
         } else {
           setAuthState(authRes);
         }
+      } else {
+        navigate("/login/user");
       }
     }
 
