@@ -19,7 +19,7 @@ const AboutUs = () => {
         </div>
       </div>    
 
-    <div className="flex flex-wrap -mx-4 max-w-8xl md:max-w-8xl mx-auto px-5 sm:px-6 mt-50 w-5/6">
+    <div className="flex flex-wrap ">
 
       <div className="w-full md:w-1/3 px-4 mb-8">
         <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-sky-200">
