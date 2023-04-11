@@ -54,7 +54,8 @@ const UserSignUp = () => {
             }
     
             const createRes = await responseCreate.json();
-            if (!createRes._id) {
+            console.log(createRes);
+            if (!createRes.acknowledged) {
                 const message = `An error has occurred: ${createRes.message}`;
                 window.alert(message);
                 return;

@@ -54,7 +54,7 @@ const Listing = (props) => {
       <div>
         <p className="text-sm font-light">{props.listing.address}</p>
         <div className="flex items-center mt-1">
-          <p className="text-sm font-light">{reviewScore}</p>
+          <p className="text-sm font-light">{reviewScore?.toFixed(2)}</p>
           <StarIcon
             className="h-4 w-4 ml-1 text-yellow-400"
             aria-hidden="true"
