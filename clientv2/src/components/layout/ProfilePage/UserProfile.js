@@ -58,7 +58,7 @@ const UserProfile = () => {
   const handleCancel = () => {
     setEditState(false);
     formik.handleReset();
-};
+  };
 
   const handleSubmit = (e) => {
     setEditState(false);
@@ -243,11 +243,10 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.name && formik.errors.name
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -266,11 +265,10 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.email && formik.errors.email
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -288,11 +286,10 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.password && formik.errors.password
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -310,11 +307,10 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.phone && formik.errors.phone
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}

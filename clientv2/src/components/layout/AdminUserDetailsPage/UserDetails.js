@@ -55,7 +55,7 @@ const UserDetails = ({ entityType }) => {
   const phoneRegExp = "(6|8|9)[0-9]{7}";
   const userDetailsSchema = Yup.object().shape({
     name: Yup.string()
-    .min(3, "Name must be at least 3 characters")
+      .min(3, "Name must be at least 3 characters")
       .max(32, "Name exceeds 32 characters")
       .required("Name is required"),
     email: Yup.string()
@@ -132,11 +132,10 @@ const UserDetails = ({ entityType }) => {
     updateData();
   };
   const formStyle = {
-    active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-      formik.touched.name && formik.errors.name
-        ? "border-red-400 text-red-400"
-        : "border-gray-300"
-    }`,
+    active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
+      ? "border-red-400 text-red-400"
+      : "border-gray-300"
+      }`,
     inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };
 
@@ -216,11 +215,10 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                      formik.touched.name && formik.errors.name
-                        ? "border-red-400 text-red-400"
-                        : "border-gray-300"
-                    }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
+                    ? "border-red-400 text-red-400"
+                    : "border-gray-300"
+                  }`
                   : formStyle.inactive
               }
               readOnly={!editState}
@@ -239,11 +237,10 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                      formik.touched.email && formik.errors.email
-                        ? "border-red-400 text-red-400"
-                        : "border-gray-300"
-                    }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
+                    ? "border-red-400 text-red-400"
+                    : "border-gray-300"
+                  }`
                   : formStyle.inactive
               }
               readOnly={!editState}
@@ -261,11 +258,10 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                      formik.touched.phone && formik.errors.phone
-                        ? "border-red-400 text-red-400"
-                        : "border-gray-300"
-                    }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
+                    ? "border-red-400 text-red-400"
+                    : "border-gray-300"
+                  }`
                   : formStyle.inactive
               }
               readOnly={!editState}
@@ -286,7 +282,7 @@ const UserDetails = ({ entityType }) => {
                 readOnly={!editState}
                 id="bankAccount"
                 type="number"
-                value={formState.bankAccount}
+                value={formState.phone}
                 onChange={handleChange}
               />
             )}

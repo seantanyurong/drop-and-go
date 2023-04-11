@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ProviderListingCard = (props) => {
 
     const navigate = useNavigate();
-    function handleClick(id) {
+    function handleClick() {
         navigate(`/provider/edit-listing/${props.listing._id}`);
     }
 
@@ -37,13 +37,11 @@ const ProviderListingCard = (props) => {
                 <h4 className="font-light text-md">{props.listing.address}</h4>
             </div>
             <div className="mt-4 flex space-x-3 items-center">
-                <p className="cursor-pointer rounded-md bg-text-main text-text-dark p-1.5 text-xs border-[1px] border-border-main font-medium hover:bg-primary-200 hover:border-blue-300">
-                    {/* need CTAs */}
+                <p className="cursor-pointer rounded-md bg-text-main text-text-dark p-1.5 text-xs border-[1px] border-border-main font-medium hover:bg-primary-200 hover:border-blue-300"
+                    onClick={() => navigate(`/provider/listing/bookings/${props.listing._id}`)}>
                     Bookings
                 </p>
-                <p className="cursor-pointer rounded-md bg-text-main text-text-dark p-1.5 text-xs border-[1px] border-border-main font-medium hover:bg-primary-200 hover:border-blue-300">
-                    Billings
-                </p>
+
             </div>
         </div>
     );

@@ -100,34 +100,13 @@ bookingRoutes.route("/booking/users/:userId").get(function (req, res) {
     });
 });
 
+// This helps you get all the bookings at a certain listing ID
 bookingRoutes.route("/booking/listings/:listingId").get(function (req, res) {
   let db_connect = dbo.getDb("dropandgo");
   let myquery = [
     {
       $match: {
         listing_id: req.params.listingId,
-      },
-    },
-    {
-      $addFields: {
-        convertedUserId: { $toObjectId: "$user_id" },
-        convertedListingId: { $toObjectId: "$listing_id" },
-      },
-    },
-    {
-      $lookup: {
-        from: "user",
-        localField: "convertedUserId",
-        foreignField: "_id",
-        as: "userDetails",
-      },
-    },
-    {
-      $lookup: {
-        from: "listing",
-        localField: "convertedListingId",
-        foreignField: "_id",
-        as: "listingDetails",
       },
     },
   ];

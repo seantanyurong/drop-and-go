@@ -5,6 +5,8 @@ import * as yup from "yup";
 
 const AddBusinessHours = () => {
 
+  const navigate = useNavigate();
+  const [providerId, setProviderId] = useState(null);
   const [formState, setFormState] = useState({
     name: "",
     monOpening: "",
@@ -21,11 +23,45 @@ const AddBusinessHours = () => {
     satClosing: "",
     sunOpening: "",
     sunClosing: "",
+    provider_id: ""
 
   });
 
+  useEffect(() => {
+    async function fetchData() {
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/provider/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      setProviderId(userIDRes.id);
+      console.log(userIDRes.id);
+    }
+    fetchData();
+    console.log(providerId);
+    return;
+  }, []);
+
+
   const handleSubmit = (e) => {
     // e.preventDefault();
+    const id = providerId;
 
     let body = {
       name: formik.values.name,
@@ -43,6 +79,7 @@ const AddBusinessHours = () => {
       satClosingHours: formik.values.satClosing,
       sunOpeningHours: formik.values.sunOpening,
       sunClosingHours: formik.values.sunClosing,
+      provider_id: id
     };
 
     async function addData() {
@@ -74,21 +111,13 @@ const AddBusinessHours = () => {
           window.alert(message);
           return;
         }
-
-        // const res = await response.json();
-        // if (!res) {
-        //   window.alert(`Business Hours not found`);
-        //   return;
-        // }
-        // return;
-
         // means a duplicate was found
       } else {
         const message = `You have another Business Hour with the same name of ${body.name}. Please use another name`;
         window.alert(message);
         return;
       }
-      alert(`${body.name} Business Hours has been added!`);
+      // alert(`${body.name} Business Hours has been added!`);
     }
     addData();
   };
@@ -100,6 +129,8 @@ const AddBusinessHours = () => {
 
     onSubmit: function (values) {
       handleSubmit();
+      alert(`${formik.values.name} Business Hours has been created!`);
+      navigate(`/provider/view-business-hours`);
     },
 
     validationSchema: yup.object({
@@ -139,7 +170,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-2" >
                   <p className="mt-1.5 text-md font-medium py-2">Name:</p>
 
                   <div>
@@ -170,7 +201,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Monday:</p>
 
                   <div>
@@ -191,7 +222,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.monOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -221,7 +252,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Tuesday:</p>
 
                   <div>
@@ -242,7 +273,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.tueOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -272,7 +303,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Wednesday:</p>
 
                   <div>
@@ -293,7 +324,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.wedOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -323,7 +354,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Thursday:</p>
 
                   <div>
@@ -344,7 +375,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.thurOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -374,7 +405,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Friday:</p>
 
                   <div>
@@ -395,7 +426,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.friOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -425,7 +456,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Saturday:</p>
 
                   <div>
@@ -446,7 +477,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.satOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"
@@ -476,7 +507,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="flex items-center mb-1 justify-between">
+                <div className="grid grid-cols-4" >
                   <p className="mt-1.5 text-md font-medium py-2">Sunday:</p>
 
                   <div>
@@ -497,7 +528,7 @@ const AddBusinessHours = () => {
                       <span className="text-red-400">{formik.errors.sunOpening}</span>
                     )}
                   </div>
-                  <div>to</div>
+                  <div className="pt-3 text-center">to</div>
                   <div>
                     <input
                       type="time"

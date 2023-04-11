@@ -149,7 +149,7 @@ providerRoutes.route("/provider/update/:id").post(async function (req, response)
   const providerDB = await db_connect
     .collection("provider")
     .findOne({ _id: ObjectId(req.params.id) });
-  
+
   let encryptedPassword = "";
   if (!req.body.password) {
     encryptedPassword = providerDB.password;
