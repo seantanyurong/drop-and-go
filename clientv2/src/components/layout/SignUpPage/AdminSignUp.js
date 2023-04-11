@@ -166,9 +166,9 @@ const AdminSignUp = () => {
                             </div>
 
                             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                <button
-                                    type="submit"
-                                    className="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                                <button 
+                                    type="submit" 
+                                    className="inline-flex justify-center rounded-md bg-orange-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
                                 >
                                     Create
                                 </button>
@@ -214,7 +214,7 @@ const AdminSignUp = () => {
                                 <button
                                     onClick={() => navigate(`/login/admin`)}
                                     id="loginButton"
-                                    className="px-4 py-2 bg-indigo-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+                                    className="px-4 py-2 bg-orange-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
                                 >
                                     Proceed To Login
                                 </button>

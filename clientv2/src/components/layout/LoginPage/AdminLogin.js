@@ -133,7 +133,7 @@ const AdminLogin = () => {
                         src={LogoImg} 
                         alt="Logo" 
                     />
-                    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-indigo-900">
+                    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-black-900">
                         Administrator Log In
                     </h2>
                 </div>
@@ -190,7 +190,7 @@ const AdminLogin = () => {
                                 id="remember-me" 
                                 name="remember-me" 
                                 type="checkbox" 
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-600"
                             ></input>
                             <label 
                                 htmlFor="remember-me" 
@@ -204,11 +204,11 @@ const AdminLogin = () => {
                     <div>
                         <button 
                             type="submit" 
-                            className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="group relative flex w-full justify-center rounded-md bg-orange-600 py-2 px-3 text-sm font-semibold text-white hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
                         >
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <svg 
-                                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" 
+                                    className="h-5 w-5 text-orange-500 group-hover:text-orange-400" 
                                     viewBox="0 0 20 20" 
                                     fill="currentColor" 
                                     aria-hidden="true"
