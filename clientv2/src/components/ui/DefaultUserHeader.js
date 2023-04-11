@@ -1,15 +1,90 @@
 import { Link, useNavigate } from "react-router-dom";
-import LogoImg from "../../../assets/Logo.png";
-import { Fragment } from "react";
+import LogoImg from "../../assets/Logo.png";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
-const Header = () => {
+const DefaultUserHeader = () => {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
   let navigate = useNavigate();
+
+  const credentials = {
+    loggedIn: "",
+    id: "",
+    name: "",
+  };
+
+  const [authState, setAuthState] = useState(credentials);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const handleAccount = () => {
+    navigate(`/user/profile/${authState.id}`);
+  };
+
+  const handleBookings = () => {
+    navigate(`/user/bookings/${authState.id}`);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log("Check If Logged In");
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+
+      if (!responseAuth) {
+        const message = `An error has occurred: ${responseAuth.message}`;
+        window.alert(message);
+        return;
+      }
+
+      const authRes = await responseAuth.json();
+      console.log(authRes);
+
+      if (!authRes) {
+        const message = `An error has occurred: ${authRes.message}`;
+        window.alert(message);
+        return;
+      }
+
+      if (authRes.isLoggedIn) {
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+
+        if (!responseDetails) {
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
+
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
+
+        if (detailsRes === null) {
+          navigate("/login/user");
+        } else {
+          setAuthState(authRes);
+        }
+      }
+    }
+
+    fetchData();
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <header className="z-30 bg-gradient-to-b from-primary-100 to-primary-200 pb-6 md:pb-0">
@@ -18,7 +93,7 @@ const Header = () => {
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/provider/view-locations" className="flex items-center">
               <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
             </Link>
           </div>
@@ -28,14 +103,6 @@ const Header = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
               <li>
-                <Link
-                  to="/"
-                  className="font-semibold text-text-main hover:text-main-hover
-                px-5 flex items-center transition duration-150 ease-in-out
-                underline"
-                >
-                  How does it work?
-                </Link>
               </li>
               <li>
                 <Menu as="div" className="inline-block text-left">
@@ -67,12 +134,12 @@ const Header = () => {
                             className="text-text-dark
                               block px-4 text-lg font-semibold"
                           >
-                            Sean Tan
+                            {authState.name}
                           </h3>
                         </div>
                       </div>
                       <div className="py-1">
-                        <Menu.Item>
+                        <Menu.Button>
                           {({ active }) => (
                             <div
                               className={classNames(
@@ -81,42 +148,44 @@ const Header = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
-                              onClick={() => navigate(`/user/bookings`)}
+                              onClick={handleBookings}
                             >
-                              My bookings
+                              My Bookings
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleAccount}
                             >
-                              Account
+                              My Account
                             </div>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Button>
+                        <br />
+                        <Menu.Button>
                           {({ active }) => (
                             <div
-                              href="#"
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={handleLogout}
                             >
                               Logout
                             </div>
                           )}
-                        </Menu.Item>
+                        </Menu.Button>
                       </div>
                     </Menu.Items>
                   </Transition>
@@ -130,4 +199,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default DefaultUserHeader;

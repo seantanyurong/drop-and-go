@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const Header = () => {
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -39,10 +38,13 @@ const Header = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/user/authenticate", settings);
+      const responseAuth = await fetch(
+        "http://localhost:6003/user/authenticate",
+        settings
+      );
 
       if (!responseAuth) {
-        const message = `An error has occurred: ${responseAuth.statusText}`;
+        const message = `An error has occurred: ${responseAuth.message}`;
         window.alert(message);
         return;
       }
@@ -51,13 +53,31 @@ const Header = () => {
       console.log(authRes);
 
       if (!authRes) {
-        const message = `An error has occurred: ${authRes.statusText}`;
+        const message = `An error has occurred: ${authRes.message}`;
         window.alert(message);
         return;
-      //} else if (!authRes.isLoggedIn) {
-        //navigate("/login/user");
+      }
+
+      if (!authRes.isLoggedIn) {
+        navigate("/login/user");
       } else {
-        setAuthState(authRes);
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
+        
+        if (!responseDetails) {
+            const message = `An error has occurred: ${responseDetails.message}`;
+            window.alert(message);
+            return;
+        } 
+
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
+
+        if (detailsRes._id === authRes.id) {
+          setAuthState(authRes);
+        } else {
+          navigate("/login/user");
+        }
       }
     }
 
@@ -137,6 +157,7 @@ const Header = () => {
                                   : "text-text-dark",
                                 "block px-4 py-2 text-sm"
                               )}
+                              onClick={() => navigate(`/user/bookings`)}
                             >
                               My bookings
                             </div>

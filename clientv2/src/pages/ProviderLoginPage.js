@@ -1,12 +1,14 @@
-import React from 'react'
-import Header from '../components/layout/LoginPage/Header'
-import ProviderLogin from '../components/layout/LoginPage/ProviderLogin'
+import React from 'react';
+import DefaultProviderHeader from '../components/ui/DefaultProviderHeader';
+import ProviderLogin from '../components/layout/LoginPage/ProviderLogin';
+import FooterBottom from "../components/ui/FooterBottom";
 
 const ProviderLoginPage = () => {
     return(
         <div>
-            <Header></Header>
+            <DefaultProviderHeader></DefaultProviderHeader>
             <ProviderLogin></ProviderLogin>
+            <FooterBottom></FooterBottom>
         </div>
     );
 }

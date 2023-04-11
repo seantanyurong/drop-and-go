@@ -4,6 +4,11 @@ import LogoImg from "../../../assets/Logo.png";
 
 const AdminLogin = () => {
 
+    const credentials = {
+        loggedIn: "",
+        id: "",
+    };
+
     let defaultState = {
         email:"",
         password: "",
@@ -12,6 +17,7 @@ const AdminLogin = () => {
     let navigate = useNavigate();
     
     const [formState, setFormState] = useState(defaultState);
+    const [authState, setAuthState] = useState(credentials);
 
     const handleChange = ({ target: { value, id } }) => {
         setFormState({ ...formState, [id]: value });
@@ -24,8 +30,12 @@ const AdminLogin = () => {
             email: formState.email,
             password: formState.password,
         }
+
         async function confirmLogin() {
             console.log("Submitting");
+
+            const adminId = authState.id;
+            console.log(adminId);
 
             const settings = {
                 method: "POST",
@@ -37,23 +47,26 @@ const AdminLogin = () => {
             };
             
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/admin/login", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data.token);
-                    localStorage.setItem("token", data.token);
+            const responseLogin = await fetch("http://localhost:6003/admin/login", settings);
 
-                    if (data.token) {
-                        navigate("/admin/dashboard");
-                    } else {
-                        window.alert("Incorrect Email or Password!");
-                    }
-                });
-            
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseLogin) {
+                const message = `An error has occurred: ${responseLogin.message}`;
                 window.alert(message);
                 return;
+            }
+
+            const loginRes = await responseLogin.json();
+            if (!loginRes) {
+                window.alert(`Admin with id ${adminId} not found`);
+                return;
+            } else {
+                console.log(loginRes.token);
+                if (loginRes.token) {
+                    localStorage.setItem("token", loginRes.token);
+                    navigate("/admin/dashboard");
+                } else {
+                    window.alert("Incorrect Email or Password!");
+                }
             }
         }
 
@@ -62,7 +75,7 @@ const AdminLogin = () => {
 
     useEffect(() => {
         async function checkIsLoggedIn() {
-            console.log("Use Effect Triggered");
+            console.log("Checking If Logged In");
             const settings = {
                 method: "GET",
                 headers: {
@@ -70,23 +83,44 @@ const AdminLogin = () => {
                 },
             };
 
-            const response = await fetch("http://localhost:6003/admin/authenticate", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
 
-                    if (data.isLoggedIn) {
-                        navigate("/admin/dashboard");
-                    }
-                });
-
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseAuth) {
+                const message = `An error has occurred: ${responseAuth.message}`;
                 window.alert(message);
                 return;
             }
-        }
 
+            const authRes = await responseAuth.json();
+            console.log(authRes);
+
+            if (!authRes) {
+                const message = `An error has occurred: ${authRes.message}`;
+                window.alert(message);
+                return;
+            } 
+
+            if (authRes.isLoggedIn) {
+                console.log("Fetch Data Triggered");
+                const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
+                
+                if (!responseDetails) {
+                    const message = `An error has occurred: ${responseDetails.message}`;
+                    window.alert(message);
+                    return;
+                } 
+
+                const detailsRes = await responseDetails.json();
+                console.log(detailsRes);
+
+                if (detailsRes) {
+                    if (authRes.isLoggedIn) {
+                        navigate("/admin/dashboard");
+                    }
+                } 
+            }
+        } 
+    
         checkIsLoggedIn();
     }, []);
 

@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import moment from "moment";
 
 const UserDetails = ({ entityType }) => {
@@ -21,7 +23,6 @@ const UserDetails = ({ entityType }) => {
   };
 
   const [formState, setFormState] = useState(defaultState);
-  const [initialState, setInitialState] = useState(defaultState);
   const { userId, providerId } = useParams();
 
   useEffect(() => {
@@ -44,7 +45,6 @@ const UserDetails = ({ entityType }) => {
         return;
       } else {
         setFormState(res);
-        setInitialState(res);
       }
     }
     fetchData();
@@ -52,24 +52,51 @@ const UserDetails = ({ entityType }) => {
     // eslint-disable-next-line
   }, []);
 
+  const phoneRegExp = "(6|8|9)[0-9]{7}";
+  const userDetailsSchema = Yup.object().shape({
+    name: Yup.string()
+    .min(3, "Name must be at least 3 characters")
+      .max(32, "Name exceeds 32 characters")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Email Address is required"),
+    phone: Yup.string()
+      .matches(phoneRegExp, "Phone Number is not valid")
+      .required("Phone Number is required"),
+    status: Yup.string().required("Status is required"),
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: formState,
+
+    onSubmit: function (values) {
+      handleSubmit();
+    },
+
+    validationSchema: userDetailsSchema,
+  });
+
   const [editState, setEditState] = useState(false);
 
   const handleChange = ({ target: { value, id } }) => {
     setFormState({ ...formState, [id]: value });
+    formik.handleChange();
   };
   const handleCancel = () => {
     setEditState(false);
-    setFormState(initialState);
+    formik.handleReset();
   };
   const handleSubmit = (e) => {
-    e.preventDefault();
     setEditState(false);
 
     let body = {
-      name: formState.name,
-      email: formState.email,
-      phone: formState.phone,
-      status: formState.status,
+      name: formik.values.name,
+      email: formik.values.email,
+      phone: formik.values.phone,
+      status: formik.values.status,
+      bankAccount: formik.values.bankAccount,
     };
 
     async function updateData() {
@@ -84,7 +111,7 @@ const UserDetails = ({ entityType }) => {
       console.log("body" + JSON.stringify(body));
 
       let dbUrl =
-        entityType === "user"
+        entityType === "User"
           ? `http://localhost:6003/user/update/${userId}`
           : `http://localhost:6003/provider/update/${providerId}`;
 
@@ -103,18 +130,20 @@ const UserDetails = ({ entityType }) => {
       }
     }
     updateData();
-    setInitialState(formState);
   };
   const formStyle = {
-    active:
-      "shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline",
+    active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+      formik.touched.name && formik.errors.name
+        ? "border-red-400 text-red-400"
+        : "border-gray-300"
+    }`,
     inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };
 
   const statusStyle = {
     active: "row-span-2 rounded bg-green-400 p-3",
     inactive: "row-span-2 rounded bg-red-400 p-3",
-  }
+  };
 
   return (
     <div>
@@ -131,7 +160,7 @@ const UserDetails = ({ entityType }) => {
             Back
           </button>
           <div className="grid grid-cols-2 gap-4 pt-6">
-            <h1 className="text-3xl font-semibold">{formState.name}</h1>
+            <h1 className="text-3xl font-semibold">{formik.values.name}</h1>
             <div className="flex justify-end space-x-4">
               <button
                 className="rounded-md bg-box-gray w-30 p-3 px-4 text-s font-medium"
@@ -147,7 +176,10 @@ const UserDetails = ({ entityType }) => {
       {/* User details */}
       <div className="max-w-5xl md:max-w-3xl mx-auto px-6 sm:px-10 py-2 text-text-dark">
         {/* Column Headings*/}
-        <form className="grid grid-cols-3 gap-4 py-8" onSubmit={handleSubmit}>
+        <form
+          className="grid grid-cols-3 gap-4 py-8"
+          onSubmit={formik.handleSubmit}
+        >
           <div className="grid grid-rows-4 gap-4">
             <label
               className="text-l py-2 text-text-dark font-semibold"
@@ -155,22 +187,25 @@ const UserDetails = ({ entityType }) => {
             >
               Name
             </label>
+            {formik.touched.name && formik.errors.name && <br />}
             <label
               className="text-l py-2 text-text-dark font-semibold"
               htmlFor="email"
             >
               Email Address
             </label>
+            {formik.touched.email && formik.errors.email && <br />}
             <label
               className="text-l py-2 text-text-dark font-semibold"
-              htmlFor="phoneNumber"
+              htmlFor="phone"
             >
               Phone Number
             </label>
+            {formik.touched.phone && formik.errors.phone && <br />}
             {entityType === "Provider" && (
               <label
                 className="text-l py-2 text-text-dark font-semibold"
-                htmlFor="phoneNumber"
+                htmlFor="bankAccount"
               >
                 Bank Account
               </label>
@@ -179,30 +214,72 @@ const UserDetails = ({ entityType }) => {
           {/* Actual Data */}
           <div className="grid grid-rows-4 gap-4">
             <input
-              className={editState ? formStyle.active : formStyle.inactive}
+              className={
+                editState
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.name && formik.errors.name
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
+                  : formStyle.inactive
+              }
               readOnly={!editState}
               id="name"
               name="name"
               type="text"
-              value={formState.name}
-              onChange={handleChange}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
             />
+            {formik.touched.name && formik.errors.name && (
+              <p className="text-red-500 text-xs italic">
+                {formik.errors.name}
+              </p>
+            )}
             <input
-              className={editState ? formStyle.active : formStyle.inactive}
+              className={
+                editState
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.email && formik.errors.email
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
+                  : formStyle.inactive
+              }
               readOnly={!editState}
               id="email"
               type="email"
-              value={formState.email}
-              onChange={handleChange}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
             />
+            {formik.touched.email && formik.errors.email && (
+              <span className="text-red-500 text-xs italic">
+                {formik.errors.email}
+              </span>
+            )}
             <input
-              className={editState ? formStyle.active : formStyle.inactive}
+              className={
+                editState
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.phone && formik.errors.phone
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
+                  : formStyle.inactive
+              }
               readOnly={!editState}
               id="phone"
-              type="number"
-              value={formState.phone}
-              onChange={handleChange}
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.phone}
             />
+            {formik.touched.phone && formik.errors.phone && (
+              <span className="text-red-500 text-xs italic">
+                {formik.errors.phone}
+              </span>
+            )}
             {entityType === "Provider" && (
               <input
                 className={editState ? formStyle.active : formStyle.inactive}
@@ -221,7 +298,13 @@ const UserDetails = ({ entityType }) => {
                 {moment(formState.joinDate).format("DD/MM/YYYY")}
               </h3>
             </div>
-            <div className={formState.status === "Active" ? statusStyle.active : statusStyle.inactive}>
+            <div
+              className={
+                formState.status === "Active"
+                  ? statusStyle.active
+                  : statusStyle.inactive
+              }
+            >
               <p className="text-sm font-light text-white">Status</p>
               {editState ? (
                 <select

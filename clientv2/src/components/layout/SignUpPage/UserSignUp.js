@@ -45,20 +45,21 @@ const UserSignUp = () => {
             };
 
             console.log("body" + JSON.stringify(body));
-            const response = await fetch("http://localhost:6003/user/add", settings)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            const responseCreate = await fetch("http://localhost:6003/user/add", settings);
 
-                    if (data) {
-                        setShowModal(true);
-                    }
-                });
-
-            if (!response.ok) {
-                const message = `An error has occurred: ${response.statusText}`;
+            if (!responseCreate) {
+                const message = `An error has occurred: ${responseCreate.message}`;
                 window.alert(message);
                 return;
+            }
+    
+            const createRes = await responseCreate.json();
+            if (!createRes._id) {
+                const message = `An error has occurred: ${createRes.message}`;
+                window.alert(message);
+                return;
+            } else {
+                setShowModal(true);
             }
         }
 
@@ -78,16 +79,6 @@ const UserSignUp = () => {
                             <p className="mt-1 text-sm text-center text-gray-600">
                                 By continuing you agree to our terms and conditions.
                             </p>
-                            <br />
-                            <br />
-                            <div className="text-sm text-center">
-                                <a
-                                    href="/faq"
-                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                >
-                                    Frequently Asked Questions
-                                </a>
-                            </div>
                         </span>
                     </div>
                 </div>
@@ -225,9 +216,9 @@ const UserSignUp = () => {
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
                                         d="M5 13l4 4L19 7"
                                     ></path>
                                 </svg>
