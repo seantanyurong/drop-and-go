@@ -29,19 +29,19 @@ const ContactUsSection = () => {
                         A reply to a booking confirmation email will be sent directly to our support team. Please expect a reply within 1-3 business days.
                     </p>
 
-                    <h3 className="text-2xl font-normal tracking-tighter leading-6 text-gray-700 mb-5">
+                    <h3 className="text-2xl font-normal tracking-tighter leading-6 text-gray-700 my-5">
                         Frequently Asked Questions
                     </h3>
 
                     <p className="my-4">
-                    We have gathered the most frequently asked questions from our traveling customers and uploaded them and our answers on the following page –>
+                        We have gathered the most frequently asked questions from our traveling customers and uploaded them and our answers on the following page –>
 
                         &nbsp;
 
                         <a
                             className="text-primary-200"
-                            href="mailto:contact@dropandgo.com">
-                            contact@dropandgo.com
+                            href="/faq">
+                            FAQ
                         </a>
 
                         .
