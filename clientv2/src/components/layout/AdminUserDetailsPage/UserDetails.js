@@ -4,8 +4,6 @@ import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import moment from "moment";
 
 const UserDetails = ({ entityType }) => {
@@ -135,8 +133,8 @@ const UserDetails = ({ entityType }) => {
   };
   const formStyle = {
     active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-        ? "border-red-400 text-red-400"
-        : "border-gray-300"
+      ? "border-red-400 text-red-400"
+      : "border-gray-300"
       }`,
     inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };

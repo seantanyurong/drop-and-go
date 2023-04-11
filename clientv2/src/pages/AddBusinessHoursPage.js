@@ -1,11 +1,11 @@
 import React from "react";
 import AddBusinessHours from "../components/layout/AddBusinessHoursPage/AddBusinessHours";
-import Header from "../components/layout/UserBookingPage/Header";
+import ProviderHeader from "../components/ui/ProviderHeader";
 
 const AddBusinessHoursPage = () => {
   return (
     <div>
-      <Header />
+      <ProviderHeader />
       <AddBusinessHours />
     </div>
   );
