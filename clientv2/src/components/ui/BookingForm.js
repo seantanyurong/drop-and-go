@@ -14,7 +14,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingForm = (props) => {
-
   let navigate = useNavigate();
 
   let [listing, setListing] = useState(null);
@@ -83,8 +82,7 @@ const BookingForm = (props) => {
       } else {
         console.log(reviewScoreRes);
         setReviewScore(reviewScoreRes[0]?.reviewScore);
-      } 
-      
+      }
     }
 
     fetchData();
@@ -198,7 +196,9 @@ const BookingForm = (props) => {
                 <div>
                   <p className="text-sm font-light">{listing.address}</p>
                   <div className="flex items-center mt-1">
-                    <p className="text-sm font-light">{reviewScore}</p>
+                    <p className="text-sm font-light">
+                      {reviewScore.toFixed(2)}
+                    </p>
                     <StarIcon
                       className="h-4 w-4 ml-1 text-yellow-400"
                       aria-hidden="true"
