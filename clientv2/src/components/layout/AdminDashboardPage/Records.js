@@ -117,6 +117,12 @@ const Records = () => {
       item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
+  const filteredBookings = bookings.filter(
+    (item) =>
+      (item.userName && item.userName.toLowerCase().includes(filterText.toLowerCase())) ||  
+      (item.listingName && item.listingName.toLowerCase().includes(filterText.toLowerCase()))
+  );
+
   const subHeaderComponentMemo = useMemo(() => {
     return (
       <FilterComponent
@@ -186,11 +192,13 @@ const Records = () => {
             <DataTable
               title="Bookings"
               columns={bookingsColumns}
-              data={bookings}
+              data={filteredBookings}
               onRowClicked={(rowData) => {
                 setRedirectState(true);
                 setData(rowData._id);
               }}
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
             />
             {bookingsRedirect}
           </div>
