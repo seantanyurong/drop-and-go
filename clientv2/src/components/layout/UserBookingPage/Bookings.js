@@ -106,31 +106,28 @@ const Bookings = () => {
               <ul className="flex grow justify-end flex-wrap items-center">
                 <li
                   onClick={() => setActiveMenuItem(0)}
-                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
-                    activeMenuItem === 0
+                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 0
                       ? "bg-text-main text-text-dark"
                       : "text-text-main"
-                  } `}
+                    } `}
                 >
                   Active
                 </li>
                 <li
                   onClick={() => setActiveMenuItem(1)}
-                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
-                    activeMenuItem === 1
+                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 1
                       ? "bg-text-main text-text-dark"
                       : "text-text-main"
-                  } `}
+                    } `}
                 >
                   Completed
                 </li>
                 <li
                   onClick={() => setActiveMenuItem(2)}
-                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${
-                    activeMenuItem === 2
+                  className={`cursor-pointer rounded-t-sm hover:text-main-hover font-semibold px-6 flex items-center transition duration-150 ease-in-out text-sm py-[0.6rem] ${activeMenuItem === 2
                       ? "bg-text-main text-text-dark"
                       : "text-text-main"
-                  } `}
+                    } `}
                 >
                   Cancelled
                 </li>

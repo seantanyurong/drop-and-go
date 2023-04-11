@@ -29,6 +29,9 @@ import EditLocationPage from "./pages/EditLocationPage";
 import ViewBusinessHoursPage from "./pages/ViewBusinessHoursPage";
 import EditBusinessHoursPage from "./pages/EditBusinessHoursPage";
 import AddBusinessHoursPage from "./pages/AddBusinessHoursPage";
+import ProviderBookingPage from "./pages/ProviderBookingPage";
+
+import ProviderBookingDetailsPage from "./pages/ProviderBookingDetailsPage";
 import UserBookingDetailsPage from "./pages/UserBookingDetailsPage";
 import ListingDetailsPage from "./pages/ListingDetailsPage";
 
@@ -51,25 +54,43 @@ function App() {
         <Route path="/user/bookings" element={<UserBookingPage />} />
         <Route path="/provider/add-location" element={<AddLocationPage />} />
         <Route
+
           path="/provider/view-locations"
+
           element={<ViewLocationsPage />}
+
         />
         <Route
+
           path="/provider/edit-listing/:id"
+
           element={<EditLocationPage />}
+
         />
         <Route
+
           path="/provider/view-business-hours"
+
           element={<ViewBusinessHoursPage />}
+
         />
         <Route
+
           path="/provider/add-business-hours"
+
           element={<AddBusinessHoursPage />}
+
         />
         <Route
+
           path="/provider/edit-business-hours/:businessHoursId"
+
           element={<EditBusinessHoursPage />}
+
         />
+        <Route path="/provider/listing/bookings/:id" element={<ProviderBookingPage />} />
+
+
         <Route path="/login/menu" element={<LoginPage />} />
         <Route path="/login/user" element={<UserLoginPage />} />
         <Route path="/login/provider" element={<ProviderLoginPage />} />
@@ -97,6 +118,10 @@ function App() {
         <Route
           path="/user/bookings/:bookingId"
           element={<UserBookingDetailsPage />}
+        />
+        <Route
+          path="/provider/bookings/:bookingId"
+          element={<ProviderBookingDetailsPage />}
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />

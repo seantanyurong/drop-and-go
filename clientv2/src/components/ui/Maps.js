@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import GoogleMapReact from "google-map-react";
 import LocationPin from "./LocationPin";
@@ -23,7 +23,7 @@ const mapApiJs = 'https://maps.googleapis.com/maps/api/js';
 const geocodeJson = 'https://maps.googleapis.com/maps/api/geocode/json';
 
 
-const Map = ({ failValidation, onSelect, onSearch, formError }) => {
+const Map = ({ failValidation, onSelect, onSearch, formError, initVal }) => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDDLDyyMbja4JYIn0WXLXrcQ3zjWQhjBKs',
         libraries: ["places"],
@@ -40,7 +40,7 @@ const Map = ({ failValidation, onSelect, onSearch, formError }) => {
     return (
         <>
             <div className="places-container">
-                <PlacesAutocomplete setSelected={setSelected} onSelect={onSelect} onSearch={onSearch} failValidation={failValidation} formError={formError} />
+                <PlacesAutocomplete setSelected={setSelected} onSelect={onSelect} onSearch={onSearch} failValidation={failValidation} formError={formError} initVal={initVal} />
 
             </div>
             <div className="grid grid-cols-12 gap-8 mx-auto min-h-screen">
@@ -67,7 +67,7 @@ const Map = ({ failValidation, onSelect, onSearch, formError }) => {
     );
 }
 
-const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, formError }) => {
+const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, formError, initVal }) => {
 
     const [postalCode, setPostalCode] = useState(null);
 
@@ -92,6 +92,18 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
         suggestions: { status, data },
         clearSuggestions,
     } = usePlacesAutocomplete();
+
+    // Set initial value
+    useEffect(() => {
+        async function setInitVal() {
+            setValue(initVal);
+        }
+        setInitVal();
+        return;
+    }, []);
+
+    console.log(usePlacesAutocomplete.value)
+
 
     const handleSelect = async (address) => {
         setValue(address, false);
@@ -124,9 +136,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
             />
             {failValidation &&
                 (<span className='text-red-400'>{formError}</span>)}
-            <div className="py-2 text-gray-700 leading-tight">
-                Postal Code is: {postalCode}
-            </div>
+
             <ComboboxPopover>
                 <ComboboxList>
                     {status === "OK" &&

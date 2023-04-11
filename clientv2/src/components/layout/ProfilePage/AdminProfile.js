@@ -225,11 +225,10 @@ const AdminProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.name && formik.errors.name
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -248,11 +247,10 @@ const AdminProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                        formik.touched.email && formik.errors.email
-                          ? "border-red-400 text-red-400"
-                          : "border-gray-300"
-                      }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -269,14 +267,13 @@ const AdminProfile = () => {
               )}
               <input
                 className={
-                    editState
-                      ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
-                          formik.touched.password && formik.errors.password
-                            ? "border-red-400 text-red-400"
-                            : "border-gray-300"
-                        }`
-                      : formStyle.inactive
-                  }
+                  editState
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
+                      ? "border-red-400 text-red-400"
+                      : "border-gray-300"
+                    }`
+                    : formStyle.inactive
+                }
                 readOnly={!editState}
                 id="password"
                 type="password"
@@ -307,7 +304,7 @@ const AdminProfile = () => {
                   </button>
                 </div>
               )}
-              
+
             </div>
           </form>
         </div>

@@ -1,4 +1,5 @@
-import { useEffect, useState, useParams } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import CloudinaryUploadWidget from "../../ui/CloudinaryUploadWidget";
@@ -7,30 +8,33 @@ import Map from "../../ui/Maps";
 const AddLocation = () => {
 
   const [formState, setFormState] = useState({
-    shopName: '',
-    capacity: '',
-    address: '',
-    about: '',
-    openingHours: '',
-    smallHourlyFee: '',
-    mediumHourlyFee: '',
-    largeHourlyFee: '',
-    smallDailyFee: '',
-    mediumDailyFee: '',
-    largeDailyFee: '',
-    latitude: '',
-    longitude: '',
-    postal: '',
-    dateListed: '',
-    displayPicture: ''
+    shopName: "",
+    capacity: "",
+    address: "",
+    about: "",
+    openingHours: "",
+    smallHourlyFee: "",
+    mediumHourlyFee: "",
+    largeHourlyFee: "",
+    smallDailyFee: "",
+    mediumDailyFee: "",
+    largeDailyFee: "",
+    latitude: "",
+    longitude: "",
+    postal: "",
+    dateListed: "",
+    displayPicture: "",
+    provider_id: ""
 
   });
 
-  const { listingId } = useParams();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:6003/listing/${listingId}`);
+      const response = await fetch(`http://localhost:6003/listing/${id}
+      `);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -39,10 +43,14 @@ const AddLocation = () => {
       }
 
       const res = await response.json();
+      console.log(res);
+      console.log(res.name);
       if (!res) {
-        window.alert(`Listing with id ${listingId} not found`);
+        window.alert(`Listing with id ${id} not found`);
         return;
       } else {
+        const adrs = res.address;
+        console.log(adrs);
 
         // setting initial form state
         setFormState({
@@ -51,33 +59,70 @@ const AddLocation = () => {
           address: res.address,
           about: res.about,
           openingHours: res.openingHours,
-          smallHourlyFee: res.smallHourlyFee,
-          mediumHourlyFee: res.mediumHourlyFee,
-          largeHourlyFee: res.largeHourlyFee,
-          smallDailyFee: res.smallDailyFee,
-          mediumDailyFee: res.mediumDailyFee,
-          largeDailyFee: res.largeDailyFee,
+          smallHourlyFee: res.pricePerHour[0],
+          mediumHourlyFee: res.pricePerHour[1],
+          largeHourlyFee: res.pricePerHour[2],
+          smallDailyFee: res.pricePerDay[0],
+          mediumDailyFee: res.pricePerDay[1],
+          largeDailyFee: res.pricePerDay[2],
           latitude: res.latitude,
           longitude: res.longitude,
           postal: res.postal,
           dateListed: res.dateListed,
-          displayPicture: res.displayPicture
+          displayPicture: res.displayPicture,
+          provider_id: res.provider_id
         });
       }
     }
     fetchData();
+    console.log(formState);
+
     return;
     // eslint-disable-next-line
   }, []);
 
-  // console log to check errors
+  // not sure why this is not working
   useEffect(() => { console.log(formState) }, formState)
 
+  const [providerId, setProviderId] = useState(null);
   let [hours, setHours] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`http://localhost:6003/businessHours`);
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/provider/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      setProviderId(userIDRes.id);
+      console.log(userIDRes.id);
+      //   }
+      //   fetchData();
+      //   console.log(providerId);
+      //   return;
+      // }, []);
+
+      // const providerIdRes = providerId;
+
+      // useEffect(() => {
+      //   async function fetchData() {
+      const res = await fetch(`http://localhost:6003/businessHours/provider/${userIDRes.id}`);
 
 
       if (!res.ok) {
@@ -133,14 +178,14 @@ const AddLocation = () => {
       longitude: formik.values.longitude,
       pricePerDay: [formik.values.smallDailyFee, formik.values.mediumDailyFee, formik.values.largeDailyFee],
       pricePerHour: [formik.values.smallHourlyFee, formik.values.mediumHourlyFee, formik.values.largeHourlyFee],
-      dateListed: new Date().toISOString(),
+      dateListed: formik.values.dateListed,
       review_ids: [],
-      provider_id: 'to be filled in',
+      provider_id: formik.values.provider_id,
       booking_ids: [],
       displayPicture: formik.values.displayPicture
     };
 
-    async function addData() {
+    async function updateData() {
       const settings = {
         method: "POST",
         headers: {
@@ -151,58 +196,32 @@ const AddLocation = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      const duplicate = await fetch(`http://localhost:6003/listing/name/${body.shopName}`, settings);
-      if (!duplicate.ok) {
-        console.log("Error in finding by name")
-        const message = `An error has occurred: ${duplicate.statusText}`;
+      const response = await fetch(`http://localhost:6003/listing/update/${id}`, settings);
+
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
         window.alert(message);
         return;
       }
 
-      const duplicateRes = await duplicate.json();
-      // expected result: indicates there is no duplicate 
-      if (!duplicateRes) {
-        const response = await fetch(`http://localhost:6003/listing/add`, settings);
-
-        if (!response.ok) {
-          const message = `An error has occurred: ${response.statusText}`;
-          window.alert(message);
-          return;
-        }
-
-        // means a duplicate was found
-      } else {
-        const message = `You have another Listing with the same name of ${body.name}. Please use another name`;
-        window.alert(message);
+      const res = await response.json();
+      if (!res) {
+        window.alert(`Listing not found`);
         return;
       }
-      alert(`Listing with name ${body.shopName} has been added!`);
     }
-    addData();
+    updateData();
   };
 
   const formik = useFormik({
-    initialValues: {
-      shopName: '',
-      capacity: '',
-      address: '',
-      about: '',
-      openingHours: 'Select an option',
-      smallHourlyFee: '',
-      mediumHourlyFee: '',
-      largeHourlyFee: '',
-      smallDailyFee: '',
-      mediumDailyFee: '',
-      largeDailyFee: '',
-      latitude: '',
-      longitude: '',
-      postal: '',
-      dateListed: new Date().toISOString(),
-      displayPicture: ''
+    enableReinitialize: true,
+    initialValues: formState,
 
-    },
     onSubmit: function (values) {
       handleSubmit();
+      alert(`${formState.shopName} Listing has been updated!`);
+      navigate(`/provider/view-locations`);
+
     },
     validationSchema: yup.object({
       shopName: yup.string()
@@ -320,7 +339,7 @@ const AddLocation = () => {
               First, enter your address and select from the drop down. Then, enter your unit number.
             </p>
 
-            <Map onSelect={handleAddressDetails} failValidation={formik.touched.address && formik.errors.address} onSearch={handleMapSearch} formError={formik.errors.address} />
+            <Map onSelect={handleAddressDetails} failValidation={formik.touched.address && formik.errors.address} onSearch={handleMapSearch} formError={formik.errors.address} initVal={formik.values.address} />
           </label>
 
           <label>
@@ -333,7 +352,7 @@ const AddLocation = () => {
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300 
             ${formik.touched.openingHours && formik.errors.openingHours ? 'border-red-400' : 'border-gray-300'}`}
               onChange={formik.handleChange} value={formik.values.openingHours}>
-              <option value='Select an option'>Select an option</option>
+              {/* <option value='Select an option'>Select an option</option> */}
               {hours.map(businessHourSetting => (
                 <option value={businessHourSetting._id} key={businessHourSetting.id} >{businessHourSetting.name}</option>
               ))
