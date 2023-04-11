@@ -1,7 +1,7 @@
 const ContactUsSection = () => {
     return (
         <div className="py-[70px] bg-white border-b border-gray-200">
-            <div className="w-full sm:w-auto mx-auto sm:mx-0 sm:max-w-none sm:px-6 max-w-800">
+            <div className="max-w-1280 mx-4 sm:mx-8 md:mx-12 lg:mx-16 xl:mx-20">
                 <h2 className="mb-[35px] text-center text-2xl leading-snug tracking-tighter font-bold mt-0 text-gray-700">
                     Contact Us
                 </h2>
