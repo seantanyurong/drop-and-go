@@ -99,7 +99,7 @@ const DefaultUserHeader = () => {
           {/* Site branding */}
           <div className="shrink-0 mr-4 py-2">
             {/* Logo */}
-            <Link to="/provider/view-locations" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img className="mx-auto h-8" src={LogoImg} alt="Logo" />
             </Link>
           </div>
