@@ -100,11 +100,12 @@ const ViewBusinessHours = () => {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-3 ">
+            <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
+
+            <div className="grid sm:grid-cols-1 md:grid-cols-3">
                 {hours.map((businessHourSetting) => {
                     return (
-                        <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
-                            <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
+                            <div className="m-2 border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
                                 <div className="flex items-center mb-1 justify-between">
                                     <div className="flex space-x-3 items-center">
                                         <h3 className="font-semibold">{businessHourSetting.name}</h3>
@@ -187,9 +188,9 @@ const ViewBusinessHours = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
                     );
                 })}
+            </div>
             </div>
         </div>
     );
