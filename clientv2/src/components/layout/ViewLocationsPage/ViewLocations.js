@@ -25,7 +25,7 @@ const ViewLocations = () => {
       };
 
       const userID = await fetch(
-        `http://localhost:6003/user/authenticate`,
+        `http://localhost:6003/provider/authenticate`,
         settings
       );
 

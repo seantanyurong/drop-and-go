@@ -84,13 +84,45 @@ const AddLocation = () => {
   // not sure why this is not working
   useEffect(() => { console.log(formState) }, formState)
 
-
-
+  const [providerId, setProviderId] = useState(null);
   let [hours, setHours] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`http://localhost:6003/businessHours`);
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/provider/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      setProviderId(userIDRes.id);
+      console.log(userIDRes.id);
+      //   }
+      //   fetchData();
+      //   console.log(providerId);
+      //   return;
+      // }, []);
+
+      // const providerIdRes = providerId;
+
+      // useEffect(() => {
+      //   async function fetchData() {
+      const res = await fetch(`http://localhost:6003/businessHours/provider/${userIDRes.id}`);
 
 
       if (!res.ok) {
@@ -320,7 +352,7 @@ const AddLocation = () => {
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300 
             ${formik.touched.openingHours && formik.errors.openingHours ? 'border-red-400' : 'border-gray-300'}`}
               onChange={formik.handleChange} value={formik.values.openingHours}>
-              <option value='Select an option'>Select an option</option>
+              {/* <option value='Select an option'>Select an option</option> */}
               {hours.map(businessHourSetting => (
                 <option value={businessHourSetting._id} key={businessHourSetting.id} >{businessHourSetting.name}</option>
               ))

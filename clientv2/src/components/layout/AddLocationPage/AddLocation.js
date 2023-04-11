@@ -24,7 +24,7 @@ const AddLocation = () => {
       };
 
       const userID = await fetch(
-        `http://localhost:6003/user/authenticate`,
+        `http://localhost:6003/provider/authenticate`,
         settings
       );
 
@@ -37,15 +37,17 @@ const AddLocation = () => {
       const userIDRes = await userID.json();
       setProviderId(userIDRes.id);
       console.log(userIDRes.id);
-    }
-    fetchData();
-    console.log(providerId);
-    return;
-  }, []);
+      //   }
+      //   fetchData();
+      //   console.log(providerId);
+      //   return;
+      // }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(`http://localhost:6003/businessHours`);
+      // const providerIdRes = providerId;
+
+      // useEffect(() => {
+      //   async function fetchData() {
+      const res = await fetch(`http://localhost:6003/businessHours/provider/${userIDRes.id}`);
 
 
       if (!res.ok) {

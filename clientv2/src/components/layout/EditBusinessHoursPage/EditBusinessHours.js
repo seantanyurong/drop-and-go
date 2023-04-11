@@ -28,6 +28,36 @@ const EditBusinessHours = () => {
   const { businessHoursId } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    async function fetchData() {
+
+      // getting the user ID
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const userID = await fetch(
+        `http://localhost:6003/provider/authenticate`,
+        settings
+      );
+
+      if (!userID.ok) {
+        const message = `An error has occurred: ${userID.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const userIDRes = await userID.json();
+      console.log(userIDRes);
+    }
+    fetchData();
+    return;
+
+  }, []);
+
 
   useEffect(() => {
     async function fetchData() {
