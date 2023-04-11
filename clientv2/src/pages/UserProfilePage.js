@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../components/layout/UserBookingPage/Header';
+import DefaultUserHeader from '../components/ui/DefaultUserHeader';
 import UserProfile from "../components/layout/ProfilePage/UserProfile";
 import FooterBottom from "../components/ui/FooterBottom";
 
 const UserProfilePage = () => {
     return (
         <div>
-            <Header></Header>
+            <DefaultUserHeader></DefaultUserHeader>
             <UserProfile></UserProfile>
             <FooterBottom></FooterBottom>
         </div>
