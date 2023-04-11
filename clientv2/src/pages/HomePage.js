@@ -6,7 +6,6 @@ import HowItWorks from "../components/layout/HomePage/HowItWorks";
 import LocationSection from "../components/layout/HomePage/LocationSection";
 import SearchBarSection from "../components/layout/HomePage/SearchBarSection";
 import Footer from "../components/ui/Footer";
-import FooterBottom from "../components/ui/FooterBottom";
 
 const HomePage = () => {
   return (
@@ -18,7 +17,6 @@ const HomePage = () => {
       <HowItWorks />
       <LocationSection />
       <Footer />
-      <FooterBottom />
     </div>
   );
 };
