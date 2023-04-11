@@ -9,9 +9,8 @@ const Listing = (props) => {
 
   useEffect(() => {
     async function fetchData() {
-
       const review = await fetch(
-        `http://localhost:6003/review/listing/${props.listing_id}`
+        `http://localhost:6003/review/listing/${props.listing._id}`
       );
 
       if (!review.ok) {
@@ -22,14 +21,13 @@ const Listing = (props) => {
 
       const reviewScoreRes = await review.json();
       if (!reviewScoreRes) {
-        window.alert(`review with listing id ${props.listing_id} not found`);
+        window.alert(`review with listing id ${props.listing._id} not found`);
         return;
       } else {
         console.log(reviewScoreRes);
         setReviewScore(reviewScoreRes[0]?.reviewScore);
         console.log(reviewScore);
-      } 
-      
+      }
     }
 
     fetchData();
