@@ -37,6 +37,7 @@ import AdminBookingDetailsPage from "./pages/AdminBookingDetailsPage";
 import AdminUserDetailsPage from "./pages/AdminUserDetailsPage";
 import AdminProviderDetailsPage from "./pages/AdminProviderDetailsPage";
 import AdminListingDetailsPage from "./pages/AdminListingDetailsPage";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   return (
@@ -98,6 +99,7 @@ function App() {
         />
         <Route path="/searchresultpage" element={<SearchResultPage />} />
         <Route path="/become-a-provider" element={<BecomeAProviderPage />} />
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>

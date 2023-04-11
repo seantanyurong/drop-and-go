@@ -78,6 +78,8 @@ const ProviderHeader = () => {
         } else {
           setAuthState(authRes);
         }
+      } else {
+        navigate("/login/provider");
       }
     }
 

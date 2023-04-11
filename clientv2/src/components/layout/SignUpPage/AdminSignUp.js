@@ -52,7 +52,7 @@ const AdminSignUp = () => {
             }
     
             const createRes = await responseCreate.json();
-            if (!createRes._id) {
+            if (!createRes.acknowledged) {
                 const message = `An error has occurred: ${createRes.message}`;
                 window.alert(message);
                 return;
