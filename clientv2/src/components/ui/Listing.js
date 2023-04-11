@@ -1,9 +1,42 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 
 const Listing = (props) => {
   const navigate = useNavigate();
+  const [reviewScore, setReviewScore] = useState(3);
+
+  useEffect(() => {
+    async function fetchData() {
+
+      const review = await fetch(
+        `http://localhost:6003/review/listing/${props.listing_id}`
+      );
+
+      if (!review.ok) {
+        const message = `An error has occurred: ${review.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const reviewScoreRes = await review.json();
+      if (!reviewScoreRes) {
+        window.alert(`review with listing id ${props.listing_id} not found`);
+        return;
+      } else {
+        console.log(reviewScoreRes);
+        setReviewScore(reviewScoreRes[0]?.reviewScore);
+        console.log(reviewScore);
+      } 
+      
+    }
+
+    fetchData();
+
+    return;
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="max-w-xl mx-auto border-[1px] border-border-main p-4 rounded-md my-4 shadow-md cursor-pointer bg-white">
@@ -23,7 +56,7 @@ const Listing = (props) => {
       <div>
         <p className="text-sm font-light">{props.listing.address}</p>
         <div className="flex items-center mt-1">
-          <p className="text-sm font-light">4.7</p>
+          <p className="text-sm font-light">{reviewScore}</p>
           <StarIcon
             className="h-4 w-4 ml-1 text-yellow-400"
             aria-hidden="true"
