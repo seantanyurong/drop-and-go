@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 const ReviewSection = () => {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0.0);
-  const starArray = [...Array(5).keys()].map(i => i + 1);
+  const starArray = [0, 1, 2, 3, 4];
 
   // carousel responsive
   const responsive = {
@@ -34,6 +34,7 @@ const ReviewSection = () => {
 
   useEffect(() => {
     async function fetchData() {
+      console.log(starArray);
       // fetch reviews for home page
       const response = await fetch(`http://localhost:6003/review/home`);
 
@@ -71,7 +72,7 @@ const ReviewSection = () => {
           return review.starNumber;
         })
         const sum = allReviewsRatings.reduce((acc, curr) => acc + curr, 0);
-        setAverageRating(sum / allReviewsRatings.length);
+        setAverageRating((sum / allReviewsRatings.length).toFixed(2));
         console.log("average rating " + averageRating);
       }
     }
@@ -79,7 +80,7 @@ const ReviewSection = () => {
     fetchData();
 
     return;
-  }, [])
+  }, [averageRating])
 
   return (
     <div className="py-[70px] bg-white border-b border-gray-200">
@@ -97,7 +98,7 @@ const ReviewSection = () => {
               {starArray.map(i => ( // use many times
                 <StarIcon className="overflow-hidden h-[16px] w-[16px]"
                   key={i}
-                  color={averageRating + 1 >= i ? "orange" : "lightgrey"} />
+                  color={averageRating > i ? "orange" : "lightgrey"} />
 
               ))}
             </div>
