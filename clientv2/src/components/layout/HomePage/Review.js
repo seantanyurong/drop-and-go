@@ -1,20 +1,49 @@
 import { StarIcon } from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
 
 const Review = (props) => {
-    const stars = parseInt(props.star);
-
-    // create [1,2,3,4,5] once
+    const stars = parseInt(props.review.starNumber);
     const starArray = [...Array(5).keys()].map(i => i + 1);
 
+    const [user, setUser] = useState("");
+
+    // display date according to user's native language
+    const locale = window.navigator.userLanguage || window.navigator.language;
+
+    useEffect(() => {
+        async function fetchData() {
+            const user = await fetch(`http://localhost:6003/user/${props.review.user_id}`);
+
+            if (!user.ok) {
+                const message = `An error has occurred: ${user.statusText}`;
+                window.alert(message);
+                return;
+            }
+
+            const userRes = await user.json();
+            if (!userRes) {
+                window.alert(`user who wrote the review id ${props.review._id} is not found`);
+                return;
+            } else {
+                setUser(userRes.name);
+                console.log(user);
+            }
+        }
+
+        fetchData();
+
+        return;
+        // eslint-disable-next-line
+    }, []);
     return (
         <div className="">
             <div className="flex flex-col flex-nowrap">
                 <div className="block text-sm m-0 font-medium">
-                    {props.user}
+                    {user}
                 </div>
 
                 <div className="block mb-0.5 text-xs">
-                    Used Drop&Go {props.time}
+                    Used Drop&Go on {new Date(props.review.dateReviewed).toLocaleDateString(locale)}
                 </div>
 
                 <div className="block relative grow shrink-0 basis-auto min-h-[24px] h-[24px]">
@@ -29,8 +58,12 @@ const Review = (props) => {
                 </div>
             </div>
 
+            <div className="block leading-6 text-[15px] mt-[3px] mx-0 mb-[3px] relative duration-200 ease-out transition-[color] overflow-hidden text-[#384347] font-medium">
+                <div className="mb-2.5">{props.review.subject}</div>
+            </div>
+
             <div className="block leading-6 text-[15px] mt-[3px] mx-0 mb-[5px] relative duration-200 ease-out transition-[color] overflow-hidden text-[#384347]">
-                <div className="mb-2.5">{props.review}</div>
+                <div className="mb-2.5">{props.review.description}</div>
             </div>
         </div>
     );
