@@ -24,6 +24,23 @@ reviewRoutes.route("/review").get(function (req, res) {
     });
 });
 
+// This section will help you get a list of 8 reviews, for the homepage.
+reviewRoutes.route("/review/home").get(function (req, res) {
+  console.log("review: Getting reviews for homepage");
+  let db_connect = dbo.getDb("dropandgo");
+  db_connect
+    .collection("review")
+    .find({})
+    .sort({
+      "dateReviewed": -1
+    })
+    .limit(8)
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // This section will help you get review by booking id
 reviewRoutes.route("/review/booking/:bookingId").get(function (req, res) {
   console.log("Review: BookingId");
