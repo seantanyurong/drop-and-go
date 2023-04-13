@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const ProviderHeader = () => {
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -43,7 +42,10 @@ const ProviderHeader = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
+      const responseAuth = await fetch(
+        "https://is3106-dropandgo.herokuapp.com/provider/authenticate",
+        settings
+      );
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.message}`;
@@ -62,7 +64,9 @@ const ProviderHeader = () => {
 
       if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
+        const responseDetails = await fetch(
+          `https://is3106-dropandgo.herokuapp.com/provider/${authRes.id}`
+        );
 
         if (!responseDetails) {
           const message = `An error has occurred: ${responseDetails.message}`;
@@ -104,8 +108,7 @@ const ProviderHeader = () => {
           <nav className="flex grow mt-4 sm:mt-0">
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
-              <li>
-              </li>
+              <li></li>
               <li>
                 <Menu as="div" className="inline-block text-left">
                   <div>

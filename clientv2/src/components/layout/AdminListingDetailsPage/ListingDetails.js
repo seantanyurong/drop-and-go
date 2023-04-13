@@ -16,7 +16,7 @@ const ListingDetails = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const dbUrl = `http://localhost:6003/listing/${listingId}`;
+      const dbUrl = `https://is3106-dropandgo.herokuapp.com/listing/${listingId}`;
       const responseListing = await fetch(dbUrl);
 
       if (!responseListing.ok) {

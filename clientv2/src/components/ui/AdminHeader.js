@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 
 const AdminHeader = () => {
-
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
@@ -39,7 +38,10 @@ const AdminHeader = () => {
         },
       };
 
-      const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
+      const responseAuth = await fetch(
+        "https://is3106-dropandgo.herokuapp.com/admin/authenticate",
+        settings
+      );
 
       if (!responseAuth) {
         const message = `An error has occurred: ${responseAuth.message}`;
@@ -58,7 +60,9 @@ const AdminHeader = () => {
 
       if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
+        const responseDetails = await fetch(
+          `https://is3106-dropandgo.herokuapp.com/admin/${authRes.id}`
+        );
 
         if (!responseDetails) {
           const message = `An error has occurred: ${responseDetails.message}`;

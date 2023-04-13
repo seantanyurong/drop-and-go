@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const AddBusinessHours = () => {
-
   const navigate = useNavigate();
   const [providerId, setProviderId] = useState(null);
   const [formState, setFormState] = useState({
@@ -23,13 +22,11 @@ const AddBusinessHours = () => {
     satClosing: "",
     sunOpening: "",
     sunClosing: "",
-    provider_id: ""
-
+    provider_id: "",
   });
 
   useEffect(() => {
     async function fetchData() {
-
       // getting the user ID
       const settings = {
         method: "GET",
@@ -39,7 +36,7 @@ const AddBusinessHours = () => {
       };
 
       const userID = await fetch(
-        `http://localhost:6003/provider/authenticate`,
+        `https://is3106-dropandgo.herokuapp.com/provider/authenticate`,
         settings
       );
 
@@ -57,7 +54,6 @@ const AddBusinessHours = () => {
     console.log(providerId);
     return;
   }, []);
-
 
   const handleSubmit = (e) => {
     // e.preventDefault();
@@ -79,7 +75,7 @@ const AddBusinessHours = () => {
       satClosingHours: formik.values.satClosing,
       sunOpeningHours: formik.values.sunOpening,
       sunClosingHours: formik.values.sunClosing,
-      provider_id: id
+      provider_id: id,
     };
 
     async function addData() {
@@ -93,18 +89,24 @@ const AddBusinessHours = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      const duplicate = await fetch(`http://localhost:6003/businessHours/name/${body.name}`, settings);
+      const duplicate = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/businessHours/name/${body.name}`,
+        settings
+      );
       if (!duplicate.ok) {
-        console.log("Error in finding by name")
+        console.log("Error in finding by name");
         const message = `An error has occurred: ${duplicate.statusText}`;
         window.alert(message);
         return;
       }
 
       const duplicateRes = await duplicate.json();
-      // expected result: indicates there is no duplicate 
+      // expected result: indicates there is no duplicate
       if (!duplicateRes) {
-        const response = await fetch(`http://localhost:6003/businessHours/add`, settings);
+        const response = await fetch(
+          `https://is3106-dropandgo.herokuapp.com/businessHours/add`,
+          settings
+        );
 
         if (!response.ok) {
           const message = `An error has occurred: ${response.statusText}`;
@@ -123,7 +125,6 @@ const AddBusinessHours = () => {
   };
 
   const formik = useFormik({
-
     enableReinitialize: true,
     initialValues: formState,
 
@@ -148,7 +149,7 @@ const AddBusinessHours = () => {
       satOpening: yup.string().label("This").required(),
       satClosing: yup.string().label("This").required(),
       sunOpening: yup.string().label("This").required(),
-      sunClosing: yup.string().label("This").required()
+      sunClosing: yup.string().label("This").required(),
     }),
   });
 
@@ -170,7 +171,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-2" >
+                <div className="grid grid-cols-2">
                   <p className="mt-1.5 text-md font-medium py-2">Name:</p>
 
                   <div>
@@ -179,10 +180,11 @@ const AddBusinessHours = () => {
                       name="name"
                       placeholder="Name"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.name && formik.errors.name
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.name && formik.errors.name
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
@@ -192,7 +194,6 @@ const AddBusinessHours = () => {
                     )}
                   </div>
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -201,7 +202,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Monday:</p>
 
                   <div>
@@ -210,16 +211,19 @@ const AddBusinessHours = () => {
                       name="monOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.monOpening && formik.errors.monOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.monOpening && formik.errors.monOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monOpening}
                     />
                     {formik.touched.monOpening && formik.errors.monOpening && (
-                      <span className="text-red-400">{formik.errors.monOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.monOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -229,21 +233,22 @@ const AddBusinessHours = () => {
                       name="monClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.monClosing && formik.errors.monClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.monClosing && formik.errors.monClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monClosing}
                     />
                     {formik.touched.monClosing && formik.errors.monClosing && (
-                      <span className="text-red-400">{formik.errors.monClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.monClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -252,7 +257,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Tuesday:</p>
 
                   <div>
@@ -261,16 +266,19 @@ const AddBusinessHours = () => {
                       name="tueOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.tueOpening && formik.errors.tueOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.tueOpening && formik.errors.tueOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueOpening}
                     />
                     {formik.touched.tueOpening && formik.errors.tueOpening && (
-                      <span className="text-red-400">{formik.errors.tueOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.tueOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -280,21 +288,22 @@ const AddBusinessHours = () => {
                       name="tueClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.tueClosing && formik.errors.tueClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.tueClosing && formik.errors.tueClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueClosing}
                     />
                     {formik.touched.tueClosing && formik.errors.tueClosing && (
-                      <span className="text-red-400">{formik.errors.tueClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.tueClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -303,7 +312,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Wednesday:</p>
 
                   <div>
@@ -312,16 +321,19 @@ const AddBusinessHours = () => {
                       name="wedOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.wedOpening && formik.errors.wedOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.wedOpening && formik.errors.wedOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedOpening}
                     />
                     {formik.touched.wedOpening && formik.errors.wedOpening && (
-                      <span className="text-red-400">{formik.errors.wedOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.wedOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -331,21 +343,22 @@ const AddBusinessHours = () => {
                       name="wedClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.wedClosing && formik.errors.wedClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.wedClosing && formik.errors.wedClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedClosing}
                     />
                     {formik.touched.wedClosing && formik.errors.wedClosing && (
-                      <span className="text-red-400">{formik.errors.wedClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.wedClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -354,7 +367,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Thursday:</p>
 
                   <div>
@@ -363,17 +376,21 @@ const AddBusinessHours = () => {
                       name="thurOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.thurOpening && formik.errors.thurOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.thurOpening && formik.errors.thurOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurOpening}
                     />
-                    {formik.touched.thurOpening && formik.errors.thurOpening && (
-                      <span className="text-red-400">{formik.errors.thurOpening}</span>
-                    )}
+                    {formik.touched.thurOpening &&
+                      formik.errors.thurOpening && (
+                        <span className="text-red-400">
+                          {formik.errors.thurOpening}
+                        </span>
+                      )}
                   </div>
                   <div className="pt-3 text-center">to</div>
                   <div>
@@ -382,21 +399,23 @@ const AddBusinessHours = () => {
                       name="thurClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.thurClosing && formik.errors.thurClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.thurClosing && formik.errors.thurClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurClosing}
                     />
-                    {formik.touched.thurClosing && formik.errors.thurClosing && (
-                      <span className="text-red-400">{formik.errors.thurClosing}</span>
-                    )}
+                    {formik.touched.thurClosing &&
+                      formik.errors.thurClosing && (
+                        <span className="text-red-400">
+                          {formik.errors.thurClosing}
+                        </span>
+                      )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -405,7 +424,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Friday:</p>
 
                   <div>
@@ -414,16 +433,19 @@ const AddBusinessHours = () => {
                       name="friOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.friOpening && formik.errors.friOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.friOpening && formik.errors.friOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friOpening}
                     />
                     {formik.touched.friOpening && formik.errors.friOpening && (
-                      <span className="text-red-400">{formik.errors.friOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.friOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -433,21 +455,22 @@ const AddBusinessHours = () => {
                       name="friClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.friClosing && formik.errors.friClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.friClosing && formik.errors.friClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friClosing}
                     />
                     {formik.touched.friClosing && formik.errors.friClosing && (
-                      <span className="text-red-400">{formik.errors.friClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.friClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -456,7 +479,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Saturday:</p>
 
                   <div>
@@ -465,16 +488,19 @@ const AddBusinessHours = () => {
                       name="satOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.satOpening && formik.errors.satOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.satOpening && formik.errors.satOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satOpening}
                     />
                     {formik.touched.satOpening && formik.errors.satOpening && (
-                      <span className="text-red-400">{formik.errors.satOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.satOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -484,21 +510,22 @@ const AddBusinessHours = () => {
                       name="satClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.satClosing && formik.errors.satClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.satClosing && formik.errors.satClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satClosing}
                     />
                     {formik.touched.satClosing && formik.errors.satClosing && (
-                      <span className="text-red-400">{formik.errors.satClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.satClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
@@ -507,7 +534,7 @@ const AddBusinessHours = () => {
             <div className="border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md">
               {/* <div className="flex items-center mb-1 justify-between"> */}
               <label>
-                <div className="grid grid-cols-4" >
+                <div className="grid grid-cols-4">
                   <p className="mt-1.5 text-md font-medium py-2">Sunday:</p>
 
                   <div>
@@ -516,16 +543,19 @@ const AddBusinessHours = () => {
                       name="sunOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.sunOpening && formik.errors.sunOpening
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.sunOpening && formik.errors.sunOpening
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunOpening}
                     />
                     {formik.touched.sunOpening && formik.errors.sunOpening && (
-                      <span className="text-red-400">{formik.errors.sunOpening}</span>
+                      <span className="text-red-400">
+                        {formik.errors.sunOpening}
+                      </span>
                     )}
                   </div>
                   <div className="pt-3 text-center">to</div>
@@ -535,25 +565,31 @@ const AddBusinessHours = () => {
                       name="sunClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${formik.touched.sunClosing && formik.errors.sunClosing
-                          ? "border-red-400"
-                          : "border-gray-300"
-                        }`}
+                    ${
+                      formik.touched.sunClosing && formik.errors.sunClosing
+                        ? "border-red-400"
+                        : "border-gray-300"
+                    }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunClosing}
                     />
                     {formik.touched.sunClosing && formik.errors.sunClosing && (
-                      <span className="text-red-400">{formik.errors.sunClosing}</span>
+                      <span className="text-red-400">
+                        {formik.errors.sunClosing}
+                      </span>
                     )}
                   </div>
-
                 </div>
-
               </label>
               {/* </div> */}
             </div>
-            <button className='w-full bg-blue-500 rounded p-3 text-white' type='submit'>Submit</button>
+            <button
+              className="w-full bg-blue-500 rounded p-3 text-white"
+              type="submit"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>

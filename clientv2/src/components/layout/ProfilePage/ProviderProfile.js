@@ -90,7 +90,7 @@ const ProviderProfile = () => {
 
       console.log("body" + JSON.stringify(body));
       const responseUpdate = await fetch(
-        `http://localhost:6003/provider/update/${providerId}`,
+        `https://is3106-dropandgo.herokuapp.com/provider/update/${providerId}`,
         settings
       );
 
@@ -127,7 +127,7 @@ const ProviderProfile = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/provider/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/provider/authenticate",
         settings
       );
 
@@ -150,7 +150,7 @@ const ProviderProfile = () => {
 
       console.log("Fetch Data Triggered");
       const responseDetails = await fetch(
-        `http://localhost:6003/provider/${authRes.id}`
+        `https://is3106-dropandgo.herokuapp.com/provider/${authRes.id}`
       );
 
       if (!responseDetails) {
@@ -205,7 +205,10 @@ const ProviderProfile = () => {
 
       <div className="border-t border-gray-200">
         <div className="max-w-5xl md:max-w-3xl mx-auto px-10 sm:px-5 py-2 text-text-dark">
-          <form className="grid grid-cols-2 py-8" onSubmit={formik.handleSubmit}>
+          <form
+            className="grid grid-cols-2 py-8"
+            onSubmit={formik.handleSubmit}
+          >
             <div className="grid grid-rows-5 gap-4">
               <label
                 className="text-l py-2 text-text-dark font-semibold"
@@ -241,17 +244,20 @@ const ProviderProfile = () => {
               >
                 Bank Account
               </label>
-              {formik.touched.bankAccount && formik.errors.bankAccount && <br />}
+              {formik.touched.bankAccount && formik.errors.bankAccount && (
+                <br />
+              )}
             </div>
 
             <div className="grid grid-rows-5 gap-4">
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.name && formik.errors.name
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -270,10 +276,11 @@ const ProviderProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.email && formik.errors.email
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -291,10 +298,11 @@ const ProviderProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.password && formik.errors.password
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -312,10 +320,11 @@ const ProviderProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.phone && formik.errors.phone
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -333,10 +342,11 @@ const ProviderProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.bankAccount && formik.errors.bankAccount
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.bankAccount && formik.errors.bankAccount
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -369,7 +379,6 @@ const ProviderProfile = () => {
                   </button>
                 </div>
               )}
-
             </div>
           </form>
         </div>

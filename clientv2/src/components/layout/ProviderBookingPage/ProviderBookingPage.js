@@ -1,36 +1,19 @@
 import { useState, useEffect } from "react";
-import UserBooking from "../../ui/UserBooking";
+import { useNavigate, useParams } from "react-router-dom";
+import UserBookingProvider from "../../ui/UserBookingProvider";
 
-const Bookings = () => {
+const ProviderBookings = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
+  const [specificListing, setSpecificListing] = useState(null);
   const [bookings, setBookings] = useState([]);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
-      const settings = {
-        method: "GET",
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      };
-
-      const userID = await fetch(
-        `https://is3106-dropandgo.herokuapp.com/user/authenticate`,
-        settings
-      );
-
-      if (!userID.ok) {
-        const message = `An error has occurred: ${userID.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const userIDRes = await userID.json();
-
-      console.log(userIDRes);
-
       const response = await fetch(
-        `https://is3106-dropandgo.herokuapp.com/booking/users/${userIDRes.id}`
+        `https://is3106-dropandgo.herokuapp.com/booking/listings/${id}`
       );
 
       if (!response.ok) {
@@ -55,6 +38,34 @@ const Bookings = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing/${id}`
+      );
+
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const listingRes = await response.json();
+      if (!listingRes) {
+        window.alert(`Listing cannot be retrieved`);
+        return;
+      } else {
+        console.log(listingRes.name);
+        setSpecificListing(listingRes.name);
+      }
+    }
+
+    fetchData();
+
+    return;
+    // eslint-disable-next-line
+  }, []);
+
   const renderSwitch = () => {
     switch (activeMenuItem) {
       case 0:
@@ -65,7 +76,7 @@ const Bookings = () => {
                 booking.status !== "Collected" &&
                 booking.status !== "Cancelled"
               )
-                return <UserBooking booking={booking} key={index} />;
+                return <UserBookingProvider booking={booking} key={index} />;
             })}
           </div>
         );
@@ -74,7 +85,7 @@ const Bookings = () => {
           <div>
             {bookings.map((booking, index) => {
               if (booking.status === "Collected")
-                return <UserBooking booking={booking} key={index} />;
+                return <UserBookingProvider booking={booking} key={index} />;
             })}
           </div>
         );
@@ -83,7 +94,7 @@ const Bookings = () => {
           <div>
             {bookings.map((booking, index) => {
               if (booking.status === "Cancelled")
-                return <UserBooking booking={booking} key={index} />;
+                return <UserBookingProvider booking={booking} key={index} />;
             })}
           </div>
         );
@@ -98,7 +109,9 @@ const Bookings = () => {
         <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6">
           <div className="flex-col sm:flex-row flex items-center justify-between relative">
             <div className="shrink-0 mr-4">
-              <p className="text-text-main text-xl">My bookings</p>
+              <p className="text-text-main text-xl">
+                Bookings at: {specificListing}
+              </p>
             </div>
 
             {/* Navigation */}
@@ -147,4 +160,4 @@ const Bookings = () => {
   );
 };
 
-export default Bookings;
+export default ProviderBookings;
