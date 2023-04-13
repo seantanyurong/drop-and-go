@@ -19,7 +19,7 @@ const AboutUs = () => {
         </div>
       </div>    
 
-    <div className="flex flex-wrap ">
+    <div className="flex flex-wrap mx-auto w-5/6">
 
       <div className="w-full md:w-1/3 px-4 mb-8">
         <div className="opacity-90 bg-white rounded-lg shadow p-6 hover:bg-orange-100">
