@@ -35,7 +35,7 @@ const BookingForm = (props) => {
       };
 
       const getUserID = await fetch(
-        `http://localhost:6003/user/authenticate`,
+        `https://is3106-dropandgo.herokuapp.com/user/authenticate`,
         settings
       );
 
@@ -50,7 +50,9 @@ const BookingForm = (props) => {
       setUserID(getUserIDRes.id);
 
       const id = props.listing_id;
-      const response = await fetch(`http://localhost:6003/listing/${id}`);
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing/${id}`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -66,7 +68,7 @@ const BookingForm = (props) => {
         setListing(listingRes);
       }
       const review = await fetch(
-        `http://localhost:6003/review/listing/${props.listing_id}`
+        `https://is3106-dropandgo.herokuapp.com/review/listing/${props.listing_id}`
       );
 
       if (!review.ok) {
@@ -95,7 +97,9 @@ const BookingForm = (props) => {
     // When a post request is sent to the create url, we'll add a new record to the database.
     console.log("Submitting");
 
-    const response = await fetch(`http://localhost:6003/booking`);
+    const response = await fetch(
+      `https://is3106-dropandgo.herokuapp.com/booking`
+    );
 
     if (!response.ok) {
       const message = `An error has occurred: ${response.statusText}`;
@@ -132,7 +136,7 @@ const BookingForm = (props) => {
     } else if (userID === undefined) {
       navigate("/login/user");
     } else {
-      await fetch("http://localhost:6003/booking/add", {
+      await fetch("https://is3106-dropandgo.herokuapp.com/booking/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

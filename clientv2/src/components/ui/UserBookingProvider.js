@@ -10,7 +10,9 @@ const UserBookingProvider = (props) => {
   useEffect(() => {
     async function fetchData() {
       const id = props.booking.listing_id;
-      const response = await fetch(`http://localhost:6003/listing/${id}`);
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing/${id}`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -36,7 +38,9 @@ const UserBookingProvider = (props) => {
   useEffect(() => {
     async function fetchUserData() {
       const id = props.booking.user_id;
-      const response = await fetch(`http://localhost:6003/user/${id}`);
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/user/${id}`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;

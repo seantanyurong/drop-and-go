@@ -54,7 +54,6 @@ const UserProfile = () => {
     validationSchema: userDetailsSchema,
   });
 
-
   const handleCancel = () => {
     setEditState(false);
     formik.handleReset();
@@ -87,7 +86,7 @@ const UserProfile = () => {
 
       console.log("body" + JSON.stringify(body));
       const responseUpdate = await fetch(
-        `http://localhost:6003/user/update/${userId}`,
+        `https://is3106-dropandgo.herokuapp.com/user/update/${userId}`,
         settings
       );
 
@@ -125,7 +124,7 @@ const UserProfile = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/user/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/user/authenticate",
         settings
       );
 
@@ -148,7 +147,7 @@ const UserProfile = () => {
 
       console.log("Fetch Data Triggered");
       const responseDetails = await fetch(
-        `http://localhost:6003/user/${authRes.id}`
+        `https://is3106-dropandgo.herokuapp.com/user/${authRes.id}`
       );
 
       if (!responseDetails) {
@@ -243,10 +242,11 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.name && formik.errors.name
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -265,10 +265,11 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.email && formik.errors.email
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -286,10 +287,11 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.password && formik.errors.password
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -307,10 +309,11 @@ const UserProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.phone && formik.errors.phone
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}

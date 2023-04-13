@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import ProviderListingCard from "../../ui/ProviderListingCard";
-
 
 const ViewLocations = () => {
   let [activeMenuItem, setActiveMenuItem] = useState(0);
@@ -12,10 +11,8 @@ const ViewLocations = () => {
     navigate(`/provider/add-location`);
   }
 
-
   useEffect(() => {
     async function fetchData() {
-
       // getting the user ID
       const settings = {
         method: "GET",
@@ -25,7 +22,7 @@ const ViewLocations = () => {
       };
 
       const userID = await fetch(
-        `http://localhost:6003/provider/authenticate`,
+        `https://is3106-dropandgo.herokuapp.com/provider/authenticate`,
         settings
       );
 
@@ -39,8 +36,9 @@ const ViewLocations = () => {
       console.log(userIDRes);
 
       // get listings based on id
-      const responseListings = await fetch(`http://localhost:6003/listing/provider/${userIDRes.id}`);
-
+      const responseListings = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing/provider/${userIDRes.id}`
+      );
 
       if (!responseListings.ok) {
         const message = `An error has occurred: ${responseListings.statusText}`;
@@ -55,14 +53,12 @@ const ViewLocations = () => {
       } else {
         setListings(listingRes);
         console.log(listingRes);
-
       }
     }
 
     fetchData();
-    console.log(listings)
+    console.log(listings);
     return;
-
   }, []);
 
   return (
@@ -89,7 +85,7 @@ const ViewLocations = () => {
                   onClick={() => navigate(`/provider/view-business-hours`)}
                   className={`cursor-pointer rounded-t-sm  hover:text-orange-400  font-semibold px-6 flex items-center text-sm py-[0.6rem]
                   bg-text-main text-text-dark mx-2
-                  ` }
+                  `}
                 >
                   Business Hours
                 </li>
@@ -100,13 +96,7 @@ const ViewLocations = () => {
       </div>
       <div className="max-w-5xl md:max-w-3xl mx-auto px-5 sm:px-6 py-8 text-text-dark">
         {listings.map((listing, index) => {
-          return (
-            <ProviderListingCard
-              listing={listing}
-
-              key={index}
-            />
-          );
+          return <ProviderListingCard listing={listing} key={index} />;
         })}
       </div>
     </div>

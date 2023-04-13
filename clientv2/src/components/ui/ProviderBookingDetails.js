@@ -15,7 +15,7 @@ const UserBookingDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        `http://localhost:6003/booking/${bookingId}`
+        `https://is3106-dropandgo.herokuapp.com/booking/${bookingId}`
       );
 
       console.log(bookingId);
@@ -38,7 +38,7 @@ const UserBookingDetails = () => {
         setFinalPrice(bookingRes.finalPrice || 0.0);
 
         const response2 = await fetch(
-          `http://localhost:6003/listing/${bookingRes.listing_id}`
+          `https://is3106-dropandgo.herokuapp.com/listing/${bookingRes.listing_id}`
         );
 
         if (!response2.ok) {
@@ -76,13 +76,16 @@ const UserBookingDetails = () => {
       };
 
       // This will send a post request to update the data in the database.
-      await fetch(`http://localhost:6003/booking/update/${bookingId}`, {
-        method: "POST",
-        body: JSON.stringify(editedBooking),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await fetch(
+        `https://is3106-dropandgo.herokuapp.com/booking/update/${bookingId}`,
+        {
+          method: "POST",
+          body: JSON.stringify(editedBooking),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
     onStatusChange();
@@ -158,9 +161,10 @@ const UserBookingDetails = () => {
             </div>
             <div className="flex space-x-4 items-center mb-10">
               <CheckCircleIcon
-                className={`h-10 w-10 ${(status === "Handed over" || status === "Collected") &&
+                className={`h-10 w-10 ${
+                  (status === "Handed over" || status === "Collected") &&
                   "text-emerald-400"
-                  }`}
+                }`}
                 aria-hidden="true"
               />
               <h4 className="font-semibold text-lg">Hand over luggage</h4>
@@ -170,12 +174,13 @@ const UserBookingDetails = () => {
                   status === "Collected" ||
                   status === "Cancelled"
                 }
-                className={`rounded-md p-1.5 px-4 text-md font-medium ${status === "Handed over" ||
+                className={`rounded-md p-1.5 px-4 text-md font-medium ${
+                  status === "Handed over" ||
                   status === "Collected" ||
                   status === "Cancelled"
-                  ? "bg-gray-100 text-slate-300"
-                  : "bg-box-gray"
-                  }`}
+                    ? "bg-gray-100 text-slate-300"
+                    : "bg-box-gray"
+                }`}
                 onClick={() => {
                   setStartTime(new Date());
                   setStatus("Handed over");
@@ -191,26 +196,28 @@ const UserBookingDetails = () => {
             </div>
             <div className="flex space-x-4 items-center mb-10">
               <CheckCircleIcon
-                className={`h-10 w-10 ${status === "Collected" && "text-emerald-400"
-                  }`}
+                className={`h-10 w-10 ${
+                  status === "Collected" && "text-emerald-400"
+                }`}
                 aria-hidden="true"
               />
               <h4 className="font-semibold text-lg">Reclaim your baggage</h4>
               <button
                 disabled={status === "Collected" || status === "Cancelled"}
-                className={`rounded-md p-1.5 px-4 text-md font-medium ${status === "Collected" || status === "Cancelled"
-                  ? "bg-gray-100 text-slate-300"
-                  : "bg-box-gray"
-                  }`}
+                className={`rounded-md p-1.5 px-4 text-md font-medium ${
+                  status === "Collected" || status === "Cancelled"
+                    ? "bg-gray-100 text-slate-300"
+                    : "bg-box-gray"
+                }`}
                 onClick={async (e) => {
                   setEndTime(new Date());
                   setStatus("Collected");
                   if (booking.paynow) {
                     setFinalPrice(
                       listing.pricePerHour[0] *
-                      booking.bags *
-                      hours(new Date(), startTime) +
-                      1
+                        booking.bags *
+                        hours(new Date(), startTime) +
+                        1
                     );
                   }
                 }}
@@ -231,16 +238,18 @@ const UserBookingDetails = () => {
               </h3>
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm text-text-dark font-light">
-                  {`Storage, ${booking.paynow ? "pay as you go" : booking.days
-                    } day(s) x ${booking.bags} bag(s)`}
+                  {`Storage, ${
+                    booking.paynow ? "pay as you go" : booking.days
+                  } day(s) x ${booking.bags} bag(s)`}
                 </p>
                 <p className="text-sm text-text-dark font-light">
                   {" "}
-                  {`${booking.paynow
-                    ? "$" + listing.pricePerHour[0] * booking.bags + "/hour"
-                    : "$" +
-                    listing.pricePerDay[0] * booking.bags * booking.days
-                    }`}
+                  {`${
+                    booking.paynow
+                      ? "$" + listing.pricePerHour[0] * booking.bags + "/hour"
+                      : "$" +
+                        listing.pricePerDay[0] * booking.bags * booking.days
+                  }`}
                 </p>
               </div>
               <div className="flex items-center justify-between mb-6">

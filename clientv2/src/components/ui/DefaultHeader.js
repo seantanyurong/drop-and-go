@@ -44,7 +44,7 @@ const DefaultHeader = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/user/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/user/authenticate",
         settings
       );
 
@@ -66,7 +66,7 @@ const DefaultHeader = () => {
       if (authRes.isLoggedIn) {
         console.log("Fetch Data Triggered");
         const responseDetails = await fetch(
-          `http://localhost:6003/user/${authRes.id}`
+          `https://is3106-dropandgo.herokuapp.com/user/${authRes.id}`
         );
 
         if (!responseDetails) {

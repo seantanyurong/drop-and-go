@@ -34,10 +34,18 @@ const Records = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const responseUsers = await fetch(`http://localhost:6003/user`);
-      const responseProviders = await fetch(`http://localhost:6003/provider`);
-      const responseListing = await fetch(`http://localhost:6003/listing`);
-      const responseBookings = await fetch(`http://localhost:6003/booking`);
+      const responseUsers = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/user`
+      );
+      const responseProviders = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/provider`
+      );
+      const responseListing = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing`
+      );
+      const responseBookings = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/booking`
+      );
 
       if (!responseUsers.ok) {
         const message = `An error has occurred: ${responseUsers.statusText}`;
@@ -119,8 +127,10 @@ const Records = () => {
 
   const filteredBookings = bookings.filter(
     (item) =>
-      (item.userName && item.userName.toLowerCase().includes(filterText.toLowerCase())) ||  
-      (item.listingName && item.listingName.toLowerCase().includes(filterText.toLowerCase()))
+      (item.userName &&
+        item.userName.toLowerCase().includes(filterText.toLowerCase())) ||
+      (item.listingName &&
+        item.listingName.toLowerCase().includes(filterText.toLowerCase()))
   );
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -131,7 +141,6 @@ const Records = () => {
       />
     );
   }, [filterText]);
-
 
   const renderSwitch = () => {
     switch (activeMenuItem) {

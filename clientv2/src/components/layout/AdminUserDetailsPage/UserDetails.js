@@ -29,8 +29,8 @@ const UserDetails = ({ entityType }) => {
     async function fetchData() {
       const dbUrl =
         entityType === "User"
-          ? `http://localhost:6003/user/${userId}`
-          : `http://localhost:6003/provider/${providerId}`;
+          ? `https://is3106-dropandgo.herokuapp.com/user/${userId}`
+          : `https://is3106-dropandgo.herokuapp.com/provider/${providerId}`;
       const response = await fetch(dbUrl);
 
       if (!response.ok) {
@@ -112,8 +112,8 @@ const UserDetails = ({ entityType }) => {
 
       let dbUrl =
         entityType === "User"
-          ? `http://localhost:6003/user/update/${userId}`
-          : `http://localhost:6003/provider/update/${providerId}`;
+          ? `https://is3106-dropandgo.herokuapp.com/user/update/${userId}`
+          : `https://is3106-dropandgo.herokuapp.com/provider/update/${providerId}`;
 
       const response = await fetch(dbUrl, settings);
 
@@ -132,10 +132,11 @@ const UserDetails = ({ entityType }) => {
     updateData();
   };
   const formStyle = {
-    active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-      ? "border-red-400 text-red-400"
-      : "border-gray-300"
-      }`,
+    active: `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+      formik.touched.name && formik.errors.name
+        ? "border-red-400 text-red-400"
+        : "border-gray-300"
+    }`,
     inactive: "text-l font-light py-2 px-3 focus:outline-none",
   };
 
@@ -215,10 +216,11 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-                    ? "border-red-400 text-red-400"
-                    : "border-gray-300"
-                  }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.name && formik.errors.name
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
                   : formStyle.inactive
               }
               readOnly={!editState}
@@ -237,10 +239,11 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
-                    ? "border-red-400 text-red-400"
-                    : "border-gray-300"
-                  }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.email && formik.errors.email
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
                   : formStyle.inactive
               }
               readOnly={!editState}
@@ -258,10 +261,11 @@ const UserDetails = ({ entityType }) => {
             <input
               className={
                 editState
-                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.phone && formik.errors.phone
-                    ? "border-red-400 text-red-400"
-                    : "border-gray-300"
-                  }`
+                  ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                      formik.touched.phone && formik.errors.phone
+                        ? "border-red-400 text-red-400"
+                        : "border-gray-300"
+                    }`
                   : formStyle.inactive
               }
               readOnly={!editState}

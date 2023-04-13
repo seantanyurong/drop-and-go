@@ -36,7 +36,9 @@ const ReviewSection = () => {
     async function fetchData() {
       console.log(starArray);
       // fetch reviews for home page
-      const response = await fetch(`http://localhost:6003/review/home`);
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/review/home`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -54,7 +56,9 @@ const ReviewSection = () => {
       }
 
       // calculate average review stars
-      const reviews = await fetch(`http://localhost:6003/review`);
+      const reviews = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/review`
+      );
 
       if (!reviews.ok) {
         const message = `An error has occurred: ${reviews.statusText}`;
@@ -70,7 +74,7 @@ const ReviewSection = () => {
       } else {
         const allReviewsRatings = allReviewsRes.map((review) => {
           return review.starNumber;
-        })
+        });
         const sum = allReviewsRatings.reduce((acc, curr) => acc + curr, 0);
         setAverageRating((sum / allReviewsRatings.length).toFixed(2));
         console.log("average rating " + averageRating);
@@ -80,7 +84,7 @@ const ReviewSection = () => {
     fetchData();
 
     return;
-  }, [averageRating])
+  }, [averageRating]);
 
   return (
     <div className="py-[70px] bg-white border-b border-gray-200">
@@ -95,12 +99,17 @@ const ReviewSection = () => {
           <span className="mx-1">
             <div className="flex relative items-center">
               {/* round up the ratings */}
-              {starArray.map(i => ( // use many times
-                <StarIcon className="overflow-hidden h-[16px] w-[16px]"
-                  key={i}
-                  color={averageRating > i ? "orange" : "lightgrey"} />
-
-              ))}
+              {starArray.map(
+                (
+                  i // use many times
+                ) => (
+                  <StarIcon
+                    className="overflow-hidden h-[16px] w-[16px]"
+                    key={i}
+                    color={averageRating > i ? "orange" : "lightgrey"}
+                  />
+                )
+              )}
             </div>
           </span>
         </div>
@@ -117,16 +126,9 @@ const ReviewSection = () => {
             containerClass=""
             itemClass="mr-[16px] my-[8px] min-h-[250px] max-w-[550px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative"
           >
-
             {reviews.map((review, index) => {
-              return (
-                <Review
-                  review={review}
-                  key={index}
-                />
-              )
+              return <Review review={review} key={index} />;
             })}
-
           </Carousel>
         </div>
 
