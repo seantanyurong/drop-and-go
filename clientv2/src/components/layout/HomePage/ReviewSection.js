@@ -5,11 +5,16 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import LeftArrow from "../../ui/LeftArrow";
 import RightArrow from "../../ui/RightArrow";
 import Review from "./Review";
+import { useEffect, useState } from "react";
 
 const ReviewSection = () => {
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0.0);
+  const starArray = [0, 1, 2, 3, 4];
+
+  // carousel responsive
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 5,
     },
@@ -27,6 +32,56 @@ const ReviewSection = () => {
     },
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      console.log(starArray);
+      // fetch reviews for home page
+      const response = await fetch(`http://localhost:6003/review/home`);
+
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const reviewsRes = await response.json();
+
+      if (!reviewsRes) {
+        window.alert(`Homepage reviews cannot be retrieved`);
+        return;
+      } else {
+        setReviews(reviewsRes);
+      }
+
+      // calculate average review stars
+      const reviews = await fetch(`http://localhost:6003/review`);
+
+      if (!reviews.ok) {
+        const message = `An error has occurred: ${reviews.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const allReviewsRes = await reviews.json();
+
+      if (!allReviewsRes) {
+        window.alert(`All reviews cannot be retrieved`);
+        return;
+      } else {
+        const allReviewsRatings = allReviewsRes.map((review) => {
+          return review.starNumber;
+        })
+        const sum = allReviewsRatings.reduce((acc, curr) => acc + curr, 0);
+        setAverageRating((sum / allReviewsRatings.length).toFixed(2));
+        console.log("average rating " + averageRating);
+      }
+    }
+
+    fetchData();
+
+    return;
+  }, [averageRating])
+
   return (
     <div className="py-[70px] bg-white border-b border-gray-200">
       <div className="mb-3.5 text-center text-lg tracking-normal font-bold mt-0 not-italic text-cyan-900">
@@ -35,30 +90,17 @@ const ReviewSection = () => {
 
       <div>
         <div className="flex mx-0 mb-2.5 -mt-2.5 items-center justify-center text-cyan-900 text-lg font-medium">
-          <span className="mx-1">4.9</span>
+          <span className="mx-1">{averageRating}</span>
 
           <span className="mx-1">
             <div className="flex relative items-center">
-              <StarIcon
-                className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden"
-                color="orange"
-              />
-              <StarIcon
-                className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden"
-                color="orange"
-              />
-              <StarIcon
-                className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden"
-                color="orange"
-              />
-              <StarIcon
-                className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden"
-                color="orange"
-              />
-              <StarIcon
-                className="mt-px mr-px mb-0 ml-0 h-6 w-6 overflow-hidden"
-                color="orange"
-              />
+              {/* round up the ratings */}
+              {starArray.map(i => ( // use many times
+                <StarIcon className="overflow-hidden h-[16px] w-[16px]"
+                  key={i}
+                  color={averageRating > i ? "orange" : "lightgrey"} />
+
+              ))}
             </div>
           </span>
         </div>
@@ -75,36 +117,16 @@ const ReviewSection = () => {
             containerClass=""
             itemClass="mr-[16px] my-[8px] min-h-[250px] max-w-[550px] py-[20px] px-[25px] text-left bg-white rounded-[5px] overflow-hidden shadow-md shrink-0 h-full relative"
           >
-            <Review
-              user="Traveler"
-              time="Last Saturday"
-              star="5"
-              review="Great service, very safe!"
-            ></Review>
-            <Review
-              user="Grace Yong"
-              time="Last Monday"
-              star="5"
-              review="Friendly owner :)"
-            ></Review>
-            <Review
-              user="Steven Gerrard"
-              time="Last Friday"
-              star="4"
-              review="Bien!"
-            ></Review>
-            <Review
-              user="Roberto Firmino"
-              time="Last Saturday"
-              star="5"
-              review="Very convenient!"
-            ></Review>
-            <Review
-              user="Alisson Becker"
-              time="Last Sunday"
-              star="4"
-              review="Very helpful"
-            ></Review>
+
+            {reviews.map((review, index) => {
+              return (
+                <Review
+                  review={review}
+                  key={index}
+                />
+              )
+            })}
+
           </Carousel>
         </div>
 
