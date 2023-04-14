@@ -12,6 +12,8 @@ const Review = (props) => {
 
   useEffect(() => {
     async function fetchData() {
+
+      // fetch user who wrote the review
       const user = await fetch(
         `https://is3106-dropandgo.herokuapp.com/user/${props.review.user_id}`
       );
@@ -39,16 +41,23 @@ const Review = (props) => {
     return;
     // eslint-disable-next-line
   }, []);
+
   return (
     <div className="">
       <div className="flex flex-col flex-nowrap">
-        <div className="block text-sm m-0 font-medium">{user}</div>
 
+        {/* User's Display Name */}
+        <div className="block text-sm m-0 font-medium">
+          {user}
+        </div>
+
+        {/* Date User Used Drop&Go */}
         <div className="block mb-0.5 text-xs">
           Used Drop&Go on{" "}
           {new Date(props.review.dateReviewed).toLocaleDateString(locale)}
         </div>
 
+        {/* Number of Stars */}
         <div className="block relative grow shrink-0 basis-auto min-h-[24px] h-[24px]">
           <div className="flex absolute top-0 left-0">
             {starArray.map(
@@ -66,12 +75,18 @@ const Review = (props) => {
         </div>
       </div>
 
+      {/* Review Subject */}
       <div className="block leading-6 text-[15px] mt-[3px] mx-0 mb-[3px] relative duration-200 ease-out transition-[color] overflow-hidden text-[#384347] font-medium">
-        <div className="mb-2.5">{props.review.subject}</div>
+        <div className="mb-2.5">
+          {props.review.subject}
+        </div>
       </div>
 
+      {/* Review Description */}
       <div className="block leading-6 text-[15px] mt-[3px] mx-0 mb-[5px] relative duration-200 ease-out transition-[color] overflow-hidden text-[#384347]">
-        <div className="mb-2.5">{props.review.description}</div>
+        <div className="mb-2.5">
+          {props.review.description}
+        </div>
       </div>
     </div>
   );

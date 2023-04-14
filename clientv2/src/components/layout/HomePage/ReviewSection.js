@@ -12,6 +12,8 @@ const ReviewSection = () => {
   const [averageRating, setAverageRating] = useState(0.0);
   const starArray = [0, 1, 2, 3, 4];
 
+  const [dynamicState, setDynamicState] = useState(true);
+
   // carousel responsive
   const responsive = {
     superLargeDesktop: {
@@ -34,8 +36,62 @@ const ReviewSection = () => {
 
   useEffect(() => {
     async function fetchData() {
-      console.log(starArray);
+      // check if user is logged in
+      console.log("Check If Logged In");
+      const settings = {
+        method: "GET",
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
+      const responseAuth = await fetch(
+        "https://is3106-dropandgo.herokuapp.com/user/authenticate",
+        settings
+      );
+
+      if (!responseAuth) {
+        const message = `An error has occurred: ${responseAuth.message}`;
+        window.alert(message);
+        return;
+      }
+
+      const authRes = await responseAuth.json();
+      console.log(authRes);
+
+      if (!authRes) {
+        const message = `An error has occurred: ${authRes.message}`;
+        window.alert(message);
+        return;
+      }
+
+      if (authRes.isLoggedIn) {
+        console.log("Fetch Data Triggered");
+        const responseDetails = await fetch(
+          `https://is3106-dropandgo.herokuapp.com/user/${authRes.id}`
+        );
+
+        if (!responseDetails) {
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
+
+        const detailsRes = await responseDetails.json();
+        console.log(detailsRes);
+
+        if (detailsRes === null) {
+          setDynamicState(false);
+        } else {
+          // setAuthState(authRes);
+          setDynamicState(true);
+        }
+      } else {
+        setDynamicState(false);
+      }
+
       // fetch reviews for home page
+      console.log(starArray);
       const response = await fetch(
         `https://is3106-dropandgo.herokuapp.com/review/home`
       );
@@ -88,14 +144,21 @@ const ReviewSection = () => {
 
   return (
     <div className="py-[70px] bg-white border-b border-gray-200">
+
+      {/* Review Section Header Text */}
       <div className="mb-3.5 text-center text-lg tracking-normal font-bold mt-0 not-italic text-cyan-900">
         <h2>Most-reviewed luggage storage service</h2>
       </div>
 
       <div>
+        {/* Overall Average Rating */}
         <div className="flex mx-0 mb-2.5 -mt-2.5 items-center justify-center text-cyan-900 text-lg font-medium">
-          <span className="mx-1">{averageRating}</span>
+          {/* Average Rating Score */}
+          <span className="mx-1">
+            {averageRating}
+          </span>
 
+          {/* Average Rating Stars */}
           <span className="mx-1">
             <div className="flex relative items-center">
               {/* round up the ratings */}
@@ -115,11 +178,14 @@ const ReviewSection = () => {
         </div>
       </div>
 
+      {/* Review Carousel */}
       <div className="block text-center">
         <div className="px-[33px] pt-[30px] pb-[50px] my-0 mx-0 relative overflow-hidden z-[1]">
           <Carousel
             partialVisbile
             responsive={responsive}
+
+            // Custom Arrows
             customLeftArrow={<LeftArrow />}
             customRightArrow={<RightArrow />}
             infinite={false}
@@ -132,12 +198,16 @@ const ReviewSection = () => {
           </Carousel>
         </div>
 
-        <a
-          className="py-0 px-[40px] duration-200 ease-in transition-[all] rounded-[100px] h-[50px] leading-[50px] text-[15px] bg-[#F4F4F4] text-[#384347] border-none outline-none inline-block no-underline font-medium cursor-pointer"
-          href="/login/user"
-        >
-          Write a review
-        </a>
+        {/* Prompt User to Login */}
+        {!dynamicState &&
+          <a
+            className="py-0 px-[40px] duration-200 ease-in transition-[all] rounded-[100px] h-[50px] leading-[50px] text-[15px] bg-[#F4F4F4] text-[#384347] border-none outline-none inline-block no-underline font-medium cursor-pointer"
+            href="/login/user"
+          >
+            Write a review
+          </a>
+        }
+
       </div>
     </div>
   );
