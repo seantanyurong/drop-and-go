@@ -55,6 +55,10 @@ userRoutes.route("/user/login").post(async function (req, res) {
     return res.json({ message: "Invalid Email Address!" });
   }
 
+  if (userDB.status === "Inactive") {
+    return res.json({ message: "Account is deactivated. Please contact administrator!"});
+  }
+
   bcrypt.compare(userLogin.password, userDB.password).then((isCorrect) => {
     if (isCorrect) {
       console.log("Passwords Equal");
@@ -79,7 +83,7 @@ userRoutes.route("/user/login").post(async function (req, res) {
       );
     } else {
       console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
+      return res.json({ message: "Invalid Password!" });
     }
   });
 });
@@ -94,10 +98,10 @@ userRoutes.route("/user/add").post(async function (req, res) {
   const user = req.body;
   console.log(user.name);
 
-  // checks if username or email have been taken by another user
-  const takenUsername = await db_connect
-    .collection("user")
-    .findOne({ name: user.name });
+  // checks if email have been taken by another user
+  // const takenUsername = await db_connect
+  //   .collection("user")
+  //   .findOne({ name: user.name });
   const takenEmail = await db_connect
     .collection("user")
     .findOne({ email: user.email });
@@ -109,9 +113,9 @@ userRoutes.route("/user/add").post(async function (req, res) {
   const pw = user.password;
   const repw = user.reenterPassword;
 
-  if (takenUsername || takenEmail) {
-    console.log("Username/Email Taken!");
-    res.json({ message: "Username or Email has already been taken!" });
+  if (takenEmail) {
+    console.log("Email Taken!");
+    res.json({ message: "Email has already been taken!" });
   } else if (pw !== repw) {
     console.log("Password Not Equals!");
 

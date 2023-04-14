@@ -61,10 +61,28 @@ const UserDetails = ({ entityType }) => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email Address is required"),
+    phone: Yup.number()
+      .typeError("Please enter a valid phone number")
+      .positive("Please enter a valid phone number")
+      .required("Phone Number is required"),
+  });
+
+  const providerDetailsSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Name must be at least 3 characters")
+      .max(32, "Name exceeds 32 characters")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Email Address is required"),
     phone: Yup.string()
       .matches(phoneRegExp, "Phone Number is not valid")
       .required("Phone Number is required"),
     status: Yup.string().required("Status is required"),
+    bankAccount: Yup.number()
+      .typeError("Please enter a valid bank account number")
+      .required("Bank Account Number is required")
+      .positive("Please enter a valid bank account number"),
   });
 
   const formik = useFormik({
@@ -75,7 +93,8 @@ const UserDetails = ({ entityType }) => {
       handleSubmit();
     },
 
-    validationSchema: userDetailsSchema,
+    validationSchema:
+      entityType === "User" ? userDetailsSchema : providerDetailsSchema,
   });
 
   const [editState, setEditState] = useState(false);
@@ -285,10 +304,16 @@ const UserDetails = ({ entityType }) => {
                 className={editState ? formStyle.active : formStyle.inactive}
                 readOnly={!editState}
                 id="bankAccount"
-                type="number"
-                value={formState.phone}
-                onChange={handleChange}
+                type="text"
+                value={formik.values.bankAccount}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
+            )}
+            {formik.touched.bankAccount && formik.errors.bankAccount && (
+              <span className="text-red-500 text-xs italic">
+                {formik.errors.bankAccount}
+              </span>
             )}
           </div>
           <div className="grid grid-rows-5 gap-4">
