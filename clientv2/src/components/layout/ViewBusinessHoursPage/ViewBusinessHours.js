@@ -103,7 +103,7 @@ const ViewBusinessHours = () => {
                 <div className="grid sm:grid-cols-1 md:grid-cols-3">
                     {hours.map((businessHourSetting) => {
                         return (
-                            <div className="m-2 border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
+                            <div className="m-1 border-[1px] border-border-main p-4 rounded-md mb-4 shadow-md hover:bg-box-hover">
                                 <div className="flex items-center mb-1 justify-between">
                                     <div className="flex space-x-3 items-center">
                                         <h3 className="font-semibold">
