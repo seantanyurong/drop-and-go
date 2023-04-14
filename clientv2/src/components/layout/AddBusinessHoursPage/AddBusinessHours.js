@@ -35,6 +35,7 @@ const AddBusinessHours = () => {
         },
       };
 
+      // calling authentication api
       const userID = await fetch(
         `https://is3106-dropandgo.herokuapp.com/provider/authenticate`,
         settings
@@ -89,6 +90,7 @@ const AddBusinessHours = () => {
       };
       console.log("body" + JSON.stringify(body));
 
+      // checking for duplicates
       const duplicate = await fetch(
         `https://is3106-dropandgo.herokuapp.com/businessHours/name/${body.name}`,
         settings
@@ -134,6 +136,7 @@ const AddBusinessHours = () => {
       navigate(`/provider/view-business-hours`);
     },
 
+    // form validation
     validationSchema: yup.object({
       name: yup.string().label("Name").required(),
       monOpening: yup.string().label("This").required(),
@@ -180,11 +183,10 @@ const AddBusinessHours = () => {
                       name="name"
                       placeholder="Name"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.name && formik.errors.name
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.name && formik.errors.name
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.name}
@@ -211,11 +213,10 @@ const AddBusinessHours = () => {
                       name="monOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.monOpening && formik.errors.monOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.monOpening && formik.errors.monOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monOpening}
@@ -233,11 +234,10 @@ const AddBusinessHours = () => {
                       name="monClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.monClosing && formik.errors.monClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.monClosing && formik.errors.monClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monClosing}
@@ -266,11 +266,10 @@ const AddBusinessHours = () => {
                       name="tueOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.tueOpening && formik.errors.tueOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.tueOpening && formik.errors.tueOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueOpening}
@@ -288,11 +287,10 @@ const AddBusinessHours = () => {
                       name="tueClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.tueClosing && formik.errors.tueClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.tueClosing && formik.errors.tueClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueClosing}
@@ -321,11 +319,10 @@ const AddBusinessHours = () => {
                       name="wedOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.wedOpening && formik.errors.wedOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.wedOpening && formik.errors.wedOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedOpening}
@@ -343,11 +340,10 @@ const AddBusinessHours = () => {
                       name="wedClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.wedClosing && formik.errors.wedClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.wedClosing && formik.errors.wedClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedClosing}
@@ -376,11 +372,10 @@ const AddBusinessHours = () => {
                       name="thurOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.thurOpening && formik.errors.thurOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.thurOpening && formik.errors.thurOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurOpening}
@@ -399,11 +394,10 @@ const AddBusinessHours = () => {
                       name="thurClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.thurClosing && formik.errors.thurClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.thurClosing && formik.errors.thurClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurClosing}
@@ -433,11 +427,10 @@ const AddBusinessHours = () => {
                       name="friOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.friOpening && formik.errors.friOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.friOpening && formik.errors.friOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friOpening}
@@ -455,11 +448,10 @@ const AddBusinessHours = () => {
                       name="friClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.friClosing && formik.errors.friClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.friClosing && formik.errors.friClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friClosing}
@@ -488,11 +480,10 @@ const AddBusinessHours = () => {
                       name="satOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.satOpening && formik.errors.satOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.satOpening && formik.errors.satOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satOpening}
@@ -510,11 +501,10 @@ const AddBusinessHours = () => {
                       name="satClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.satClosing && formik.errors.satClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.satClosing && formik.errors.satClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satClosing}
@@ -543,11 +533,10 @@ const AddBusinessHours = () => {
                       name="sunOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.sunOpening && formik.errors.sunOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.sunOpening && formik.errors.sunOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunOpening}
@@ -565,11 +554,10 @@ const AddBusinessHours = () => {
                       name="sunClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.sunClosing && formik.errors.sunClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.sunClosing && formik.errors.sunClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunClosing}

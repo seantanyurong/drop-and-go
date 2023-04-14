@@ -21,6 +21,7 @@ const ViewLocations = () => {
         },
       };
 
+      // call authentication api
       const userID = await fetch(
         `https://is3106-dropandgo.herokuapp.com/provider/authenticate`,
         settings

@@ -24,11 +24,14 @@ const geocodeJson = 'https://maps.googleapis.com/maps/api/geocode/json';
 
 
 const Map = ({ failValidation, onSelect, onSearch, formError, initVal }) => {
+
+    // load api key and places library
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyDDLDyyMbja4JYIn0WXLXrcQ3zjWQhjBKs',
         libraries: ["places"],
     });
 
+    // set initial location
     const [selected, setSelected] = useState({
         lat: 1.2907,
         lng: 103.7727,
@@ -71,6 +74,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
 
     const [postalCode, setPostalCode] = useState(null);
 
+    // generate postal code using geocode API
     const reverseGeocode = async (lat, lng) => {
 
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
@@ -85,6 +89,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
     }
 
 
+    // call usePlacesAutocomplete hook
     const {
         ready,
         value,
@@ -109,6 +114,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
         setValue(address, false);
         clearSuggestions();
 
+        // get lat and long of address
         const results = await getGeocode({ address });
         const { lat, lng } = await getLatLng(results[0]);
 
@@ -121,6 +127,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
     };
 
     return (
+        // input box
         <Combobox onSelect={handleSelect} onSearch={onSearch}>
             <ComboboxInput
                 className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-primary-200
@@ -137,6 +144,7 @@ const PlacesAutocomplete = ({ setSelected, onSelect, onSearch, failValidation, f
             {failValidation &&
                 (<span className='text-red-400'>{formError}</span>)}
 
+            {/* render suggestions if status is OK */}
             <ComboboxPopover>
                 <ComboboxList>
                     {status === "OK" &&

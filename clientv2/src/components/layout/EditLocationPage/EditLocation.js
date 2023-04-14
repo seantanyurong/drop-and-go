@@ -31,6 +31,7 @@ const AddLocation = () => {
 
   useEffect(() => {
     async function fetchData() {
+      // get specific listing data
       const response =
         await fetch(`https://is3106-dropandgo.herokuapp.com/listing/${id}
       `);
@@ -80,7 +81,6 @@ const AddLocation = () => {
     // eslint-disable-next-line
   }, []);
 
-  // not sure why this is not working
   useEffect(() => {
     console.log(formState);
   }, formState);
@@ -122,6 +122,8 @@ const AddLocation = () => {
 
       // useEffect(() => {
       //   async function fetchData() {
+
+      // getting business hours
       const res = await fetch(
         `https://is3106-dropandgo.herokuapp.com/businessHours/provider/${userIDRes.id}`
       );
@@ -155,6 +157,7 @@ const AddLocation = () => {
     console.log("formik value is " + formik.values.address);
   };
 
+  // setting lat lng postal obtained as props from map component
   const handleAddressDetails = (lat, lng, postal) => {
     formik.values.latitude = lat;
     formik.values.longitude = lng;
@@ -201,6 +204,7 @@ const AddLocation = () => {
       };
       console.log("body" + JSON.stringify(body));
 
+      // update listing
       const response = await fetch(
         `https://is3106-dropandgo.herokuapp.com/listing/update/${id}`,
         settings
@@ -222,6 +226,7 @@ const AddLocation = () => {
   };
 
   const formik = useFormik({
+    // initialise values based on earlier fetch of listing
     enableReinitialize: true,
     initialValues: formState,
 
@@ -230,6 +235,8 @@ const AddLocation = () => {
       alert(`${formState.shopName} Listing has been updated!`);
       navigate(`/provider/view-locations`);
     },
+
+    // form validation
     validationSchema: yup.object({
       shopName: yup.string().label("Shop name").required(),
       capacity: yup
@@ -285,11 +292,10 @@ const AddLocation = () => {
               placeholder="Shop Name"
               name="shopName"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.shopName && formik.errors.shopName
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.shopName && formik.errors.shopName
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.shopName}
@@ -307,11 +313,10 @@ const AddLocation = () => {
               placeholder="E.g. Your one stop place for baggage storage!"
               name="about"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.about && formik.errors.about
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.about && formik.errors.about
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.about}
@@ -331,11 +336,10 @@ const AddLocation = () => {
               name="capacity"
               placeholder="Capacity (bags)"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-primary-200
-            ${
-              formik.touched.capacity && formik.errors.capacity
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.capacity && formik.errors.capacity
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.capacity}
@@ -372,11 +376,10 @@ const AddLocation = () => {
             <select
               name="openingHours"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300 
-            ${
-              formik.touched.openingHours && formik.errors.openingHours
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.openingHours && formik.errors.openingHours
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               value={formik.values.openingHours}
             >
@@ -402,11 +405,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="smallHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.smallHourlyFee && formik.errors.smallHourlyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.smallHourlyFee && formik.errors.smallHourlyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.smallHourlyFee}
@@ -424,11 +426,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="mediumHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.mediumHourlyFee && formik.errors.mediumHourlyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.mediumHourlyFee && formik.errors.mediumHourlyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.mediumHourlyFee}
@@ -447,11 +448,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="largeHourlyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.largeHourlyFee && formik.errors.largeHourlyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.largeHourlyFee && formik.errors.largeHourlyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.largeHourlyFee}
@@ -470,11 +470,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="smallDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.smallDailyFee && formik.errors.smallDailyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.smallDailyFee && formik.errors.smallDailyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.smallDailyFee}
@@ -492,11 +491,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="mediumDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.mediumDailyFee && formik.errors.mediumDailyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.mediumDailyFee && formik.errors.mediumDailyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.mediumDailyFee}
@@ -514,11 +512,10 @@ const AddLocation = () => {
               placeholder="Per hour fee"
               name="largeDailyFee"
               className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-            ${
-              formik.touched.largeDailyFee && formik.errors.largeDailyFee
-                ? "border-red-400"
-                : "border-gray-300"
-            }`}
+            ${formik.touched.largeDailyFee && formik.errors.largeDailyFee
+                  ? "border-red-400"
+                  : "border-gray-300"
+                }`}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.largeDailyFee}
@@ -535,6 +532,7 @@ const AddLocation = () => {
               Upload one or more images of the shop, preferably showing the
               street
             </p>
+            {/* Cloudinary upload widget */}
             <CloudinaryUploadWidget onUpload={handleUpload} />
           </label>
           <input

@@ -36,6 +36,7 @@ const EditBusinessHours = () => {
         },
       };
 
+      // calling authentication api
       const userID = await fetch(
         `https://is3106-dropandgo.herokuapp.com/provider/authenticate`,
         settings
@@ -56,6 +57,7 @@ const EditBusinessHours = () => {
 
   useEffect(() => {
     async function fetchData() {
+      // getting business hours provider has created
       const response = await fetch(
         `https://is3106-dropandgo.herokuapp.com/businessHours/${businessHoursId}`
       );
@@ -135,6 +137,7 @@ const EditBusinessHours = () => {
       };
       console.log("body" + JSON.stringify(body));
 
+      // updating business hours
       const response = await fetch(
         `https://is3106-dropandgo.herokuapp.com/businessHours/update/${businessHoursId}`,
         settings
@@ -165,6 +168,7 @@ const EditBusinessHours = () => {
       navigate(`/provider/view-business-hours`);
     },
 
+    // form validation
     validationSchema: yup.object({
       monOpening: yup.string().label("This").required(),
       monClosing: yup.string().label("This").required(),
@@ -211,11 +215,10 @@ const EditBusinessHours = () => {
                       name="monOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.monOpening && formik.errors.monOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.monOpening && formik.errors.monOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monOpening}
@@ -233,11 +236,10 @@ const EditBusinessHours = () => {
                       name="monClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.monClosing && formik.errors.monClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.monClosing && formik.errors.monClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.monClosing}
@@ -265,11 +267,10 @@ const EditBusinessHours = () => {
                       name="tueOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.tueOpening && formik.errors.tueOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.tueOpening && formik.errors.tueOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueOpening}
@@ -287,11 +288,10 @@ const EditBusinessHours = () => {
                       name="tueClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.tueClosing && formik.errors.tueClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.tueClosing && formik.errors.tueClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.tueClosing}
@@ -319,11 +319,10 @@ const EditBusinessHours = () => {
                       name="wedOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.wedOpening && formik.errors.wedOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.wedOpening && formik.errors.wedOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedOpening}
@@ -341,11 +340,10 @@ const EditBusinessHours = () => {
                       name="wedClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.wedClosing && formik.errors.wedClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.wedClosing && formik.errors.wedClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.wedClosing}
@@ -373,11 +371,10 @@ const EditBusinessHours = () => {
                       name="thurOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.thurOpening && formik.errors.thurOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.thurOpening && formik.errors.thurOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurOpening}
@@ -396,11 +393,10 @@ const EditBusinessHours = () => {
                       name="thurClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.thurClosing && formik.errors.thurClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.thurClosing && formik.errors.thurClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.thurClosing}
@@ -429,11 +425,10 @@ const EditBusinessHours = () => {
                       name="friOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.friOpening && formik.errors.friOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.friOpening && formik.errors.friOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friOpening}
@@ -451,11 +446,10 @@ const EditBusinessHours = () => {
                       name="friClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.friClosing && formik.errors.friClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.friClosing && formik.errors.friClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.friClosing}
@@ -483,11 +477,10 @@ const EditBusinessHours = () => {
                       name="satOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.satOpening && formik.errors.satOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.satOpening && formik.errors.satOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satOpening}
@@ -505,11 +498,10 @@ const EditBusinessHours = () => {
                       name="satClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.satClosing && formik.errors.satClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.satClosing && formik.errors.satClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.satClosing}
@@ -537,11 +529,10 @@ const EditBusinessHours = () => {
                       name="sunOpening"
                       placeholder="Opening Hour"
                       className={`w-full appearance-none border rounded mr-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.sunOpening && formik.errors.sunOpening
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.sunOpening && formik.errors.sunOpening
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunOpening}
@@ -559,11 +550,10 @@ const EditBusinessHours = () => {
                       name="sunClosing"
                       placeholder="Closing Hour"
                       className={`w-full appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300
-                    ${
-                      formik.touched.sunClosing && formik.errors.sunClosing
-                        ? "border-red-400"
-                        : "border-gray-300"
-                    }`}
+                    ${formik.touched.sunClosing && formik.errors.sunClosing
+                          ? "border-red-400"
+                          : "border-gray-300"
+                        }`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.sunClosing}
