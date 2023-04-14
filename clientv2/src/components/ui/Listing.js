@@ -10,7 +10,7 @@ const Listing = (props) => {
   useEffect(() => {
     async function fetchData() {
       const review = await fetch(
-        `http://localhost:6003/review/listing/${props.listing._id}`
+        `https://is3106-dropandgo.herokuapp.com/review/listing/${props.listing._id}`
       );
 
       if (!review.ok) {

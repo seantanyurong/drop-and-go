@@ -48,7 +48,7 @@ const ProviderSignUp = () => {
             };
 
             console.log("body" + JSON.stringify(body));
-            const responseCreate = await fetch("http://localhost:6003/provider/add", settings);
+            const responseCreate = await fetch("https://is3106-dropandgo.herokuapp.com/provider/add", settings);
 
             if (!responseCreate) {
                 const message = `An error has occurred: ${responseCreate.message}`;

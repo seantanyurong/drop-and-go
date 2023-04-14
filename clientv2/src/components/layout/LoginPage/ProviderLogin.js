@@ -49,7 +49,7 @@ const ProviderLogin = () => {
             };
             
             console.log("body" + JSON.stringify(body));
-            const responseLogin = await fetch("http://localhost:6003/provider/login", settings);
+            const responseLogin = await fetch("https://is3106-dropandgo.herokuapp.com/provider/login", settings);
 
             if (!responseLogin) {
                 const message = `An error has occurred: ${responseLogin.message}`;
@@ -88,7 +88,7 @@ const ProviderLogin = () => {
                 },
             };
 
-            const responseAuth = await fetch("http://localhost:6003/provider/authenticate", settings);
+            const responseAuth = await fetch("https://is3106-dropandgo.herokuapp.com/provider/authenticate", settings);
 
             if (!responseAuth) {
                 const message = `An error has occurred: ${responseAuth.message}`;
@@ -107,7 +107,7 @@ const ProviderLogin = () => {
             
             if (authRes.isLoggedIn) {
                 console.log("Fetch Data Triggered");
-                const responseDetails = await fetch(`http://localhost:6003/provider/${authRes.id}`);
+                const responseDetails = await fetch(`https://is3106-dropandgo.herokuapp.com/provider/${authRes.id}`);
                 
                 if (!responseDetails) {
                     const message = `An error has occurred: ${responseDetails.message}`;
