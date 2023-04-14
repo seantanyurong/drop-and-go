@@ -6,6 +6,7 @@ import RightArrow from "../../ui/RightArrow";
 import Location from "./Location"
 
 const LocationSection = () => {
+    // Carousel Responsiveness
     const responsive = {
         superLargeDesktop: {
             // the naming can be any, depends on you.
@@ -28,14 +29,19 @@ const LocationSection = () => {
 
     return (
         <div className="block py-[70px] bg-white border-b-1 border-gray-200">
+
+            {/* Location Section Header  Text */}
             <h2 className="mb-[35px] text-center text-2xl leading-snug tracking-tighter font-bold mt-0 text-gray-700">
                 150+ cities worldwide
             </h2>
 
+            {/* Carousel of Cities */}
             <div className="opacity-100 pr-[50px] pl-[30px] py-[20px] transition-opacity duration-500 mx-auto my-0 relative overflow-hidden z-[1]">
                 <Carousel
                     partialVisbile
                     responsive={responsive}
+
+                    // Custom Arrows
                     customLeftArrow={<LeftArrow />}
                     customRightArrow={<RightArrow />}
                     infinite={false}

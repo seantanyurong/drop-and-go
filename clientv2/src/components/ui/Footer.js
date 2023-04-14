@@ -8,6 +8,7 @@ const Footer = () => {
                             Drop&Go!
                         </a>
 
+                        {/* First List of Links */}
                         <ul className="mx-0 mt-[12px] mb-0 p-0 list-none">
                             <li className="mb-[3px]">
                                 <a className="font-normal pointer-events-auto text-gray-700 inline-block py-[2px] px-0 transition-colors duration-150 hover:text-gray-900 focus:outline-none"
@@ -47,6 +48,7 @@ const Footer = () => {
                     </li>
                 </ul>
 
+                {/* Second List of Links */}
                 <ul className="basis-[48%] my-[42px] p-0 list-none">
                     <li className="mb-[3px]">
                         <a className="text-gray-700 font-medium inline-block py-2">
@@ -91,9 +93,6 @@ const Footer = () => {
                         </ul>
                     </li>
                 </ul>
-
-
-
             </div>
         </div>
     );

@@ -13,10 +13,13 @@ const FAQSection = () => {
     return (
         <div className="block py-[70px] bg-white border-b border-gray-200">
             <div className="max-w-1280 mx-4 sm:mx-8 md:mx-12 lg:mx-16 xl:mx-20">
+
+                {/* FAQ Header Text */}
                 <h2 className="mb-[35px] text-center text-2xl leading-6 tracking-tight font-bold text-gray-700">
                     FAQ
                 </h2>
 
+                {/* FAQ Accordion */}
                 <Accordion
                     allowMultipleExpanded={false}
                 >
@@ -166,7 +169,6 @@ const FAQSection = () => {
                     </AccordionItem>
                 </Accordion>
             </div>
-
         </div>
     );
 }
