@@ -24,11 +24,9 @@ const UserProfile = () => {
   };
 
   const [formState, setFormState] = useState(defaultState);
-  const [initialState, setInitialState] = useState(defaultState);
   const [editState, setEditState] = useState(false);
   const [authState, setAuthState] = useState(credentials);
 
-  const phoneRegExp = "^(6|8|9)[0-9]{7}$";
   const userDetailsSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, "Name must be at least 3 characters")
@@ -38,8 +36,9 @@ const UserProfile = () => {
       .email("Invalid email")
       .required("Email Address is required"),
     password: Yup.string().required("Password is required"),
-    phone: Yup.string()
-      .matches(phoneRegExp, "Phone Number is not valid")
+    phone: Yup.number()
+    .typeError("Please enter a valid phone number")
+      .positive("Please enter a valid phone number")
       .required("Phone Number is required"),
   });
 
@@ -104,7 +103,6 @@ const UserProfile = () => {
     }
 
     updateData();
-    setInitialState(formState);
   };
 
   const formStyle = {
@@ -165,7 +163,6 @@ const UserProfile = () => {
         return;
       } else {
         setFormState(detailsRes);
-        setInitialState(detailsRes);
       }
     }
 

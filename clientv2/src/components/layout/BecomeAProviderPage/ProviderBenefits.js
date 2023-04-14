@@ -5,10 +5,12 @@ const ProviderBenefits = () => {
         <div className="py-[70px] bg-white border-b border-solid box-border">
             <div className="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
                 <div>
+                    {/* Provider Benefits Header */}
                     <h2 className="mb-[35px] text-center text-2xl leading-snug tracking-tighter font-bold mt-0 text-gray-700">
                         Start your new revenue stream today!
                     </h2>
 
+                    {/* Provider Benefit Tile Component */}
                     <div className="flex flex-wrap">
                         <div className="w-1/2 pr-[30px]">
                             <ProviderBenefitTile

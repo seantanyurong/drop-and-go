@@ -79,7 +79,7 @@ adminRoutes.route("/admin/login").post(async function (req, res) {
       );
     } else {
       console.log("Passwords Not Equal");
-      return res.json({ message: "Invalid Email or Password!" });
+      return res.json({ message: "Invalid Password!" });
     }
   });
 });
@@ -94,10 +94,10 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
   const admin = req.body;
   console.log(admin.name);
 
-  // checks if username or email have been taken by another user
-  const takenUsername = await db_connect
-    .collection("admin")
-    .findOne({ name: admin.name });
+  // checks if email have been taken by another user
+  // const takenUsername = await db_connect
+  //   .collection("admin")
+  //   .findOne({ name: admin.name });
   const takenEmail = await db_connect
     .collection("admin")
     .findOne({ email: admin.email });
@@ -109,9 +109,9 @@ adminRoutes.route("/admin/add").post(async function (req, res) {
   const pw = admin.password;
   const repw = admin.reenterPassword;
 
-  if (takenUsername || takenEmail) {
-    console.log("Username/Email Taken!");
-    res.json({ message: "Username or Email has already been taken!" });
+  if (takenEmail) {
+    console.log("Email Taken!");
+    res.json({ message: "Email has already been taken!" });
   } else if (pw !== repw) {
     console.log("Password Not Equals!");
 
