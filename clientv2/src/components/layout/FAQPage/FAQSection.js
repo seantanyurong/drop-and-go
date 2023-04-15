@@ -68,7 +68,7 @@ const FAQSection = () => {
                             className="font-medium"
                         >
                             <AccordionItemButton>
-                                How do you store your luggage with LuggageHero?
+                                How do you store your luggage with Drop&Go?
                             </AccordionItemButton>
                         </AccordionItemHeading>
 

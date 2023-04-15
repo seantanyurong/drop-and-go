@@ -85,7 +85,7 @@ const UserProfile = () => {
 
       console.log("body" + JSON.stringify(body));
       const responseUpdate = await fetch(
-        `http://localhost:6003/user/update/${userId}`,
+        `https://is3106-dropandgo.herokuapp.com/user/update/${userId}`,
         settings
       );
 
@@ -122,7 +122,7 @@ const UserProfile = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/user/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/user/authenticate",
         settings
       );
 
@@ -145,7 +145,7 @@ const UserProfile = () => {
 
       console.log("Fetch Data Triggered");
       const responseDetails = await fetch(
-        `http://localhost:6003/user/${authRes.id}`
+        `https://is3106-dropandgo.herokuapp.com/user/${authRes.id}`
       );
 
       if (!responseDetails) {

@@ -29,8 +29,8 @@ const UserDetails = ({ entityType }) => {
     async function fetchData() {
       const dbUrl =
         entityType === "User"
-          ? `http://localhost:6003/user/${userId}`
-          : `http://localhost:6003/provider/${providerId}`;
+          ? `https://is3106-dropandgo.herokuapp.com/user/${userId}`
+          : `https://is3106-dropandgo.herokuapp.com/provider/${providerId}`;
       const response = await fetch(dbUrl);
 
       if (!response.ok) {
@@ -131,8 +131,8 @@ const UserDetails = ({ entityType }) => {
 
       let dbUrl =
         entityType === "User"
-          ? `http://localhost:6003/user/update/${userId}`
-          : `http://localhost:6003/provider/update/${providerId}`;
+          ? `https://is3106-dropandgo.herokuapp.com/user/update/${userId}`
+          : `https://is3106-dropandgo.herokuapp.com/provider/update/${providerId}`;
 
       const response = await fetch(dbUrl, settings);
 

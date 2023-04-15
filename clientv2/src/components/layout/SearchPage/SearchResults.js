@@ -24,7 +24,9 @@ const SearchResults = (props) => {
     console.log(text, bag);
 
     async function fetchData() {
-      const response = await fetch(`http://localhost:6003/listing`);
+      const response = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/listing`
+      );
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -34,7 +36,9 @@ const SearchResults = (props) => {
 
       const listingsRes = await response.json();
 
-      const response2 = await fetch(`http://localhost:6003/booking`);
+      const response2 = await fetch(
+        `https://is3106-dropandgo.herokuapp.com/booking`
+      );
 
       if (!response2.ok) {
         const message = `An error has occurred: ${response2.statusText}`;

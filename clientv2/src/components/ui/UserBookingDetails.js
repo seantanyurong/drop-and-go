@@ -27,7 +27,7 @@ const UserBookingDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        `http://localhost:6003/booking/${bookingId}`
+        `https://is3106-dropandgo.herokuapp.com/booking/${bookingId}`
       );
 
       console.log(bookingId);
@@ -50,7 +50,7 @@ const UserBookingDetails = () => {
         setFinalPrice(bookingRes.finalPrice || 0.0);
 
         const response2 = await fetch(
-          `http://localhost:6003/listing/${bookingRes.listing_id}`
+          `https://is3106-dropandgo.herokuapp.com/listing/${bookingRes.listing_id}`
         );
 
         if (!response2.ok) {
@@ -69,7 +69,7 @@ const UserBookingDetails = () => {
 
         if (status === "Collected") {
           const response3 = await fetch(
-            `http://localhost:6003/review/booking/${bookingRes._id}`
+            `https://is3106-dropandgo.herokuapp.com/review/booking/${bookingRes._id}`
           );
 
           const reviewRes = await response3.json();
@@ -83,7 +83,7 @@ const UserBookingDetails = () => {
         }
 
         const response4 = await fetch(
-          `http://localhost:6003/review/listing/${bookingRes.listing_id}`
+          `https://is3106-dropandgo.herokuapp.com/review/listing/${bookingRes.listing_id}`
         );
 
         if (!response4.ok) {
@@ -122,13 +122,16 @@ const UserBookingDetails = () => {
       };
 
       // This will send a post request to update the data in the database.
-      await fetch(`http://localhost:6003/booking/update/${bookingId}`, {
-        method: "POST",
-        body: JSON.stringify(editedBooking),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await fetch(
+        `https://is3106-dropandgo.herokuapp.com/booking/update/${bookingId}`,
+        {
+          method: "POST",
+          body: JSON.stringify(editedBooking),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
     onStatusChange();
@@ -187,7 +190,7 @@ const UserBookingDetails = () => {
       };
       console.log("body" + JSON.stringify(body));
 
-      let dbUrl = `http://localhost:6003/review/add`;
+      let dbUrl = `https://is3106-dropandgo.herokuapp.com/review/add`;
 
       await fetch(dbUrl, settings);
     }

@@ -12,8 +12,8 @@ const RecentBookings = ({ entityType }) => {
     async function fetchData() {
       const dbUrl =
         entityType === "User"
-          ? `http://localhost:6003/booking/users/${userId}`
-          : `http://localhost:6003/booking/listings/${listingId}`;
+          ? `https://is3106-dropandgo.herokuapp.com/booking/users/${userId}`
+          : `https://is3106-dropandgo.herokuapp.com/booking/listings/${listingId}`;
       const response = await fetch(dbUrl);
 
       if (!response.ok) {
@@ -81,7 +81,7 @@ const RecentBookings = ({ entityType }) => {
           },
         ];
 
-        console.log(bookings);
+  console.log(bookings);
 
   return (
     <div>

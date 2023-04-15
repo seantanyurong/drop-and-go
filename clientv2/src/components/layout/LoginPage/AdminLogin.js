@@ -49,7 +49,7 @@ const AdminLogin = () => {
             };
             
             console.log("body" + JSON.stringify(body));
-            const responseLogin = await fetch("http://localhost:6003/admin/login", settings);
+            const responseLogin = await fetch("https://is3106-dropandgo.herokuapp.com/admin/login", settings);
 
             if (!responseLogin) {
                 const message = `An error has occurred: ${responseLogin.message}`;
@@ -88,7 +88,7 @@ const AdminLogin = () => {
                 },
             };
 
-            const responseAuth = await fetch("http://localhost:6003/admin/authenticate", settings);
+            const responseAuth = await fetch("https://is3106-dropandgo.herokuapp.com/admin/authenticate", settings);
 
             if (!responseAuth) {
                 const message = `An error has occurred: ${responseAuth.message}`;
@@ -107,7 +107,7 @@ const AdminLogin = () => {
 
             if (authRes.isLoggedIn) {
                 console.log("Fetch Data Triggered");
-                const responseDetails = await fetch(`http://localhost:6003/admin/${authRes.id}`);
+                const responseDetails = await fetch(`https://is3106-dropandgo.herokuapp.com/admin/${authRes.id}`);
                 
                 if (!responseDetails) {
                     const message = `An error has occurred: ${responseDetails.message}`;

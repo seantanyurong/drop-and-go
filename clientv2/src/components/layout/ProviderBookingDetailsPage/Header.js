@@ -39,7 +39,7 @@ const Header = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/user/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/user/authenticate",
         settings
       );
 
@@ -62,13 +62,15 @@ const Header = () => {
         navigate("/login/user");
       } else {
         console.log("Fetch Data Triggered");
-        const responseDetails = await fetch(`http://localhost:6003/user/${authRes.id}`);
-        
+        const responseDetails = await fetch(
+          `https://is3106-dropandgo.herokuapp.com/user/${authRes.id}`
+        );
+
         if (!responseDetails) {
-            const message = `An error has occurred: ${responseDetails.message}`;
-            window.alert(message);
-            return;
-        } 
+          const message = `An error has occurred: ${responseDetails.message}`;
+          window.alert(message);
+          return;
+        }
 
         const detailsRes = await responseDetails.json();
         console.log(detailsRes);

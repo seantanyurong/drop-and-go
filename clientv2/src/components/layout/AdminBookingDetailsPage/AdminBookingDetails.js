@@ -23,7 +23,7 @@ const AdminBookingDetails = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const dbUrl = `http://localhost:6003/booking/${bookingId}`;
+      const dbUrl = `https://is3106-dropandgo.herokuapp.com/booking/${bookingId}`;
       const responseBooking = await fetch(dbUrl);
 
       if (!responseBooking.ok) {
@@ -42,10 +42,10 @@ const AdminBookingDetails = () => {
       }
 
       const responseUser = await fetch(
-        `http://localhost:6003/user/${bookingRes.user_id}`
+        `https://is3106-dropandgo.herokuapp.com/user/${bookingRes.user_id}`
       );
       const responseListing = await fetch(
-        `http://localhost:6003/listing/${bookingRes.listing_id}`
+        `https://is3106-dropandgo.herokuapp.com/listing/${bookingRes.listing_id}`
       );
 
       console.log(responseUser);

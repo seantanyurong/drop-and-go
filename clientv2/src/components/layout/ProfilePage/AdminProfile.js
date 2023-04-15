@@ -80,7 +80,7 @@ const AdminProfile = () => {
 
       console.log("body" + JSON.stringify(body));
       const responseUpdate = await fetch(
-        `http://localhost:6003/admin/update/${adminId}`,
+        `https://is3106-dropandgo.herokuapp.com/admin/update/${adminId}`,
         settings
       );
 
@@ -117,7 +117,7 @@ const AdminProfile = () => {
       };
 
       const responseAuth = await fetch(
-        "http://localhost:6003/admin/authenticate",
+        "https://is3106-dropandgo.herokuapp.com/admin/authenticate",
         settings
       );
 
@@ -140,7 +140,7 @@ const AdminProfile = () => {
 
       console.log("Fetch Data Triggered");
       const responseDetails = await fetch(
-        `http://localhost:6003/admin/${authRes.id}`
+        `https://is3106-dropandgo.herokuapp.com/admin/${authRes.id}`
       );
 
       if (!responseDetails) {
@@ -225,10 +225,11 @@ const AdminProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.name && formik.errors.name
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.name && formik.errors.name
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -247,10 +248,11 @@ const AdminProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.email && formik.errors.email
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.email && formik.errors.email
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -268,10 +270,11 @@ const AdminProfile = () => {
               <input
                 className={
                   editState
-                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${formik.touched.password && formik.errors.password
-                      ? "border-red-400 text-red-400"
-                      : "border-gray-300"
-                    }`
+                    ? `shadow appearance-none border rounded w-full px-3 text-gray-700 focus:shadow-outline ${
+                        formik.touched.password && formik.errors.password
+                          ? "border-red-400 text-red-400"
+                          : "border-gray-300"
+                      }`
                     : formStyle.inactive
                 }
                 readOnly={!editState}
@@ -304,7 +307,6 @@ const AdminProfile = () => {
                   </button>
                 </div>
               )}
-
             </div>
           </form>
         </div>
