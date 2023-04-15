@@ -254,6 +254,11 @@ const UserLogin = () => {
                                 <p className="text-sm text-gray-500">
                                     {errorMessage}
                                 </p>
+                                <a
+                                    className="text-primary-200"
+                                    href="mailto:contact@dropandgo.com">
+                                    contact@dropandgo.com
+                                </a>
                             </div>
                             <div className="items-center px-4 py-3">
                                 <button
