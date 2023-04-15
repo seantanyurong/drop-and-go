@@ -119,7 +119,7 @@ const AdminSignUp = () => {
                                         <input
                                             value={formState.email}
                                             onChange={handleChange}
-                                            type="text"
+                                            type="email"
                                             name="email"
                                             id="email"
                                             autoComplete="email"
